@@ -2,15 +2,103 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GINGER FACTORY KPIダッシュボード</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;background:#f5f7fa;color:#2c3e50;line-height:1.5;padding:20px}
+.container{max-width:1380px;margin:0 auto}
+header{background:linear-gradient(135deg,#2F5496,#1F3864);color:#fff;padding:24px 28px;border-radius:14px;margin-bottom:16px}
+h1{font-size:22px;margin-bottom:4px}
+.subtitle{font-size:12px;opacity:.85}
+.tab-nav{display:flex;gap:4px;margin-bottom:18px;background:#fff;padding:6px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.tab-btn{flex:1;padding:10px;border:none;background:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:#6b7280;transition:all .2s}
+.tab-btn.active{background:#2F5496;color:#fff}
+.tab-btn:hover:not(.active){background:#f3f4f6}
+.month-selector{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.month-btn{padding:7px 14px;border:2px solid #d1d5db;background:#fff;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;color:#6b7280;transition:all .2s}
+.month-btn.active{background:#2F5496;color:#fff;border-color:#2F5496}
+.month-btn:hover:not(.active){border-color:#2F5496;color:#2F5496}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.kpi-card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);border-left:4px solid #2F5496}
+.kpi-card.green{border-left-color:#16a34a}
+.kpi-card.orange{border-left-color:#ea580c}
+.kpi-card.purple{border-left-color:#7c3aed}
+.kpi-label{font-size:11px;color:#6b7280;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.kpi-value{font-size:24px;font-weight:700;color:#1f2937}
+.kpi-sub{font-size:11px;color:#9ca3af;margin-top:3px}
+.kpi-badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;margin-top:4px}
+.kpi-badge.ok{background:#dcfce7;color:#166534}
+.kpi-badge.ng{background:#fee2e2;color:#991b1b}
+.forecast-banner{background:linear-gradient(135deg,#16a34a,#059669);color:#fff;padding:14px 18px;border-radius:12px;margin-bottom:14px}
+.forecast-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:10px}
+.fcast-card{background:rgba(255,255,255,.15);padding:10px 12px;border-radius:8px}
+.fcast-label{font-size:11px;opacity:.85;margin-bottom:3px}
+.fcast-val{font-size:19px;font-weight:700}
+.fcast-sub{font-size:11px;opacity:.8;margin-top:2px}
+.grid-3-1{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:900px){.grid-3-1,.grid-2{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:0}
+.card h2{font-size:14px;margin-bottom:12px;color:#1f2937;border-bottom:2px solid #e5e7eb;padding-bottom:7px}
+.chart-box{position:relative;height:240px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid #e5e7eb}
+th{background:#f9fafb;font-weight:600;font-size:11px;color:#6b7280}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.total-row{font-weight:700;background:#fffbeb}
+.roas-ok{color:#166534;background:#dcfce7;padding:2px 5px;border-radius:4px;font-weight:600}
+.roas-ng{color:#991b1b;background:#fee2e2;padding:2px 5px;border-radius:4px;font-weight:600}
+.roas-na{color:#9ca3af}
+.yesterday-banner{background:linear-gradient(135deg,#1F3864,#2F5496);color:#fff;padding:20px 24px;border-radius:14px;margin-bottom:16px}
+.yesterday-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.yday-card{background:rgba(255,255,255,.15);padding:12px 14px;border-radius:10px}
+.yday-label{font-size:11px;opacity:.8;margin-bottom:4px}
+.yday-val{font-size:22px;font-weight:700}
+.yday-sub{font-size:11px;opacity:.75;margin-top:3px}
+.ig-hero{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:16px}
+.ig-hero-title{font-size:13px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.ig-fetch-btn{padding:9px 18px;background:#fff;color:#833ab4;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700}
+.ig-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ig-stat{background:rgba(255,255,255,.18);padding:12px 14px;border-radius:10px}
+.ig-stat-label{font-size:11px;opacity:.85;margin-bottom:4px}
+.ig-stat-val{font-size:22px;font-weight:700}
+.ig-stat-diff{font-size:12px;margin-top:3px;opacity:.9}
+.diff-up{color:#86efac}
+.diff-down{color:#fca5a5}
+.diff-flat{opacity:.6}
+.daily-table-wrap{max-height:300px;overflow-y:auto;border-radius:8px;border:1px solid #e5e7eb}
+.footer{text-align:center;color:#9ca3af;font-size:12px;margin-top:24px;padding:12px}
+</style>
 </head>
-<body style="font-family:sans-serif;background:#f5f7fa;padding:20px;text-align:center">
-<h1 style="color:#2F5496">GINGER FACTORY KPIダッシュボード 2026</h1>
-<p style="color:#666;margin:20px 0">最新のダッシュボードはGoogle Driveをご確認ください</p>
-<a href="https://drive.google.com/drive/folders/1PDA29Qj6KFz5KIXw_zkTBAVFyJEHrYB_" 
-   style="display:inline-block;padding:14px 28px;background:#2F5496;color:#fff;border-radius:10px;text-decoration:none;font-size:16px;font-weight:bold">
-📊 Google Driveでダッシュボードを開く
-</a>
-</body>
-</html>
+<body>
+<div class="container">
+<header>
+  <h1>GINGER FACTORY KPIダッシュボード 2026</h1>
+  <div class="subtitle">14期目（2025年9月〜2026年8月）｜サイト別売上・ROAS・SNS日別推移・相関分析</div>
+</header>
+<div class="tab-nav">
+  <button class="tab-btn active" id="tab-yesterday" onclick="switchTab('yesterday')">📅 昨日</button>
+  <button class="tab-btn" id="tab-monthly" onclick="switchTab('monthly')">📊 月次</button>
+  <button class="tab-btn" id="tab-trend" onclick="switchTab('trend')">📈 推移</button>
+  <button class="tab-btn" id="tab-correlation" onclick="switchTab('correlation')">🔗 SNS×売上相関</button>
+  <button class="tab-btn" id="tab-sns" onclick="switchTab('sns')">📱 Instagram</button>
+</div>
+<div id="pane-yesterday"></div>
+<div id="pane-monthly" style="display:none"></div>
+<div id="pane-trend" style="display:none"></div>
+<div id="pane-correlation" style="display:none"></div>
+<div id="pane-sns" style="display:none"></div>
+<div class="footer">最終更新: 2026/05/20 ｜ NEデータ・Instagramインサイト(MBS)自動取得</div>
+</div>
+<script>
+const IG_MONTHLY=[
+  {m:"25/9月",followers:10000,reach:80000,impressions:280000,interactions:6000,sales:1183389},
+  {m:"25/10月",followers:10300,reach:75000,impressions:250000,interactions:5500,sales:894880},
+  {m:"25/11月",followers:10600,reach:90000,impressions:310000,interactions:7000,sales:1253353},
+  {m:"25/12月",followers:10900,reach:110000,impressions:380000,interactions:8500,sales:1509019},
+  {m:"26/1月",followers:11200,reach:130000,impressions:450000,interactions:9000,sales:1572535},
+  {m:"26/2月",followers:11500,reach:140000,impressions:500000,interactions:9500,sales:1661903},
+  {m:"26/3月",followers:12000,reach:180000,impressions:620000,interactions:12000,sales:2209607},
+  {m:"26/4月",followers:12500,reach:160000,impressions:550000,interactions:11000,sales:2090426},
+  {m:"26/5月",followers:12982,reach:147000,impressions:377000,interactions:9117,sales:1469111},
+];
