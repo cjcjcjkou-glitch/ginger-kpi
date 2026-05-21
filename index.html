@@ -1,33 +1,607 @@
-<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GINGER FACTORY KPI</title><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#2c3e50;padding:16px}header{background:linear-gradient(135deg,#2F5496,#1F3864);color:#fff;padding:18px 22px;border-radius:12px;margin-bottom:14px}h1{font-size:18px;margin-bottom:3px}.sub{font-size:11px;opacity:.85}.tabs{display:flex;gap:3px;margin-bottom:14px;background:#fff;padding:5px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.06)}.tb{flex:1;padding:8px 4px;border:none;background:none;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;color:#6b7280}.tb.on{background:#2F5496;color:#fff}.kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px}.kc{background:#fff;padding:13px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.05);border-left:4px solid #2F5496}.kc.g{border-left-color:#16a34a}.kc.o{border-left-color:#ea580c}.kc.p{border-left-color:#7c3aed}.kl{font-size:9px;color:#6b7280;margin-bottom:2px;text-transform:uppercase}.kv{font-size:18px;font-weight:700}.ks{font-size:10px;color:#9ca3af;margin-top:2px}.card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.05);margin-bottom:12px}.card h2{font-size:12px;margin-bottom:9px;border-bottom:2px solid #e5e7eb;padding-bottom:5px}.cb{position:relative;height:190px}.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}@media(max-width:500px){.g2{grid-template-columns:1fr}}.bn{background:linear-gradient(135deg,#1F3864,#2F5496);color:#fff;padding:16px 18px;border-radius:11px;margin-bottom:12px}.bg{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:7px;margin-top:8px}.bc{background:rgba(255,255,255,.15);padding:9px 11px;border-radius:7px}.bl{font-size:9px;opacity:.8;margin-bottom:2px}.bv{font-size:16px;font-weight:700}.bs{font-size:10px;opacity:.75;margin-top:2px}.ih{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;border-radius:11px;padding:16px 18px;margin-bottom:12px}table{width:100%;border-collapse:collapse;font-size:11px}th,td{text-align:left;padding:5px 4px;border-bottom:1px solid #e5e7eb}th{background:#f9fafb;font-weight:600;color:#6b7280}td.r{text-align:right}.rok{color:#166534;background:#dcfce7;padding:1px 3px;border-radius:3px;font-weight:600}.rng{color:#991b1b;background:#fee2e2;padding:1px 3px;border-radius:3px;font-weight:600}.tot{font-weight:700;background:#fffbeb}.up{color:#86efac}.dn{color:#fca5a5}.foot{text-align:center;color:#9ca3af;font-size:10px;margin-top:14px;padding:10px}</style></head><body>
-<header><h1>GINGER FACTORY KPIダッシュボード 2026</h1><div class="sub">14期（2025/9〜2026/8）| 売上・広告・SNS相関分析</div></header>
-<div class="tabs"><button class="tb on" id="t0" onclick="sw(0)">📅 昨日</button><button class="tb" id="t1" onclick="sw(1)">📊 月次</button><button class="tb" id="t2" onclick="sw(2)">📈 推移</button><button class="tb" id="t3" onclick="sw(3)">🔗 SNS相関</button><button class="tb" id="t4" onclick="sw(4)">📱 IG</button></div>
-<div id="p0"></div><div id="p1" style="display:none"></div><div id="p2" style="display:none"></div><div id="p3" style="display:none"></div><div id="p4" style="display:none"></div>
-<div class="foot">最終更新: 2026/05/20 | NE・Meta Business Suiteデータ連携</div>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GINGER FACTORY KPI ダッシュボード</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;background:#f5f7fa;color:#2c3e50;line-height:1.5;padding:20px}
+.container{max-width:1380px;margin:0 auto}
+header{background:linear-gradient(135deg,#2F5496,#1F3864);color:#fff;padding:24px 28px;border-radius:14px;margin-bottom:16px}
+h1{font-size:22px;margin-bottom:4px}
+.subtitle{font-size:12px;opacity:.85}
+.tab-nav{display:flex;gap:4px;margin-bottom:18px;background:#fff;padding:6px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.tab-btn{flex:1;padding:10px;border:none;background:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:#6b7280;transition:all .2s}
+.tab-btn.active{background:#2F5496;color:#fff}
+.tab-btn:hover:not(.active){background:#f3f4f6}
+.month-selector{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.month-btn{padding:7px 14px;border:2px solid #d1d5db;background:#fff;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;color:#6b7280;transition:all .2s}
+.month-btn.active{background:#2F5496;color:#fff;border-color:#2F5496}
+.month-btn:hover:not(.active){border-color:#2F5496;color:#2F5496}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.kpi-card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);border-left:4px solid #2F5496}
+.kpi-card.green{border-left-color:#16a34a}
+.kpi-card.orange{border-left-color:#ea580c}
+.kpi-card.purple{border-left-color:#7c3aed}
+.kpi-label{font-size:11px;color:#6b7280;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.kpi-value{font-size:24px;font-weight:700;color:#1f2937}
+.kpi-sub{font-size:11px;color:#9ca3af;margin-top:3px}
+.kpi-badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;margin-top:4px}
+.kpi-badge.ok{background:#dcfce7;color:#166534}
+.kpi-badge.ng{background:#fee2e2;color:#991b1b}
+.forecast-banner{background:linear-gradient(135deg,#16a34a,#059669);color:#fff;padding:14px 18px;border-radius:12px;margin-bottom:14px}
+.forecast-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:10px}
+.fcast-card{background:rgba(255,255,255,.15);padding:10px 12px;border-radius:8px}
+.fcast-label{font-size:11px;opacity:.85;margin-bottom:3px}
+.fcast-val{font-size:19px;font-weight:700}
+.fcast-sub{font-size:11px;opacity:.8;margin-top:2px}
+.grid-3-1{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:900px){.grid-3-1,.grid-2{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:0}
+.card h2{font-size:14px;margin-bottom:12px;color:#1f2937;border-bottom:2px solid #e5e7eb;padding-bottom:7px}
+.chart-box{position:relative;height:240px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid #e5e7eb}
+th{background:#f9fafb;font-weight:600;font-size:11px;color:#6b7280}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.total-row{font-weight:700;background:#fffbeb}
+.roas-ok{color:#166534;background:#dcfce7;padding:2px 5px;border-radius:4px;font-weight:600}
+.roas-ng{color:#991b1b;background:#fee2e2;padding:2px 5px;border-radius:4px;font-weight:600}
+.roas-na{color:#9ca3af}
+.yesterday-banner{background:linear-gradient(135deg,#1F3864,#2F5496);color:#fff;padding:20px 24px;border-radius:14px;margin-bottom:16px}
+.yesterday-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.yday-card{background:rgba(255,255,255,.15);padding:12px 14px;border-radius:10px}
+.yday-label{font-size:11px;opacity:.8;margin-bottom:4px}
+.yday-val{font-size:22px;font-weight:700}
+.yday-sub{font-size:11px;opacity:.75;margin-top:3px}
+.ig-hero{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:16px}
+.ig-hero-title{font-size:13px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.ig-fetch-btn{padding:9px 18px;background:#fff;color:#833ab4;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700}
+.ig-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ig-stat{background:rgba(255,255,255,.18);padding:12px 14px;border-radius:10px}
+.ig-stat-label{font-size:11px;opacity:.85;margin-bottom:4px}
+.ig-stat-val{font-size:22px;font-weight:700}
+.ig-stat-diff{font-size:12px;margin-top:3px;opacity:.9}
+.diff-up{color:#86efac}
+.diff-down{color:#fca5a5}
+.diff-flat{opacity:.6}
+.daily-table-wrap{max-height:300px;overflow-y:auto;border-radius:8px;border:1px solid #e5e7eb}
+.footer{text-align:center;color:#9ca3af;font-size:12px;margin-top:24px;padding:12px}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>GINGER FACTORY KPIダッシュボード 2026</h1>
+  <div class="subtitle">14期目（2025年9月〜2026年8月）｜サイト別売上・ROAS・SNS日別推移・相関分析</div>
+</header>
+<div class="tab-nav">
+  <button class="tab-btn active" id="tab-instagram" onclick="switchTab('instagram')">📱 Instagram分析</button>
+  <button class="tab-btn" id="tab-sales" onclick="switchTab('sales')">📊 売上</button>
+  <button class="tab-btn" id="tab-trend" onclick="switchTab('trend')">📈 推移</button>
+</div>
+<div id="pane-instagram"></div>
+<div id="pane-sales" style="display:none"></div>
+<div id="pane-trend" style="display:none"></div>
+<div class="footer">最終更新: 2026/05/21 ｜ NEデータ・Instagramインサイト(MBS)自動取得</div>
+</div>
 <script>
-const D={"2025-09":{p:"25/9",s:[{n:"YAHOO",v:41601,o:10,a:null,r:null},{n:"楽天",v:443054,o:120,a:null,r:null},{n:"Amazon",v:178122,o:64,a:null,r:null},{n:"本店04",v:517312,o:92,a:null,r:null},{n:"メルカリ",v:3300,o:3,a:0,r:0}]},"2025-10":{p:"25/10",s:[{n:"YAHOO",v:12569,o:6,a:null,r:null},{n:"楽天",v:340772,o:98,a:null,r:null},{n:"Amazon",v:195990,o:73,a:null,r:null},{n:"本店04",v:345549,o:67,a:null,r:null},{n:"エアレジ",v:75080,o:23,a:0,r:0}]},"2025-11":{p:"25/11",s:[{n:"YAHOO",v:57571,o:18,a:null,r:null},{n:"楽天",v:483985,o:153,a:null,r:null},{n:"Amazon",v:248548,o:98,a:null,r:null},{n:"本店04",v:462149,o:69,a:null,r:null},{n:"エアレジ",v:127850,o:33,a:0,r:0}]},"2025-12":{p:"25/12",s:[{n:"YAHOO",v:47506,o:18,a:null,r:null},{n:"楽天",v:649968,o:194,a:null,r:null},{n:"Amazon",v:316563,o:117,a:null,r:null},{n:"本店04",v:493882,o:92,a:null,r:null},{n:"エアレジ",v:107170,o:33,a:0,r:0}]},"2026-01":{p:"1月",s:[{n:"YAHOO",v:61754,o:24,a:8909,r:33347},{n:"楽天",v:637702,o:175,a:55021,r:264978},{n:"Amazon",v:370340,o:132,a:null,r:null},{n:"本店04",v:493640,o:82,a:null,r:null},{n:"エアレジ",v:65090,o:18,a:0,r:0}]},"2026-02":{p:"2月",s:[{n:"YAHOO",v:87783,o:30,a:10963,r:42842},{n:"楽天",v:540895,o:174,a:46902,r:213878},{n:"Amazon",v:438258,o:145,a:null,r:null},{n:"本店04",v:573303,o:104,a:null,r:null},{n:"エアレジ",v:89130,o:29,a:0,r:0}]},"2026-03":{p:"3月",s:[{n:"YAHOO",v:110902,o:22,a:11924,r:38446},{n:"楽天",v:894921,o:256,a:50778,r:463275},{n:"Amazon",v:275503,o:106,a:null,r:null},{n:"本店04",v:921056,o:170,a:null,r:null},{n:"エアレジ",v:88680,o:25,a:0,r:0}]},"2026-04":{p:"4月",s:[{n:"YAHOO",v:76382,o:21,a:10276,r:31357},{n:"楽天",v:968306,o:262,a:59547,r:627396},{n:"Amazon",v:428657,o:137,a:null,r:null},{n:"本店04",v:607143,o:98,a:null,r:null},{n:"エアレジ",v:100790,o:24,a:0,r:0}]},"2026-05":{p:"5月(5/20)",s:[{n:"YAHOO",v:61223,o:14,a:3701,r:28613},{n:"楽天",v:680370,o:180,a:12870,r:52240},{n:"Amazon",v:273412,o:88,a:1505,r:10921},{n:"本店04",v:441707,o:84,a:6133,r:28048},{n:"メルカリ",v:4400,o:3,a:0,r:0}]}};
-const MK=Object.keys(D),ML={"2025-09":"25/9","2025-10":"25/10","2025-11":"25/11","2025-12":"25/12","2026-01":"1月","2026-02":"2月","2026-03":"3月","2026-04":"4月","2026-05":"5月"};
-const EL={"2026-05":20},DY={"2025-09":30,"2025-10":31,"2025-11":30,"2025-12":31,"2026-01":31,"2026-02":28,"2026-03":31,"2026-04":30,"2026-05":31};
-const IG=[{m:"25/9",f:10000,rc:80000,im:280000,ix:6000,s:1183389},{m:"25/10",f:10300,rc:75000,im:250000,ix:5500,s:894880},{m:"25/11",f:10600,rc:90000,im:310000,ix:7000,s:1253353},{m:"25/12",f:10900,rc:110000,im:380000,ix:8500,s:1509019},{m:"1月",f:11200,rc:130000,im:450000,ix:9000,s:1572535},{m:"2月",f:11500,rc:140000,im:500000,ix:9500,s:1661903},{m:"3月",f:12000,rc:180000,im:620000,ix:12000,s:2209607},{m:"4月",f:12500,rc:160000,im:550000,ix:11000,s:2090426},{m:"5月",f:12982,rc:147000,im:377000,ix:9117,s:1469111}];
-let cm="2026-05",ct=0,ch={};
-// localStorage使用（GitHub Pages対応）
-function lsGet(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}}
-function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
-let yd=lsGet("yd")||{date:"",sales:null,orders:null,rakuten:null,yahoo:null,amazon:null,google:null};
-let ig=lsGet("ig")||{"2026-05-20":{f:12982,r:147000,im:377000,ix:9117}};
-async function saveIGEntry(fv,rv,imv,ix,dk){const k=dk||new Date().toISOString().slice(0,10);ig[k]={f:fv,r:rv,im:imv,ix};lsSet("ig",ig);if(ct===4)rp4();}
-async function updateYesterday(o){Object.assign(yd,o);lsSet("yd",yd);if(ct===0)rp0();}
-const f=n=>n==null?"-":Math.round(n).toLocaleString("ja-JP");
-const fk=n=>n==null?"-":n>=10000?(n/10000).toFixed(1)+"万":n.toLocaleString();
-function tot(k){const d=D[k];if(!d)return null;const t={s:0,o:0,a:0,r:0};d.s.forEach(x=>{t.s+=x.v||0;t.o+=x.o||0;t.a+=x.a||0;t.r+=x.r||0});t.roas=t.a>0?t.r/t.a:null;t.aov=t.o>0?t.s/t.o:null;return t;}
-function dc(){Object.values(ch).forEach(c=>{try{c.destroy();}catch(e){}});ch={};}
-function sw(i){ct=i;[0,1,2,3,4].forEach(j=>{document.getElementById("t"+j).classList.toggle("on",j===i);document.getElementById("p"+j).style.display=j===i?"block":"none";});dc();[rp0,rp1,rp2,rp3,rp4][i]();}
-function rp0(){const y=yd,aov=(y.sales&&y.orders)?Math.round(y.sales/y.orders):null;const ads=[y.rakuten,y.yahoo,y.amazon,y.google].filter(v=>v!=null),ta=ads.reduce((a,b)=>a+b,0),has=ads.length>0;const roas=has&&y.sales?((y.sales/ta)*100).toFixed(0):null;document.getElementById("p0").innerHTML='<div class="bn"><div style="font-size:12px;font-weight:700;display:flex;justify-content:space-between;flex-wrap:wrap;gap:7px"><span>📅 '+(y.date||"昨日")+'の売上ダイジェスト</span><button onclick="fy()" id="yb" style="padding:7px 14px;background:#fff;color:#1F3864;border:none;border-radius:7px;cursor:pointer;font-size:11px;font-weight:700">🔄 今すぐ取得</button></div><div class="bg" style="margin-top:9px"><div class="bc"><div class="bl">総売上</div><div class="bv">'+(y.sales!=null?"¥"+f(y.sales):"―")+'</div><div class="bs">'+(y.orders!=null?f(y.orders)+"件":"")+(aov?" 客単価¥"+f(aov):"")+'</div></div><div class="bc"><div class="bl">広告費合計</div><div class="bv">'+(has?"¥"+f(ta):"―")+'</div><div class="bs">'+(roas?"ROAS "+roas+"%":"")+'</div></div><div class="bc"><div class="bl">楽天RPP</div><div class="bv" style="font-size:14px">'+(y.rakuten!=null?"¥"+f(y.rakuten):"―")+'</div></div><div class="bc"><div class="bl">Yahoo広告</div><div class="bv" style="font-size:14px">'+(y.yahoo!=null?"¥"+f(y.yahoo):"―")+'</div></div><div class="bc"><div class="bl">Amazon広告</div><div class="bv" style="font-size:14px">'+(y.amazon!=null?"¥"+f(y.amazon):"―")+'</div></div><div class="bc"><div class="bl">Google広告</div><div class="bv" style="font-size:14px">'+(y.google!=null?"¥"+f(y.google):"―")+'</div></div></div></div>';}
-function fy(){const b=document.getElementById("yb");if(b){b.textContent="🔄 取得中...";b.disabled=true;}if(window.sendPrompt)window.sendPrompt("昨日の売上と広告費を取得してupdateYesterday()で更新してください。");else if(b){b.textContent="❌ Claude未接続";b.disabled=false;}}
-function rp1(){const d=D[cm],t=tot(cm),el=EL[cm],td2=DY[cm],ok=t.roas!=null&&t.roas>=3;let fc="";if(el&&el<td2){const k=td2/el;fc='<div style="background:linear-gradient(135deg,#16a34a,#059669);color:#fff;padding:11px 14px;border-radius:9px;margin-bottom:10px"><div style="font-size:11px;font-weight:600">📈 月末着地予測（'+el+'/'+td2+'日）</div><div class="bg" style="margin-top:7px"><div class="bc"><div class="bl">着地売上</div><div class="bv">¥'+f(Math.round(t.s*k))+'</div></div><div class="bc"><div class="bl">着地件数</div><div class="bv">'+f(Math.round(t.o*k))+'件</div></div><div class="bc"><div class="bl">現在ROAS</div><div class="bv">'+(t.roas!=null?(t.roas*100).toFixed(0)+"%":"-")+'</div></div></div></div>';}let sel="";MK.forEach(m=>{sel+='<button onclick="cm=''+m+'';rp1()" style="padding:5px 10px;border:2px solid '+(m===cm?"#2F5496":"#d1d5db")+';background:'+(m===cm?"#2F5496":"#fff")+';color:'+(m===cm?"#fff":"#6b7280")+';border-radius:6px;cursor:pointer;font-size:10px;font-weight:600">'+ML[m]+'</button>';});let rows="";d.s.forEach(x=>{const ro=x.a>0?x.r/x.a:null;const rh=ro==null?"-":(ro>=3?'<span class="rok">'+(ro*100).toFixed(0)+'%</span>':'<span class="rng">'+(ro*100).toFixed(0)+'%</span>');rows+='<tr><td>'+x.n+'</td><td class="r">¥'+f(x.v)+'</td><td class="r">'+f(x.o)+'</td><td class="r">'+(x.a?"¥"+f(x.a):"-")+'</td><td class="r">'+rh+'</td></tr>';});rows+='<tr class="tot"><td>合計</td><td class="r">¥'+f(t.s)+'</td><td class="r">'+f(t.o)+'</td><td class="r">¥'+f(t.a)+'</td><td class="r">'+(t.roas!=null?(t.roas>=3?'<span class="rok">'+(t.roas*100).toFixed(0)+'%</span>':'<span class="rng">'+(t.roas*100).toFixed(0)+'%</span>'):"−")+'</td></tr>';document.getElementById("p1").innerHTML='<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">'+sel+'</div>'+fc+'<div class="kg"><div class="kc"><div class="kl">月累計売上</div><div class="kv">¥'+f(t.s)+'</div><div class="ks">'+f(t.o)+'件/客単価¥'+f(Math.round(t.aov||0))+'</div></div><div class="kc o"><div class="kl">広告費</div><div class="kv">¥'+f(t.a)+'</div><div class="ks">広告経由¥'+f(t.r)+'</div></div><div class="kc g"><div class="kl">ROAS</div><div class="kv">'+(t.roas!=null?(t.roas*100).toFixed(0)+"%":"-")+'</div></div><div class="kc p"><div class="kl">寄与率</div><div class="kv">'+(t.r&&t.s?((t.r/t.s)*100).toFixed(1)+"%":"-")+'</div></div></div><div class="g2"><div class="card"><h2>サイト別詳細（'+d.p+'）</h2><table><thead><tr><th>サイト</th><th>売上</th><th>件数</th><th>広告費</th><th>ROAS</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="card"><h2>構成比</h2><div class="cb"><canvas id="sc"></canvas></div></div></div>';const fl=d.s.filter(x=>x.v>0);ch.s=new Chart(document.getElementById("sc").getContext("2d"),{type:"doughnut",data:{labels:fl.map(x=>x.n),datasets:[{data:fl.map(x=>x.v),backgroundColor:["#ef4444","#f59e0b","#3b82f6","#10b981","#8b5cf6","#ec4899"],hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"right"}}}});}
-function rp2(){const lb=MK.map(m=>ML[m]),sv=MK.map(m=>{const t=tot(m);return t?t.s:0}),av=MK.map(m=>{const t=tot(m);return t?t.a:0}),rv=MK.map(m=>{const t=tot(m);return t?t.r:0}),rs=MK.map(m=>{const t=tot(m);return t&&t.roas?+(t.roas*100).toFixed(0):null});document.getElementById("p2").innerHTML='<div class="g2"><div class="card"><h2>月次売上推移</h2><div class="cb"><canvas id="tc"></canvas></div></div><div class="card"><h2>ROAS推移</h2><div class="cb"><canvas id="rc"></canvas></div></div></div><div class="card"><h2>広告費 vs 広告経由売上</h2><div class="cb"><canvas id="ac"></canvas></div></div>';ch.t=new Chart(document.getElementById("tc").getContext("2d"),{type:"bar",data:{labels:lb,datasets:[{label:"売上",data:sv,backgroundColor:"rgba(47,84,150,.85)",borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});ch.r=new Chart(document.getElementById("rc").getContext("2d"),{type:"line",data:{labels:lb,datasets:[{label:"ROAS",data:rs,borderColor:"#16a34a",backgroundColor:"rgba(22,163,74,.1)",tension:.3,fill:true,pointRadius:3,spanGaps:true},{label:"目標300%",data:MK.map(()=>300),borderColor:"#dc2626",borderDash:[5,3],pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+"%"}}}}});ch.a=new Chart(document.getElementById("ac").getContext("2d"),{type:"bar",data:{labels:lb,datasets:[{label:"広告費",data:av,backgroundColor:"rgba(234,88,12,.8)",borderSkipped:false},{label:"広告経由売上",data:rv,backgroundColor:"rgba(22,163,74,.8)",borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});}
-function rp3(){document.getElementById("p3").innerHTML='<div style="background:linear-gradient(135deg,#1F3864,#2F5496);color:#fff;padding:14px 18px;border-radius:11px;margin-bottom:11px"><div style="font-size:12px;font-weight:700;margin-bottom:3px">🔗 フォロワー数と売上の相関分析</div><div style="font-size:10px;opacity:.85">フォロワーが増えると売上も伸びる仮説を検証 ※9〜2月は推定値</div></div><div class="g2"><div class="card"><h2>フォロワー数×月次売上</h2><div class="cb"><canvas id="c1"></canvas></div></div><div class="card"><h2>フォロワー・売上 推移（2軸）</h2><div class="cb"><canvas id="c2"></canvas></div></div></div><div class="card"><h2>月別SNS×売上データ</h2><div style="overflow-x:auto"><table><thead><tr><th>月</th><th style="text-align:right">フォロワー</th><th style="text-align:right">リーチ</th><th style="text-align:right">月次売上</th><th style="text-align:right">1人あたり</th></tr></thead><tbody>'+IG.map(d=>'<tr><td>'+d.m+'</td><td class="r">'+d.f.toLocaleString()+'</td><td class="r">'+fk(d.rc)+'</td><td class="r">¥'+Math.round(d.s).toLocaleString()+'</td><td class="r">¥'+Math.round(d.s/d.f).toLocaleString()+'</td></tr>').join("")+'</tbody></table></div></div>';ch.c1=new Chart(document.getElementById("c1").getContext("2d"),{type:"scatter",data:{datasets:[{data:IG.map(d=>({x:d.f,y:d.s})),backgroundColor:"rgba(47,84,150,.7)",pointRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>IG[c.dataIndex].m+": "+c.parsed.x.toLocaleString()+"人/¥"+Math.round(c.parsed.y).toLocaleString()}}},scales:{x:{title:{display:true,text:"フォロワー数"},ticks:{callback:v=>v.toLocaleString()}},y:{title:{display:true,text:"月次売上"},ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});ch.c2=new Chart(document.getElementById("c2").getContext("2d"),{type:"line",data:{labels:IG.map(d=>d.m),datasets:[{label:"フォロワー",data:IG.map(d=>d.f),borderColor:"#e1306c",tension:.3,fill:false,pointRadius:3,yAxisID:"y1"},{label:"売上",data:IG.map(d=>d.s),borderColor:"#2F5496",tension:.3,fill:false,pointRadius:3,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y1:{type:"linear",position:"left",ticks:{callback:v=>v.toLocaleString()}},y2:{type:"linear",position:"right",ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"},grid:{drawOnChartArea:false}}}}});}
-function rp4(){const ks=Object.keys(ig).sort().reverse(),lt=ks.length>0?ig[ks[0]]:null,pv=ks.length>1?ig[ks[1]]:null,tk=new Date().toISOString().slice(0,10),has=ig[tk]!=null;function db(a,b,u=""){if(a==null||b==null)return "";const d=a-b;if(d===0)return '<span style="opacity:.6">変化なし</span>';return '<span class="'+(d>0?"up":"dn")+'">'+(d>0?"+":"")+fk(d)+u+' 前回比</span>';}let rows=ks.map(k=>'<tr><td>'+k+'</td><td class="r">'+(ig[k].f!=null?fk(ig[k].f):"-")+'</td><td class="r">'+(ig[k].r!=null?fk(ig[k].r):"-")+'</td><td class="r">'+(ig[k].im!=null?fk(ig[k].im):"-")+'</td><td class="r">'+(ig[k].ix!=null?fk(ig[k].ix):"-")+'</td></tr>').join("")||'<tr><td colspan="5" style="text-align:center;color:#9ca3af;padding:14px">まだデータなし</td></tr>';document.getElementById("p4").innerHTML='<div class="ih"><div style="font-size:11px;font-weight:700;display:flex;justify-content:space-between;flex-wrap:wrap;gap:7px;margin-bottom:9px"><span>📸 Instagramインサイト（日別記録）</span><button id="igb" onclick="fig()" style="padding:6px 12px;background:#fff;color:#833ab4;border:none;border-radius:6px;cursor:pointer;font-size:11px;font-weight:700">'+(has?"🔄 今日更新":"📊 今日取得")+'</button></div><div class="bg"><div class="bc"><div class="bl">フォロワー数</div><div class="bv">'+(lt&&lt.f!=null?fk(lt.f):"-")+'</div>'+db(lt?.f,pv?.f,"人")+'<div style="font-size:9px;opacity:.7;margin-top:1px">'+(ks[0]||"")+'時点</div></div><div class="bc"><div class="bl">リーチ(30日)</div><div class="bv">'+(lt&&lt.r!=null?fk(lt.r):"-")+'</div>'+db(lt?.r,pv?.r)+'</div><div class="bc"><div class="bl">ビュー(30日)</div><div class="bv">'+(lt&&lt.im!=null?fk(lt.im):"-")+'</div>'+db(lt?.im,pv?.im)+'</div><div class="bc"><div class="bl">インタラクション</div><div class="bv">'+(lt&&lt.ix!=null?fk(lt.ix):"-")+'</div>'+db(lt?.ix,pv?.ix)+'</div></div></div><div class="g2"><div class="card"><h2>フォロワー推移</h2><div class="cb"><canvas id="ifc"></canvas></div></div><div class="card"><h2>リーチ・ビュー推移</h2><div class="cb"><canvas id="irc"></canvas></div></div></div><div class="card"><h2>日別記録</h2><div style="max-height:260px;overflow-y:auto"><table><thead><tr><th>日付</th><th style="text-align:right">フォロワー</th><th style="text-align:right">リーチ</th><th style="text-align:right">ビュー</th><th style="text-align:right">インタラクション</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';const kss=Object.keys(ig).sort();if(kss.length>0){const lb=kss.map(k=>k.slice(5));ch.ifc=new Chart(document.getElementById("ifc").getContext("2d"),{type:"line",data:{labels:lb,datasets:[{label:"フォロワー",data:kss.map(k=>ig[k].f),borderColor:"#e1306c",backgroundColor:"rgba(225,48,108,.1)",tension:.3,fill:true,pointRadius:3,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>fk(v)}}}}});ch.irc=new Chart(document.getElementById("irc").getContext("2d"),{type:"line",data:{labels:lb,datasets:[{label:"リーチ",data:kss.map(k=>ig[k].r),borderColor:"#833ab4",tension:.3,fill:false,pointRadius:3,spanGaps:true},{label:"ビュー",data:kss.map(k=>ig[k].im),borderColor:"#fd1d1d",tension:.3,fill:false,pointRadius:3,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{ticks:{callback:v=>fk(v)}}}}});}}
-function fig(){const b=document.getElementById("igb");if(b){b.disabled=true;b.textContent="🔄 取得中...";}if(window.sendPrompt)window.sendPrompt("Meta Business SuiteのInstagramインサイトを開いてsaveIGEntry()で保存してください。");else if(b){b.disabled=false;b.textContent="❌ Claude未接続";}}
-// 即時実行（awaitなし）
-rp0();
-</script></body></html>
+
+// === GitHub Pages用 localStorage ラッパー (Claude Artifactのwindow.storage互換) ===
+window.storage = {
+  get: async function(key) {
+    try {
+      const v = localStorage.getItem(key);
+      return v === null ? null : { key: key, value: v };
+    } catch(e) { return null; }
+  },
+  set: async function(key, value) {
+    try {
+      localStorage.setItem(key, value);
+      return { key: key, value: value };
+    } catch(e) { return null; }
+  },
+  delete: async function(key) {
+    try {
+      localStorage.removeItem(key);
+      return { key: key, deleted: true };
+    } catch(e) { return null; }
+  }
+};
+// === ここまで ===
+
+const IG_MONTHLY=[
+  {m:"25/9月",followers:3431,reach:3666,impressions:28145,interactions:290,sales:1183389,metaAdCost:0,metaResults:0,linkClicks:null,access:null},
+  {m:"25/10月",followers:3481,reach:1617,impressions:25394,interactions:230,sales:894880,metaAdCost:0,metaResults:0,linkClicks:null,access:null},
+  {m:"25/11月",followers:3570,reach:1516,impressions:35177,interactions:349,sales:1253353,metaAdCost:0,metaResults:0,linkClicks:null,access:null},
+  {m:"25/12月",followers:3597,reach:1835,impressions:12439,interactions:95,sales:1509019,metaAdCost:0,metaResults:0,linkClicks:null,access:null},
+  {m:"26/1月",followers:3712,reach:83666,impressions:122795,interactions:978,sales:1572535,metaAdCost:0,metaResults:0,linkClicks:2150,access:641},
+  {m:"26/2月",followers:4265,reach:95858,impressions:154517,interactions:2403,sales:1661903,metaAdCost:20686,metaResults:1718,linkClicks:4241,access:1490},
+  {m:"26/3月",followers:8308,reach:500447,impressions:658352,interactions:18421,sales:2209607,metaAdCost:30406,metaResults:2996,linkClicks:13753,access:2255},
+  {m:"26/4月",followers:11867,reach:384632,impressions:649368,interactions:16673,sales:2090426,metaAdCost:22312,metaResults:2758,linkClicks:21766,access:4452},
+  {m:"26/5月",followers:13000,reach:177069,impressions:303677,interactions:7192,sales:1469111,metaAdCost:6723,metaResults:666,linkClicks:8031,access:1570},
+];
+const DATA={
+  "2025-09":{period:"2025年9月",sites:[
+    {name:"YAHOO",sales:41601,orders:10,adCost:null,adRev:null},
+    {name:"楽天市場",sales:443054,orders:120,adCost:null,adRev:null},
+    {name:"アマゾン",sales:178122,orders:64,adCost:null,adRev:null},
+    {name:"本店04",sales:517312,orders:92,adCost:null,adRev:null},
+    {name:"メルカリ",sales:3300,orders:3,adCost:0,adRev:0},
+    {name:"GM",sales:0,orders:0,adCost:0,adRev:0},
+    {name:"エアレジ",sales:0,orders:0,adCost:0,adRev:0},
+  ]},
+  "2025-10":{period:"2025年10月",sites:[
+    {name:"YAHOO",sales:12569,orders:6,adCost:null,adRev:null},
+    {name:"楽天市場",sales:340772,orders:98,adCost:null,adRev:null},
+    {name:"アマゾン",sales:195990,orders:73,adCost:null,adRev:null},
+    {name:"本店04",sales:345549,orders:67,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:0,adRev:0},
+    {name:"GM",sales:0,orders:0,adCost:0,adRev:0},
+    {name:"エアレジ",sales:75080,orders:23,adCost:0,adRev:0},
+  ]},
+  "2025-11":{period:"2025年11月",sites:[
+    {name:"YAHOO",sales:57571,orders:18,adCost:null,adRev:null},
+    {name:"楽天市場",sales:483985,orders:153,adCost:null,adRev:null},
+    {name:"アマゾン",sales:248548,orders:98,adCost:null,adRev:null},
+    {name:"本店04",sales:462149,orders:69,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:0,adRev:0},
+    {name:"GM",sales:0,orders:0,adCost:0,adRev:0},
+    {name:"エアレジ",sales:127850,orders:33,adCost:0,adRev:0},
+  ]},
+  "2025-12":{period:"2025年12月",sites:[
+    {name:"YAHOO",sales:47506,orders:18,adCost:null,adRev:null},
+    {name:"楽天市場",sales:649968,orders:194,adCost:null,adRev:null},
+    {name:"アマゾン",sales:316563,orders:117,adCost:null,adRev:null},
+    {name:"本店04",sales:493882,orders:92,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:0,adRev:0},
+    {name:"GM",sales:0,orders:0,adCost:0,adRev:0},
+    {name:"エアレジ",sales:107170,orders:33,adCost:0,adRev:0},
+  ]},
+  "2026-01":{period:"2026年1月",sites:[
+    {name:"YAHOO",sales:61754,orders:24,adCost:8909,adRev:33347},
+    {name:"楽天市場",sales:637702,orders:175,adCost:55021,adRev:264978},
+    {name:"アマゾン",sales:370340,orders:132,adCost:51677,adRev:197652},
+    {name:"本店04",sales:493640,orders:82,adCost:null,adRev:null},
+    {name:"メルカリ",sales:5500,orders:4,adCost:0,adRev:0},
+    {name:"GM",sales:3599,orders:1,adCost:0,adRev:0},
+    {name:"エアレジ",sales:65090,orders:18,adCost:0,adRev:0},
+  ]},
+  "2026-02":{period:"2026年2月",sites:[
+    {name:"YAHOO",sales:87783,orders:30,adCost:10963,adRev:42842},
+    {name:"楽天市場",sales:540895,orders:174,adCost:46902,adRev:213878},
+    {name:"アマゾン",sales:438258,orders:145,adCost:57390,adRev:233065},
+    {name:"本店04",sales:573303,orders:104,adCost:null,adRev:null},
+    {name:"メルカリ",sales:21664,orders:16,adCost:0,adRev:0},
+    {name:"GM",sales:0,orders:0,adCost:0,adRev:0},
+    {name:"エアレジ",sales:89130,orders:29,adCost:0,adRev:0},
+  ]},
+  "2026-03":{period:"2026年3月",sites:[
+    {name:"YAHOO",sales:110902,orders:22,adCost:11924,adRev:38446},
+    {name:"楽天市場",sales:894921,orders:256,adCost:50778,adRev:463275},
+    {name:"アマゾン",sales:275503,orders:106,adCost:37904,adRev:126180},
+    {name:"本店04",sales:921056,orders:170,adCost:null,adRev:null},
+    {name:"メルカリ",sales:2200,orders:2,adCost:0,adRev:0},
+    {name:"GM",sales:5025,orders:1,adCost:0,adRev:0},
+    {name:"エアレジ",sales:88680,orders:25,adCost:0,adRev:0},
+  ]},
+  "2026-04":{period:"2026年4月",sites:[
+    {name:"YAHOO",sales:76382,orders:21,adCost:10276,adRev:31357},
+    {name:"楽天市場",sales:968306,orders:262,adCost:59547,adRev:627396},
+    {name:"アマゾン",sales:428657,orders:137,adCost:49419,adRev:241150},
+    {name:"本店04",sales:607143,orders:98,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:0,adRev:0},
+    {name:"GM",sales:8838,orders:2,adCost:0,adRev:0},
+    {name:"エアレジ",sales:100790,orders:24,adCost:0,adRev:0},
+  ]},
+  "2026-05":{period:"2026年5月（5/20時点）",sites:[
+    {name:"YAHOO",sales:61223,orders:14,adCost:3701,adRev:28613},
+    {name:"楽天市場",sales:680370,orders:180,adCost:12870,adRev:52240},
+    {name:"アマゾン",sales:273412,orders:88,adCost:28531,adRev:126018},
+    {name:"本店04",sales:441707,orders:84,adCost:6133,adRev:28048},
+    {name:"メルカリ",sales:4400,orders:3,adCost:0,adRev:0},
+    {name:"GM",sales:7999,orders:1,adCost:0,adRev:0},
+    {name:"エアレジ",sales:0,orders:0,adCost:0,adRev:0},
+  ]},
+};
+const MONTHS=["2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05"];
+const MLABEL={"2025-09":"25/9","2025-10":"25/10","2025-11":"25/11","2025-12":"25/12","2026-01":"1月","2026-02":"2月","2026-03":"3月","2026-04":"4月","2026-05":"5月"};
+const DAYS={"2025-09":30,"2025-10":31,"2025-11":30,"2025-12":31,"2026-01":31,"2026-02":28,"2026-03":31,"2026-04":30,"2026-05":31};
+const ELAPSED={"2026-05":20};
+let curMonth="2026-05",curTab="instagram";
+let charts={};
+const fmt=n=>n==null||isNaN(n)?"-":Math.round(n).toLocaleString("ja-JP");
+const fmtK=n=>n==null?"-":n>=10000?(n/10000).toFixed(1)+"万":n.toLocaleString();
+function totals(mk){
+  const d=DATA[mk];if(!d)return null;
+  const t={sales:0,orders:0,adCost:0,adRev:0};
+  d.sites.forEach(s=>{t.sales+=s.sales||0;t.orders+=s.orders||0;t.adCost+=s.adCost||0;t.adRev+=s.adRev||0});
+  t.roas=t.adCost>0?t.adRev/t.adCost:null;
+  t.aov=t.orders>0?t.sales/t.orders:null;
+  return t;
+}
+function destroyCharts(){Object.values(charts).forEach(c=>{try{c.destroy();}catch(e){}});charts={};}
+function switchTab(tab){
+  curTab=tab;
+  ["sales","trend","instagram"].forEach(t=>{
+    document.getElementById("tab-"+t).classList.toggle("active",t===tab);
+    document.getElementById("pane-"+t).style.display=t===tab?"block":"none";
+  });
+  destroyCharts();
+  if(tab==="sales") renderSales();
+  else if(tab==="trend") renderTrendPane();
+  else renderInstagramPane();
+}
+
+// 昨日データ
+let ydayData={date:"",sales:null,orders:null,rakuten:null,yahoo:null,amazon:null,google:null};
+async function loadYdayData(){try{const r=await window.storage.get("yesterday");if(r)ydayData=JSON.parse(r.value);}catch(e){}}
+async function saveYdayData(){try{await window.storage.set("yesterday",JSON.stringify(ydayData));}catch(e){}}
+async function updateYesterday(obj){Object.assign(ydayData,obj);await saveYdayData();renderSales();}
+function renderSales(){
+  renderYesterday();
+  renderMonthly();
+}
+function renderYesterday(){
+  const y=ydayData,aov=(y.sales&&y.orders)?Math.round(y.sales/y.orders):null;
+  const ads=[y.rakuten,y.yahoo,y.amazon,y.google].filter(v=>v!=null);
+  const totalAd=ads.reduce((a,b)=>a+b,0),hasAd=ads.length>0;
+  const roas=(hasAd&&y.sales)?((y.sales/totalAd)*100).toFixed(0):null;
+  let ydayHtml=`
+    <div class="yesterday-banner">
+      <div style="font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <span>📅 ${y.date||"昨日"}の売上ダイジェスト</span>
+        <button onclick="fetchYesterday()" id="yday-fetch-btn" style="padding:9px 18px;background:#fff;color:#1F3864;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700">🔄 昨日のデータを今すぐ取得</button>
+      </div>
+      <div class="yesterday-grid" style="margin-top:14px">
+        <div class="yday-card"><div class="yday-label">総売上</div><div class="yday-val">${y.sales!=null?"¥"+fmt(y.sales):"―"}</div><div class="yday-sub">${y.orders!=null?fmt(y.orders)+"件":""}${aov?" ／ 客単価 ¥"+fmt(aov):""}</div></div>
+        <div class="yday-card"><div class="yday-label">広告費 合計</div><div class="yday-val">${hasAd?"¥"+fmt(totalAd):"―"}</div><div class="yday-sub">${roas?"ROAS "+roas+"%":""}</div></div>
+        <div class="yday-card"><div class="yday-label">楽天RPP</div><div class="yday-val" style="font-size:18px">${y.rakuten!=null?"¥"+fmt(y.rakuten):"―"}</div></div>
+        <div class="yday-card"><div class="yday-label">Yahoo広告</div><div class="yday-val" style="font-size:18px">${y.yahoo!=null?"¥"+fmt(y.yahoo):"―"}</div></div>
+        <div class="yday-card"><div class="yday-label">Amazon広告</div><div class="yday-val" style="font-size:18px">${y.amazon!=null?"¥"+fmt(y.amazon):"―"}</div></div>
+        <div class="yday-card"><div class="yday-label">Google広告</div><div class="yday-val" style="font-size:18px">${y.google!=null?"¥"+fmt(y.google):"―"}</div></div>
+      </div>
+    </div>
+    <div id="monthly-section"></div>`;
+  document.getElementById("pane-sales").innerHTML=ydayHtml;
+}
+function fetchYesterday(){
+  const btn=document.getElementById("yday-fetch-btn");
+  if(btn){btn.textContent="🔄 取得中...";btn.disabled=true;}
+  if(window.sendPrompt){window.sendPrompt("昨日の売上と広告費をネクストエンジン・各広告管理画面から取得してupdateYesterday()でダッシュボードを更新してください。");}
+  else{
+    // GitHub Pages版: 手動入力ダイアログ
+    const date = prompt("日付 (例: 2026-05-19) を入力してください", new Date(Date.now()-86400000).toISOString().slice(0,10));
+    if(!date){if(btn){btn.textContent="🔄 昨日のデータを今すぐ取得";btn.disabled=false;}return;}
+    const sales = prompt("総売上 (円) を入力 (空欄でスキップ)");
+    const orders = prompt("件数 を入力 (空欄でスキップ)");
+    const rakuten = prompt("楽天RPP広告費 (円) を入力 (空欄でスキップ)");
+    const yahoo = prompt("Yahoo広告費 (円) を入力 (空欄でスキップ)");
+    const amazon = prompt("Amazon広告費 (円) を入力 (空欄でスキップ)");
+    const google = prompt("Google広告費 (円) を入力 (空欄でスキップ)");
+    const toNum = v => (v===null||v==="")?null:Number(v);
+    updateYesterday({date,sales:toNum(sales),orders:toNum(orders),rakuten:toNum(rakuten),yahoo:toNum(yahoo),amazon:toNum(amazon),google:toNum(google)});
+    if(btn){btn.textContent="🔄 昨日のデータを今すぐ取得";btn.disabled=false;}
+  }
+}
+
+// 月次
+function renderMonthly(){
+  const d=DATA[curMonth],t=totals(curMonth),el=ELAPSED[curMonth],td=DAYS[curMonth],roasOk=t.roas!=null&&t.roas>=3;
+  let fcHtml="";
+  if(el&&el<td){
+    const k=td/el,fs=Math.round(t.sales*k),fa=Math.round(t.adCost*k),fr=Math.round(t.adRev*k),fo=Math.round(t.orders*k);
+    fcHtml=`<div class="forecast-banner"><div style="font-size:13px;font-weight:600">📈 月末着地予測（${el}/${td}日経過）</div><div class="forecast-grid">
+      <div class="fcast-card"><div class="fcast-label">着地売上</div><div class="fcast-val">¥${fmt(fs)}</div><div class="fcast-sub">現在 ¥${fmt(t.sales)}</div></div>
+      <div class="fcast-card"><div class="fcast-label">着地件数</div><div class="fcast-val">${fmt(fo)}件</div></div>
+      <div class="fcast-card"><div class="fcast-label">着地広告費</div><div class="fcast-val">¥${fmt(fa)}</div></div>
+      <div class="fcast-card"><div class="fcast-label">現在ROAS</div><div class="fcast-val">${t.roas!=null?(t.roas*100).toFixed(0)+"%":"-"}</div><div class="fcast-sub">${roasOk?"✅ 目標達成":"⚠️ 未達"}</div></div>
+    </div></div>`;
+  }
+  let rows="";
+  d.sites.forEach(s=>{
+    const roas=s.adCost>0?s.adRev/s.adCost:null;
+    const roasH=roas==null?`<span class="roas-na">-</span>`:(roas>=3?`<span class="roas-ok">${(roas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(roas*100).toFixed(0)}%</span>`);
+    rows+=`<tr><td>${s.name}</td><td class="num">¥${fmt(s.sales)}</td><td class="num">${fmt(s.orders)}</td><td class="num">${s.adCost?`¥${fmt(s.adCost)}`:"-"}</td><td class="num">${s.adRev?`¥${fmt(s.adRev)}`:"-"}</td><td class="num">${roasH}</td></tr>`;
+  });
+  rows+=`<tr class="total-row"><td>合計</td><td class="num">¥${fmt(t.sales)}</td><td class="num">${fmt(t.orders)}</td><td class="num">¥${fmt(t.adCost)}</td><td class="num">¥${fmt(t.adRev)}</td><td class="num">${t.roas!=null?(t.roas>=3?`<span class="roas-ok">${(t.roas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(t.roas*100).toFixed(0)}%</span>`):"−"}</td></tr>`;
+  const pane=document.getElementById("monthly-section");
+  if(!pane)return;
+  pane.innerHTML=`<div style="font-size:14px;font-weight:700;color:#1f2937;margin:4px 0 10px">📊 月次サマリー</div>
+    <div class="month-selector" id="monthSel"></div>${fcHtml}
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">月累計売上</div><div class="kpi-value">¥${fmt(t.sales)}</div><div class="kpi-sub">${fmt(t.orders)}件 / 客単価 ¥${fmt(Math.round(t.aov||0))}</div></div>
+      <div class="kpi-card orange"><div class="kpi-label">広告費</div><div class="kpi-value">¥${fmt(t.adCost)}</div><div class="kpi-sub">広告経由 ¥${fmt(t.adRev)}</div></div>
+      <div class="kpi-card green"><div class="kpi-label">ROAS</div><div class="kpi-value">${t.roas!=null?(t.roas*100).toFixed(0)+"%":"-"}</div><span class="kpi-badge ${roasOk?"ok":"ng"}">${roasOk?"目標300%達成":"目標未達"}</span></div>
+      <div class="kpi-card purple"><div class="kpi-label">広告寄与率</div><div class="kpi-value">${t.adRev&&t.sales?((t.adRev/t.sales)*100).toFixed(1)+"%":"-"}</div></div>
+    </div>
+    <div class="grid-3-1">
+      <div class="card"><h2>サイト別詳細（${d.period}）</h2>
+        <table><thead><tr><th>サイト</th><th>売上</th><th>件数</th><th>広告費</th><th>広告経由</th><th>ROAS</th></tr></thead><tbody>${rows}</tbody></table>
+      </div>
+      <div class="card"><h2>構成比</h2><div class="chart-box"><canvas id="siteChart"></canvas></div></div>
+    </div>`;
+  const sel=document.getElementById("monthSel");
+  MONTHS.forEach(m=>{const b=document.createElement("button");b.className="month-btn"+(m===curMonth?" active":"");b.textContent=MLABEL[m];b.onclick=()=>{curMonth=m;renderMonthly();};sel.appendChild(b);});
+  const filtered=d.sites.filter(s=>s.sales>0);
+  charts.site=new Chart(document.getElementById("siteChart").getContext("2d"),{type:"doughnut",data:{labels:filtered.map(s=>s.name),datasets:[{data:filtered.map(s=>s.sales),backgroundColor:["#ef4444","#bf1722","#f59e0b","#3b82f6","#10b981","#8b5cf6","#ec4899"],hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"right"}}}});
+}
+
+// 推移
+function renderTrendPane(){
+  document.getElementById("pane-trend").innerHTML=`
+    <div class="grid-2">
+      <div class="card"><h2>月次売上推移</h2><div class="chart-box"><canvas id="trendChart"></canvas></div></div>
+      <div class="card"><h2>ROAS推移</h2><div class="chart-box"><canvas id="roasChart"></canvas></div></div>
+    </div>
+    <div class="card" style="margin-bottom:16px"><h2>広告費 vs 広告経由売上</h2><div class="chart-box"><canvas id="adChart"></canvas></div></div>`;
+  const labels=MONTHS.map(m=>MLABEL[m]);
+  const sales=MONTHS.map(m=>{const t=totals(m);return t?t.sales:0});
+  const adCost=MONTHS.map(m=>{const t=totals(m);return t?t.adCost:0});
+  const adRev=MONTHS.map(m=>{const t=totals(m);return t?t.adRev:0});
+  const roas=MONTHS.map(m=>{const t=totals(m);return t&&t.roas?+(t.roas*100).toFixed(0):null});
+  charts.trend=new Chart(document.getElementById("trendChart").getContext("2d"),{type:"bar",data:{labels,datasets:[{label:"月次売上",data:sales,backgroundColor:"rgba(47,84,150,.85)",borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
+  charts.roas=new Chart(document.getElementById("roasChart").getContext("2d"),{type:"line",data:{labels,datasets:[{label:"ROAS(%)",data:roas,borderColor:"#16a34a",backgroundColor:"rgba(22,163,74,.1)",tension:.3,fill:true,pointRadius:4,spanGaps:true},{label:"目標300%",data:MONTHS.map(()=>300),borderColor:"#dc2626",borderDash:[6,3],pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+"%"}}}}});
+  charts.ad=new Chart(document.getElementById("adChart").getContext("2d"),{type:"bar",data:{labels,datasets:[{label:"広告費",data:adCost,backgroundColor:"rgba(234,88,12,.8)",borderSkipped:false},{label:"広告経由売上",data:adRev,backgroundColor:"rgba(22,163,74,.8)",borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
+}
+
+// Instagram日別
+let igDailyData={};
+async function loadIGData(){try{const r=await window.storage.get("ig_daily");igDailyData=r?JSON.parse(r.value):{};}catch(e){igDailyData={};}}
+async function saveIGData(){try{await window.storage.set("ig_daily",JSON.stringify(igDailyData));}catch(e){}}
+function getTodayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function getLatestEntry(){const keys=Object.keys(igDailyData).sort();return keys.length>0?{date:keys[keys.length-1],...igDailyData[keys[keys.length-1]]}:null;}
+function getPrevEntry(){const keys=Object.keys(igDailyData).sort();return keys.length>1?{date:keys[keys.length-2],...igDailyData[keys[keys.length-2]]}:null;}
+function diffBadge(cur,prev,unit=""){if(cur==null||prev==null)return "";const d=cur-prev;if(d===0)return `<span class="ig-stat-diff diff-flat">変化なし</span>`;const sign=d>0?"+":"";const cls=d>0?"diff-up":"diff-down";return `<span class="ig-stat-diff ${cls}">${sign}${fmtK(d)}${unit} 前回比</span>`;}
+async function saveIGEntry(followers,reach,impressions,interactions,dateKey){
+  const key=dateKey||getTodayKey();
+  igDailyData[key]={followers,reach,impressions,interactions};
+  await saveIGData();renderInstagramPane();
+}
+function fetchIGAndSave(){
+  const btn=document.getElementById("ig-fetch-btn");
+  btn.disabled=true;btn.textContent="🔄 取得中...";
+  if(window.sendPrompt){window.sendPrompt("Meta Business Suite（business.facebook.com）のInstagramインサイトページを開いて、フォロワー数・リーチ・ビュー数・インタラクション数を読み取り、saveIGEntry()でダッシュボードに保存してください。");}
+  else{
+    // GitHub Pages版: 手動入力ダイアログ
+    const dateKey = prompt("記録する日付 (例: 2026-05-20)", getTodayKey());
+    if(!dateKey){btn.disabled=false;btn.textContent="📊 今日のデータを取得";return;}
+    const followers = prompt("フォロワー数");
+    const reach = prompt("リーチ (過去30日)");
+    const impressions = prompt("ビュー (過去30日)");
+    const interactions = prompt("インタラクション");
+    const toNum = v => (v===null||v==="")?null:Number(v);
+    saveIGEntry(toNum(followers),toNum(reach),toNum(impressions),toNum(interactions),dateKey);
+    btn.disabled=false;btn.textContent="📊 今日のデータを取得";
+  }
+}
+
+// 月次レポート
+function pearson(xs,ys){
+  const n=xs.length;if(n<2)return null;
+  const mx=xs.reduce((a,b)=>a+b,0)/n,my=ys.reduce((a,b)=>a+b,0)/n;
+  let sxy=0,sxx=0,syy=0;
+  for(let i=0;i<n;i++){const dx=xs[i]-mx,dy=ys[i]-my;sxy+=dx*dy;sxx+=dx*dx;syy+=dy*dy;}
+  if(sxx===0||syy===0)return null;
+  return sxy/Math.sqrt(sxx*syy);
+}
+function corrLabel(r){
+  if(r==null)return"算出不可";
+  const a=Math.abs(r);
+  if(a>=0.8)return"非常に強い相関";
+  if(a>=0.6)return"強い相関";
+  if(a>=0.4)return"中程度の相関";
+  if(a>=0.2)return"弱い相関";
+  return"ほぼ相関なし";
+}
+
+// ===== Instagram分析タブ(統合) =====
+function renderInstagramPane(){
+  const latest=getLatestEntry(),prev=getPrevEntry(),todayKey=getTodayKey(),alreadyToday=igDailyData[todayKey]!=null;
+  const sortedKeys=Object.keys(igDailyData).sort().reverse();
+  // KPIデータがある月(リンククリック実測)
+  const krows=IG_MONTHLY.filter(d=>d.linkClicks!=null);
+  const months=krows.map(d=>d.m);
+  const clicks=krows.map(d=>d.linkClicks);
+  const access=krows.map(d=>d.access);
+  const views=krows.map(d=>d.impressions);
+  const reach=krows.map(d=>d.reach);
+  const sales=krows.map(d=>d.sales);
+  const rClickSales=pearson(clicks,sales);
+  const rViewSales=pearson(views,sales);
+  const rReachSales=pearson(reach,sales);
+  const rAccessSales=pearson(access,sales);
+  const totalClicks=clicks.reduce((a,b)=>a+b,0);
+  const totalAccess=access.reduce((a,b)=>a+b,0);
+  const totalViews=views.reduce((a,b)=>a+b,0);
+  const lastMonth=IG_MONTHLY[IG_MONTHLY.length-1];
+  let bestMonth=krows[0],bestClick=clicks[0];
+  krows.forEach((d,i)=>{if(clicks[i]>bestClick){bestClick=clicks[i];bestMonth=d;}});
+  // Meta広告集計
+  const totalSpent=IG_MONTHLY.reduce((s,d)=>s+(d.metaAdCost||0),0);
+  const totalResults=IG_MONTHLY.reduce((s,d)=>s+(d.metaResults||0),0);
+  const avgCPV=totalResults>0?Math.round(totalSpent/totalResults):0;
+  // 日別記録テーブル
+  let dailyRows=sortedKeys.map(k=>{const e=igDailyData[k];return `<tr><td>${k}</td><td class="num">${e.followers!=null?fmtK(e.followers):"-"}</td><td class="num">${e.reach!=null?fmtK(e.reach):"-"}</td><td class="num">${e.impressions!=null?fmtK(e.impressions):"-"}</td><td class="num">${e.interactions!=null?fmtK(e.interactions):"-"}</td></tr>`;}).join("")||`<tr><td colspan="5" style="text-align:center;color:#9ca3af;padding:20px">まだデータがありません</td></tr>`;
+  // 月別KPI一覧
+  let kpiRows=krows.map((d,i)=>{
+    const ctr=d.impressions>0?((d.linkClicks/d.impressions)*100).toFixed(2)+"%":"-";
+    const cp=i>0?clicks[i]-clicks[i-1]:null;
+    const arrow=cp==null?"":(cp>0?`<span style="color:#16a34a">▲${fmt(cp)}</span>`:cp<0?`<span style="color:#dc2626">▼${fmt(-cp)}</span>`:"→");
+    return `<tr><td>${d.m}</td><td class="num">${fmt(d.followers)}</td><td class="num">${fmt(d.impressions)}</td><td class="num">${fmt(d.reach)}</td><td class="num">${fmt(d.access)}</td><td class="num"><b>${fmt(d.linkClicks)}</b> ${arrow}</td><td class="num">${ctr}</td><td class="num">¥${fmt(d.sales)}</td></tr>`;
+  }).join("");
+  // Meta広告テーブル
+  const metaRows=IG_MONTHLY.map(d=>{
+    const cpv=(d.metaResults>0)?Math.round(d.metaAdCost/d.metaResults):null;
+    return `<tr><td>${d.m}</td><td class="num">${d.metaAdCost?'¥'+fmt(d.metaAdCost):'-'}</td><td class="num">${d.metaResults?fmt(d.metaResults):'-'}</td><td class="num">${cpv?'¥'+cpv:'-'}</td></tr>`;
+  }).join("");
+
+  document.getElementById("pane-instagram").innerHTML=`
+    <div class="ig-hero">
+      <div class="ig-hero-title">
+        <span>📱 Instagram分析｜SNSが売上にどう効いているか</span>
+        <button class="ig-fetch-btn" id="ig-fetch-btn" onclick="fetchIGAndSave()">${alreadyToday?"🔄 今日のデータを更新":"📊 今日のデータを取得"}</button>
+      </div>
+      <div class="ig-stats">
+        <div class="ig-stat"><div class="ig-stat-label">フォロワー数</div><div class="ig-stat-val">${latest&&latest.followers!=null?fmtK(latest.followers):"-"}</div>${diffBadge(latest?.followers,prev?.followers,"人")}<div style="font-size:11px;opacity:.7;margin-top:2px">${latest?latest.date+"時点":""}</div></div>
+        <div class="ig-stat"><div class="ig-stat-label">閲覧数(最新月)</div><div class="ig-stat-val">${fmtK(lastMonth.impressions)}</div></div>
+        <div class="ig-stat"><div class="ig-stat-label">リンククリック(最新月)</div><div class="ig-stat-val">${fmtK(lastMonth.linkClicks)}</div></div>
+        <div class="ig-stat"><div class="ig-stat-label">月次売上(最新月)</div><div class="ig-stat-val">¥${fmtK(lastMonth.sales)}</div></div>
+      </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#1F3864,#2F5496);color:#fff;padding:16px 22px;border-radius:12px;margin-bottom:14px">
+      <div style="font-size:14px;font-weight:700;margin-bottom:3px">🎯 最重要KPI：リンククリック数</div>
+      <div style="font-size:11px;opacity:.88">Instagramから自社ECサイトへ実際に遷移した回数。閲覧→リーチ→プロフィールアクセス→リンククリックという導線の最終地点で、売上に最も近い行動指標です。</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card purple"><div class="kpi-label">リンククリック 累計</div><div class="kpi-value">${fmt(totalClicks)}</div><div class="kpi-sub">2026年1〜5月</div></div>
+      <div class="kpi-card"><div class="kpi-label">プロフィールアクセス 累計</div><div class="kpi-value">${fmt(totalAccess)}</div></div>
+      <div class="kpi-card orange"><div class="kpi-label">閲覧数 累計</div><div class="kpi-value">${fmtK(totalViews)}</div></div>
+      <div class="kpi-card green"><div class="kpi-label">クリック→売上 相関</div><div class="kpi-value">${rClickSales!=null?rClickSales.toFixed(2):"-"}</div><span class="kpi-badge ${rClickSales>=0.6?"ok":"ng"}">${corrLabel(rClickSales)}</span></div>
+    </div>
+    <div class="grid-2">
+      <div class="card"><h2>リンククリック数 × 月次売上（2軸）</h2><div class="chart-box"><canvas id="igClickSales"></canvas></div></div>
+      <div class="card"><h2>リンククリック数 × 月次売上（散布図）</h2><div style="font-size:11px;color:#9ca3af;margin-bottom:6px">点は各月。右にあるほどクリックが多く、上にあるほど売上が多い月。点が右上がりに並ぶほど「クリックが増えると売上も増える」関係が強い。</div><div class="chart-box"><canvas id="igScatter"></canvas></div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>📊 各SNS指標と売上の相関分析</h2>
+      <table>
+        <thead><tr><th>指標</th><th style="text-align:right">月次売上との相関係数</th><th>評価</th></tr></thead>
+        <tbody>
+          <tr><td>リンククリック数</td><td class="num"><b>${rClickSales!=null?rClickSales.toFixed(3):"-"}</b></td><td>${corrLabel(rClickSales)}</td></tr>
+          <tr><td>プロフィールアクセス数</td><td class="num">${rAccessSales!=null?rAccessSales.toFixed(3):"-"}</td><td>${corrLabel(rAccessSales)}</td></tr>
+          <tr><td>閲覧数</td><td class="num">${rViewSales!=null?rViewSales.toFixed(3):"-"}</td><td>${corrLabel(rViewSales)}</td></tr>
+          <tr><td>リーチ</td><td class="num">${rReachSales!=null?rReachSales.toFixed(3):"-"}</td><td>${corrLabel(rReachSales)}</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:11px;color:#9ca3af;margin-top:8px">相関係数は-1〜+1。+1に近いほど「その指標が増えると売上も増える」関係が強い。※2026年1〜5月の5ヶ月データに基づく参考値。</div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#833ab4,#fd1d1d);color:#fff;padding:16px 22px;border-radius:12px;margin-bottom:14px">
+      <div style="font-size:14px;font-weight:700;margin-bottom:3px">💰 Meta広告（Instagram宣伝）月次推移</div>
+      <div style="font-size:11px;opacity:.85">プロフィール訪問獲得を目的としたInstagram広告の月別実績。CPV(訪問単価)が低いほど効率的。</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:12px">
+        <div style="background:rgba(255,255,255,.18);padding:10px 12px;border-radius:8px"><div style="font-size:11px;opacity:.85">累計広告費</div><div style="font-size:20px;font-weight:700">¥${fmt(totalSpent)}</div></div>
+        <div style="background:rgba(255,255,255,.18);padding:10px 12px;border-radius:8px"><div style="font-size:11px;opacity:.85">累計プロフィール訪問</div><div style="font-size:20px;font-weight:700">${fmt(totalResults)}</div></div>
+        <div style="background:rgba(255,255,255,.18);padding:10px 12px;border-radius:8px"><div style="font-size:11px;opacity:.85">平均CPV(訪問単価)</div><div style="font-size:20px;font-weight:700">¥${avgCPV}</div></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card"><h2>Meta広告費 vs プロフィール訪問数</h2><div class="chart-box"><canvas id="metaAdChart"></canvas></div></div>
+      <div class="card"><h2>CPV(訪問単価)の推移</h2><div class="chart-box"><canvas id="metaCpvChart"></canvas></div></div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <h2>Meta広告 月別実績</h2>
+      <table><thead><tr><th>月</th><th style="text-align:right">広告費</th><th style="text-align:right">プロフィール訪問</th><th style="text-align:right">CPV</th></tr></thead><tbody>${metaRows}</tbody></table>
+    </div>
+
+    <div class="grid-2">
+      <div class="card"><h2>フォロワー数の日別推移</h2><div class="chart-box"><canvas id="igFollowerChart"></canvas></div></div>
+      <div class="card"><h2>フォロワー数・売上 月次推移（2軸）</h2><div class="chart-box"><canvas id="igFollowerSales"></canvas></div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>月別KPI一覧（SNS × 売上）</h2>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>月</th><th style="text-align:right">フォロワー</th><th style="text-align:right">閲覧数</th><th style="text-align:right">リーチ</th><th style="text-align:right">アクセス</th><th style="text-align:right">リンククリック</th><th style="text-align:right">クリック率</th><th style="text-align:right">月次売上</th></tr></thead>
+          <tbody>${kpiRows}</tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>📅 日別記録一覧</h2>
+      <div class="daily-table-wrap">
+        <table><thead><tr><th>日付</th><th style="text-align:right">フォロワー</th><th style="text-align:right">リーチ</th><th style="text-align:right">ビュー</th><th style="text-align:right">インタラクション</th></tr></thead><tbody>${dailyRows}</tbody></table>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>📝 サマリー・所見</h2>
+      <div style="font-size:13px;line-height:1.8;color:#374151">
+        ・最重要KPIの<b>リンククリック数</b>は2026年1〜5月累計で<b>${fmt(totalClicks)}回</b>。最多月は<b>${bestMonth.m}（${fmt(bestClick)}回）</b>。<br>
+        ・リンククリックと売上の相関係数は<b>${rClickSales!=null?rClickSales.toFixed(2):"-"}</b>（${corrLabel(rClickSales)}）。<br>
+        ・<b>示唆</b>：閲覧数を増やすこと自体より、閲覧した人を「リンククリック（サイト遷移）」へ導く導線設計（プロフィールリンク・ハイライト・ストーリーズ）の強化が売上に効く。
+      </div>
+    </div>`;
+
+  // チャート描画
+  charts.igCS=new Chart(document.getElementById("igClickSales").getContext("2d"),{type:"bar",data:{labels:months,datasets:[{label:"リンククリック数",data:clicks,backgroundColor:"rgba(124,58,237,.85)",yAxisID:"y1",borderSkipped:false},{label:"月次売上",data:sales,type:"line",borderColor:"#2F5496",backgroundColor:"rgba(47,84,150,.1)",tension:.3,fill:false,pointRadius:5,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y1:{type:"linear",position:"left",beginAtZero:true,title:{display:true,text:"リンククリック"}},y2:{type:"linear",position:"right",beginAtZero:true,title:{display:true,text:"売上"},ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"},grid:{drawOnChartArea:false}}}}});
+  charts.igSC=new Chart(document.getElementById("igScatter").getContext("2d"),{type:"scatter",data:{datasets:[{label:"月別",data:krows.map(d=>({x:d.linkClicks,y:d.sales})),backgroundColor:"rgba(124,58,237,.75)",pointRadius:11,pointHoverRadius:13}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:24,right:30}},plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${krows[ctx.dataIndex].m}: クリック${fmt(ctx.parsed.x)} / ¥${fmt(ctx.parsed.y)}`}}},scales:{x:{title:{display:true,text:"リンククリック数（多い→）"}},y:{title:{display:true,text:"月次売上（多い↑）"},ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}},plugins:[{id:"monthLabels",afterDatasetsDraw(chart){const{ctx}=chart;const meta=chart.getDatasetMeta(0);ctx.save();ctx.font="bold 13px sans-serif";ctx.fillStyle="#1f2937";ctx.textAlign="center";meta.data.forEach((pt,i)=>{ctx.fillText(krows[i].m,pt.x,pt.y-16);});ctx.restore();}}]});
+
+  // Meta広告チャート
+  const metaLabels=IG_MONTHLY.map(d=>d.m);
+  charts.metaAd=new Chart(document.getElementById("metaAdChart").getContext("2d"),{type:"bar",data:{labels:metaLabels,datasets:[{label:"広告費",data:IG_MONTHLY.map(d=>d.metaAdCost||0),backgroundColor:"rgba(131,58,180,.85)",yAxisID:"y1",borderSkipped:false},{label:"プロフィール訪問",data:IG_MONTHLY.map(d=>d.metaResults||0),type:"line",borderColor:"#fd1d1d",backgroundColor:"rgba(253,29,29,.1)",tension:.3,fill:false,pointRadius:4,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y1:{type:"linear",position:"left",beginAtZero:true,title:{display:true,text:"広告費"},ticks:{callback:v=>"¥"+(v/1000).toFixed(0)+"K"}},y2:{type:"linear",position:"right",beginAtZero:true,title:{display:true,text:"訪問数"},grid:{drawOnChartArea:false}}}}});
+  charts.metaCpv=new Chart(document.getElementById("metaCpvChart").getContext("2d"),{type:"line",data:{labels:metaLabels,datasets:[{label:"CPV(訪問単価)",data:IG_MONTHLY.map(d=>(d.metaResults>0)?Math.round(d.metaAdCost/d.metaResults):null),borderColor:"#16a34a",backgroundColor:"rgba(22,163,74,.1)",tension:.3,fill:true,pointRadius:5,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.parsed.y!=null?"CPV ¥"+ctx.parsed.y:"未出稿"}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+v}}}}});
+
+  // フォロワー日別推移
+  const dkeys=Object.keys(igDailyData).sort();
+  if(dkeys.length>0){
+    charts.igF=new Chart(document.getElementById("igFollowerChart").getContext("2d"),{type:"line",data:{labels:dkeys.map(k=>k.slice(5)),datasets:[{label:"フォロワー",data:dkeys.map(k=>igDailyData[k].followers),borderColor:"#e1306c",backgroundColor:"rgba(225,48,108,.12)",tension:.3,fill:true,pointRadius:2,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>fmtK(v)}}}}});
+  }
+  // フォロワー×売上 月次2軸
+  charts.igFS=new Chart(document.getElementById("igFollowerSales").getContext("2d"),{type:"line",data:{labels:IG_MONTHLY.map(d=>d.m),datasets:[{label:"フォロワー数",data:IG_MONTHLY.map(d=>d.followers),borderColor:"#e1306c",tension:.3,fill:false,pointRadius:4,yAxisID:"y1"},{label:"月次売上",data:IG_MONTHLY.map(d=>d.sales),borderColor:"#2F5496",tension:.3,fill:false,pointRadius:4,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y1:{type:"linear",position:"left",title:{display:true,text:"フォロワー"},ticks:{callback:v=>fmtK(v)}},y2:{type:"linear",position:"right",title:{display:true,text:"売上"},ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"},grid:{drawOnChartArea:false}}}}});
+}
+
+
+// 初期化
+loadIGData().then(()=>{
+  // 初回起動時のみシードデータを投入(既にデータがある場合は上書きしない)
+  if(Object.keys(igDailyData).length===0){
+    // 2026-01-01〜2026-05-19の日別フォロワー総数(1/1=3500スタート、両端固定でアンフォロー按分吸収した近似値)
+    const seedFollowers={
+      "2026-01-01":3500,"2026-01-02":3502,"2026-01-03":3504,"2026-01-05":3505,
+      "2026-01-06":3506,"2026-01-07":3509,"2026-01-08":3513,"2026-01-09":3516,
+      "2026-01-10":3518,"2026-01-11":3519,"2026-01-12":3521,"2026-01-13":3522,
+      "2026-01-14":3524,"2026-01-15":3527,"2026-01-16":3530,"2026-01-17":3536,
+      "2026-01-18":3543,"2026-01-19":3546,"2026-01-20":3548,"2026-01-21":3554,
+      "2026-01-22":3560,"2026-01-23":3562,"2026-01-24":3567,"2026-01-25":3579,
+      "2026-01-26":3585,"2026-01-27":3588,"2026-01-28":3611,"2026-01-29":3642,
+      "2026-01-30":3679,"2026-01-31":3712,"2026-02-01":3748,"2026-02-02":3774,
+      "2026-02-03":3791,"2026-02-04":3806,"2026-02-05":3819,"2026-02-06":3819,
+      "2026-02-08":3834,"2026-02-09":3845,"2026-02-10":3864,"2026-02-11":3881,
+      "2026-02-12":3900,"2026-02-13":3916,"2026-02-14":3925,"2026-02-15":3930,
+      "2026-02-16":3940,"2026-02-17":3944,"2026-02-18":3945,"2026-02-19":3949,
+      "2026-02-20":3981,"2026-02-21":4001,"2026-02-22":4035,"2026-02-23":4065,
+      "2026-02-24":4087,"2026-02-25":4102,"2026-02-26":4118,"2026-02-27":4122,
+      "2026-02-28":4265,"2026-03-01":5257,"2026-03-02":6109,"2026-03-03":6471,
+      "2026-03-04":6650,"2026-03-05":6803,"2026-03-06":6927,"2026-03-07":7065,
+      "2026-03-08":7165,"2026-03-09":7266,"2026-03-10":7333,"2026-03-11":7408,
+      "2026-03-12":7469,"2026-03-13":7509,"2026-03-14":7535,"2026-03-15":7616,
+      "2026-03-16":7667,"2026-03-17":7687,"2026-03-18":7703,"2026-03-19":7724,
+      "2026-03-20":7746,"2026-03-21":7785,"2026-03-22":7843,"2026-03-23":7884,
+      "2026-03-24":7925,"2026-03-25":7982,"2026-03-26":8037,"2026-03-27":8076,
+      "2026-03-28":8114,"2026-03-29":8154,"2026-03-30":8207,"2026-03-31":8308,
+      "2026-04-01":8365,"2026-04-02":8411,"2026-04-03":8452,"2026-04-04":8505,
+      "2026-04-05":8571,"2026-04-06":8630,"2026-04-07":8683,"2026-04-08":8732,
+      "2026-04-09":8794,"2026-04-10":8860,"2026-04-11":9104,"2026-04-12":10008,
+      "2026-04-13":10424,"2026-04-14":10680,"2026-04-15":10843,"2026-04-16":10939,
+      "2026-04-17":11058,"2026-04-18":11200,"2026-04-19":11285,"2026-04-20":11355,
+      "2026-04-21":11436,"2026-04-22":11515,"2026-04-23":11584,"2026-04-24":11645,
+      "2026-04-25":11706,"2026-04-26":11734,"2026-04-27":11757,"2026-04-28":11768,
+      "2026-04-29":11830,"2026-04-30":11867,"2026-05-01":11912,"2026-05-02":11944,
+      "2026-05-03":11978,"2026-05-04":12013,"2026-05-05":12060,"2026-05-06":12103,
+      "2026-05-07":12139,"2026-05-08":12199,"2026-05-09":12304,"2026-05-10":12354,
+      "2026-05-11":12400,"2026-05-12":12423,"2026-05-13":12452,"2026-05-14":12502,
+      "2026-05-15":12646,"2026-05-16":12723,"2026-05-17":12824,"2026-05-18":12913,
+      "2026-05-19":13000
+    };
+    for(const d in seedFollowers){
+      igDailyData[d]={followers:seedFollowers[d],reach:null,impressions:null,interactions:null};
+    }
+    // 5/20はリーチ・ビュー・インタラクションも取得済の値を入れる
+    igDailyData["2026-05-20"]={followers:13000,reach:147000,impressions:377000,interactions:9117};
+    saveIGData();
+  }
+  renderInstagramPane();
+});
+loadYdayData();
+</script>
+</body>
+</html>
