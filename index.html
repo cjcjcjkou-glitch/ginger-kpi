@@ -70,9 +70,39 @@ tr.total-row{font-weight:700;background:#fffbeb}
 .diff-flat{opacity:.6}
 .daily-table-wrap{max-height:300px;overflow-y:auto;border-radius:8px;border:1px solid #e5e7eb}
 .footer{text-align:center;color:#9ca3af;font-size:12px;margin-top:24px;padding:12px}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.show{display:flex}
+.modal-box{background:#fff;border-radius:14px;padding:24px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.modal-box h3{font-size:16px;margin-bottom:4px;color:#1f2937}
+.modal-box .modal-sub{font-size:12px;color:#6b7280;margin-bottom:16px}
+.modal-field{margin-bottom:12px}
+.modal-field label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:4px}
+.modal-field input{width:100%;padding:9px 12px;border:2px solid #d1d5db;border-radius:8px;font-size:14px}
+.modal-field input:focus{outline:none;border-color:#2F5496}
+.modal-btns{display:flex;gap:8px;margin-top:18px}
+.modal-btns button{flex:1;padding:11px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:700}
+.modal-save{background:#2F5496;color:#fff}
+.modal-cancel{background:#e5e7eb;color:#374151}
 </style>
 </head>
 <body>
+<div class="modal-overlay" id="yday-modal">
+  <div class="modal-box">
+    <h3>📅 昨日の売上データを入力</h3>
+    <div class="modal-sub">わかる項目だけ入力すればOK（空欄はスキップされます）</div>
+    <div class="modal-field"><label>日付</label><input type="date" id="f-date"></div>
+    <div class="modal-field"><label>総売上（円）</label><input type="number" id="f-sales" placeholder="例: 185000"></div>
+    <div class="modal-field"><label>件数</label><input type="number" id="f-orders" placeholder="例: 42"></div>
+    <div class="modal-field"><label>楽天RPP広告費（円）</label><input type="number" id="f-rakuten" placeholder="例: 12000"></div>
+    <div class="modal-field"><label>Yahoo広告費（円）</label><input type="number" id="f-yahoo" placeholder="例: 3000"></div>
+    <div class="modal-field"><label>Amazon広告費（円）</label><input type="number" id="f-amazon" placeholder="例: 5000"></div>
+    <div class="modal-field"><label>Google広告費（円）</label><input type="number" id="f-google" placeholder="例: 2000"></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeYdayModal()">キャンセル</button>
+      <button class="modal-save" onclick="saveYdayModal()">保存</button>
+    </div>
+  </div>
+</div>
 <div class="container">
 <header>
   <h1>GINGER FACTORY KPIダッシュボード 2026</h1>
@@ -270,22 +300,34 @@ function renderYesterday(){
 }
 function fetchYesterday(){
   const btn=document.getElementById("yday-fetch-btn");
-  if(btn){btn.textContent="🔄 取得中...";btn.disabled=true;}
-  if(window.sendPrompt){window.sendPrompt("昨日の売上と広告費をネクストエンジン・各広告管理画面から取得してupdateYesterday()でダッシュボードを更新してください。");}
-  else{
-    // GitHub Pages版: 手動入力ダイアログ
-    const date = prompt("日付 (例: 2026-05-19) を入力してください", new Date(Date.now()-86400000).toISOString().slice(0,10));
-    if(!date){if(btn){btn.textContent="🔄 昨日のデータを今すぐ取得";btn.disabled=false;}return;}
-    const sales = prompt("総売上 (円) を入力 (空欄でスキップ)");
-    const orders = prompt("件数 を入力 (空欄でスキップ)");
-    const rakuten = prompt("楽天RPP広告費 (円) を入力 (空欄でスキップ)");
-    const yahoo = prompt("Yahoo広告費 (円) を入力 (空欄でスキップ)");
-    const amazon = prompt("Amazon広告費 (円) を入力 (空欄でスキップ)");
-    const google = prompt("Google広告費 (円) を入力 (空欄でスキップ)");
-    const toNum = v => (v===null||v==="")?null:Number(v);
-    updateYesterday({date,sales:toNum(sales),orders:toNum(orders),rakuten:toNum(rakuten),yahoo:toNum(yahoo),amazon:toNum(amazon),google:toNum(google)});
-    if(btn){btn.textContent="🔄 昨日のデータを今すぐ取得";btn.disabled=false;}
+  if(window.sendPrompt){
+    if(btn){btn.textContent="🔄 取得中...";btn.disabled=true;}
+    window.sendPrompt("昨日の売上と広告費をネクストエンジン・各広告管理画面から取得してupdateYesterday()でダッシュボードを更新してください。");
+  }else{
+    // GitHub Pages版: 1画面の入力フォームを開く
+    openYdayModal();
   }
+}
+function openYdayModal(){
+  const y=ydayData;
+  // 既存値があれば初期表示、日付は昨日をデフォルト
+  document.getElementById("f-date").value=y.date||new Date(Date.now()-86400000).toISOString().slice(0,10);
+  document.getElementById("f-sales").value=y.sales!=null?y.sales:"";
+  document.getElementById("f-orders").value=y.orders!=null?y.orders:"";
+  document.getElementById("f-rakuten").value=y.rakuten!=null?y.rakuten:"";
+  document.getElementById("f-yahoo").value=y.yahoo!=null?y.yahoo:"";
+  document.getElementById("f-amazon").value=y.amazon!=null?y.amazon:"";
+  document.getElementById("f-google").value=y.google!=null?y.google:"";
+  document.getElementById("yday-modal").classList.add("show");
+}
+function closeYdayModal(){
+  document.getElementById("yday-modal").classList.remove("show");
+}
+function saveYdayModal(){
+  const v=id=>{const el=document.getElementById(id).value;return el===""?null:Number(el);};
+  const date=document.getElementById("f-date").value;
+  updateYesterday({date:date||"",sales:v("f-sales"),orders:v("f-orders"),rakuten:v("f-rakuten"),yahoo:v("f-yahoo"),amazon:v("f-amazon"),google:v("f-google")});
+  closeYdayModal();
 }
 
 // 月次
