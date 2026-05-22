@@ -70,43 +70,22 @@ tr.total-row{font-weight:700;background:#fffbeb}
 .diff-flat{opacity:.6}
 .daily-table-wrap{max-height:300px;overflow-y:auto;border-radius:8px;border:1px solid #e5e7eb}
 .footer{text-align:center;color:#9ca3af;font-size:12px;margin-top:24px;padding:12px}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;padding:16px}
-.modal-overlay.show{display:flex}
-.modal-box{background:#fff;border-radius:14px;padding:24px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.25)}
-.modal-box h3{font-size:16px;margin-bottom:4px;color:#1f2937}
-.modal-box .modal-sub{font-size:12px;color:#6b7280;margin-bottom:16px}
-.modal-field{margin-bottom:12px}
-.modal-field label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:4px}
-.modal-field input{width:100%;padding:9px 12px;border:2px solid #d1d5db;border-radius:8px;font-size:14px}
-.modal-field input:focus{outline:none;border-color:#2F5496}
-.modal-btns{display:flex;gap:8px;margin-top:18px}
-.modal-btns button{flex:1;padding:11px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:700}
-.modal-save{background:#2F5496;color:#fff}
-.modal-cancel{background:#e5e7eb;color:#374151}
+.cum-banner{background:linear-gradient(135deg,#16a34a,#047857);color:#fff;padding:20px 24px;border-radius:14px;margin-bottom:12px;text-align:center}
+.cum-banner-label{font-size:13px;font-weight:600;opacity:.9;margin-bottom:6px}
+.cum-grand{font-size:34px;font-weight:800;letter-spacing:.5px}
+.cum-grand-sub{font-size:12px;opacity:.85;margin-top:4px}
+.cum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.cum-card{background:#fff;padding:14px 16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);border-left:4px solid #16a34a}
+.cum-site{font-size:12px;color:#6b7280;font-weight:600;margin-bottom:4px}
+.cum-amount{font-size:20px;font-weight:700;color:#1f2937}
+.cum-sub{font-size:11px;color:#9ca3af;margin-top:3px}
 </style>
 </head>
 <body>
-<div class="modal-overlay" id="yday-modal">
-  <div class="modal-box">
-    <h3>📅 昨日の売上データを入力</h3>
-    <div class="modal-sub">わかる項目だけ入力すればOK（空欄はスキップされます）</div>
-    <div class="modal-field"><label>日付</label><input type="date" id="f-date"></div>
-    <div class="modal-field"><label>総売上（円）</label><input type="number" id="f-sales" placeholder="例: 185000"></div>
-    <div class="modal-field"><label>件数</label><input type="number" id="f-orders" placeholder="例: 42"></div>
-    <div class="modal-field"><label>楽天RPP広告費（円）</label><input type="number" id="f-rakuten" placeholder="例: 12000"></div>
-    <div class="modal-field"><label>Yahoo広告費（円）</label><input type="number" id="f-yahoo" placeholder="例: 3000"></div>
-    <div class="modal-field"><label>Amazon広告費（円）</label><input type="number" id="f-amazon" placeholder="例: 5000"></div>
-    <div class="modal-field"><label>Google広告費（円）</label><input type="number" id="f-google" placeholder="例: 2000"></div>
-    <div class="modal-btns">
-      <button class="modal-cancel" onclick="closeYdayModal()">キャンセル</button>
-      <button class="modal-save" onclick="saveYdayModal()">保存</button>
-    </div>
-  </div>
-</div>
 <div class="container">
 <header>
   <h1>GINGER FACTORY KPIダッシュボード 2026</h1>
-  <div class="subtitle">14期目（2025年9月〜2026年8月）｜サイト別売上・ROAS・SNS日別推移・相関分析</div>
+  <div class="subtitle">14期目（2025年9月〜2026年8月）｜サイト別ネット売上・ROAS・SNS日別推移・相関分析</div>
 </header>
 <div class="tab-nav">
   <button class="tab-btn active" id="tab-instagram" onclick="switchTab('instagram')">📱 Instagram分析</button>
@@ -116,7 +95,7 @@ tr.total-row{font-weight:700;background:#fffbeb}
 <div id="pane-instagram"></div>
 <div id="pane-sales" style="display:none"></div>
 <div id="pane-trend" style="display:none"></div>
-<div class="footer">最終更新: 2026/05/21 ｜ NEデータ・Instagramインサイト(MBS)自動取得</div>
+<div class="footer">最終更新: 2026/05/22 ｜ NEデータ・Instagramインサイト(MBS)自動取得</div>
 </div>
 <script>
 
@@ -144,103 +123,274 @@ window.storage = {
 // === ここまで ===
 
 const IG_MONTHLY=[
-  {m:"25/9月",followers:3431,reach:3666,impressions:28145,interactions:290,sales:1183389,metaAdCost:0,metaResults:0,linkClicks:null,access:null},
-  {m:"25/10月",followers:3481,reach:1617,impressions:25394,interactions:230,sales:894880,metaAdCost:0,metaResults:0,linkClicks:null,access:null},
-  {m:"25/11月",followers:3570,reach:1516,impressions:35177,interactions:349,sales:1253353,metaAdCost:0,metaResults:0,linkClicks:null,access:null},
-  {m:"25/12月",followers:3597,reach:1835,impressions:12439,interactions:95,sales:1509019,metaAdCost:0,metaResults:0,linkClicks:null,access:null},
-  {m:"26/1月",followers:3712,reach:83666,impressions:122795,interactions:978,sales:1572535,metaAdCost:0,metaResults:0,linkClicks:2150,access:641},
-  {m:"26/2月",followers:4265,reach:95858,impressions:154517,interactions:2403,sales:1661903,metaAdCost:20686,metaResults:1718,linkClicks:4241,access:1490},
-  {m:"26/3月",followers:8308,reach:500447,impressions:658352,interactions:18421,sales:2209607,metaAdCost:30406,metaResults:2996,linkClicks:13753,access:2255},
+  {m:"25/9月",followers:3431,reach:8304,impressions:28145,interactions:290,sales:1183389,metaAdCost:0,metaResults:0,linkClicks:331,access:20},
+  {m:"25/10月",followers:3481,reach:4572,impressions:25394,interactions:230,sales:894880,metaAdCost:0,metaResults:0,linkClicks:380,access:6},
+  {m:"25/11月",followers:3570,reach:5178,impressions:35177,interactions:349,sales:1253353,metaAdCost:0,metaResults:0,linkClicks:642,access:0},
+  {m:"25/12月",followers:3597,reach:3430,impressions:12439,interactions:95,sales:1509019,metaAdCost:0,metaResults:0,linkClicks:258,access:14},
+  {m:"26/1月",followers:3712,reach:83666,impressions:122795,interactions:978,sales:1572535,metaAdCost:15384,metaResults:911,linkClicks:2150,access:641},
+  {m:"26/2月",followers:4265,reach:95858,impressions:154517,interactions:2403,sales:1661903,metaAdCost:27319,metaResults:2025,linkClicks:4241,access:1490},
+  {m:"26/3月",followers:8308,reach:500447,impressions:658352,interactions:18421,sales:2209607,metaAdCost:30406,metaResults:4060,linkClicks:13753,access:2255},
   {m:"26/4月",followers:11867,reach:384632,impressions:649368,interactions:16673,sales:2090426,metaAdCost:22312,metaResults:2758,linkClicks:21766,access:4452},
-  {m:"26/5月",followers:13000,reach:177069,impressions:303677,interactions:7192,sales:1469111,metaAdCost:6723,metaResults:666,linkClicks:8031,access:1570},
+  {m:"26/5月",followers:13000,reach:210349,impressions:361007,interactions:8214,sales:1469111,metaAdCost:7662,metaResults:768,linkClicks:8834,access:1655},
 ];
 const DATA={
   "2025-09":{period:"2025年9月",sites:[
-    {name:"YAHOO",sales:41601,orders:10,adCost:null,adRev:null},
-    {name:"楽天市場",sales:443054,orders:120,adCost:null,adRev:null},
+    {name:"YAHOO",sales:41601,orders:10,adCost:4360,adRev:23874},
+    {name:"楽天市場",sales:443054,orders:120,adCost:13703,adRev:24843},
     {name:"アマゾン",sales:178122,orders:64,adCost:null,adRev:null},
-    {name:"本店04",sales:517312,orders:92,adCost:null,adRev:null},
+    {name:"本店04",sales:517312,orders:92,adCost:7965,adRev:null},
     {name:"メルカリ",sales:3300,orders:3,adCost:0,adRev:0},
     {name:"GM",sales:0,orders:0,adCost:0,adRev:0},
-    {name:"エアレジ",sales:0,orders:0,adCost:0,adRev:0},
   ]},
   "2025-10":{period:"2025年10月",sites:[
-    {name:"YAHOO",sales:12569,orders:6,adCost:null,adRev:null},
-    {name:"楽天市場",sales:340772,orders:98,adCost:null,adRev:null},
+    {name:"YAHOO",sales:12569,orders:6,adCost:3174,adRev:8546},
+    {name:"楽天市場",sales:340772,orders:98,adCost:30153,adRev:65789},
     {name:"アマゾン",sales:195990,orders:73,adCost:null,adRev:null},
-    {name:"本店04",sales:345549,orders:67,adCost:null,adRev:null},
+    {name:"本店04",sales:345549,orders:67,adCost:9027,adRev:null},
     {name:"メルカリ",sales:0,orders:0,adCost:0,adRev:0},
     {name:"GM",sales:0,orders:0,adCost:0,adRev:0},
-    {name:"エアレジ",sales:75080,orders:23,adCost:0,adRev:0},
   ]},
   "2025-11":{period:"2025年11月",sites:[
-    {name:"YAHOO",sales:57571,orders:18,adCost:null,adRev:null},
-    {name:"楽天市場",sales:483985,orders:153,adCost:null,adRev:null},
+    {name:"YAHOO",sales:57571,orders:18,adCost:4113,adRev:22537},
+    {name:"楽天市場",sales:483985,orders:153,adCost:40407,adRev:79952},
     {name:"アマゾン",sales:248548,orders:98,adCost:null,adRev:null},
-    {name:"本店04",sales:462149,orders:69,adCost:null,adRev:null},
+    {name:"本店04",sales:462149,orders:69,adCost:10962,adRev:null},
     {name:"メルカリ",sales:1100,orders:1,adCost:0,adRev:0},
     {name:"GM",sales:0,orders:0,adCost:0,adRev:0},
-    {name:"エアレジ",sales:127850,orders:33,adCost:0,adRev:0},
   ]},
   "2025-12":{period:"2025年12月",sites:[
-    {name:"YAHOO",sales:47506,orders:18,adCost:null,adRev:null},
-    {name:"楽天市場",sales:649968,orders:194,adCost:null,adRev:null},
+    {name:"YAHOO",sales:47506,orders:18,adCost:5560,adRev:27602},
+    {name:"楽天市場",sales:649968,orders:194,adCost:39076,adRev:108304},
     {name:"アマゾン",sales:316563,orders:117,adCost:null,adRev:null},
-    {name:"本店04",sales:493882,orders:92,adCost:null,adRev:null},
+    {name:"本店04",sales:493882,orders:92,adCost:25889,adRev:null},
     {name:"メルカリ",sales:1100,orders:1,adCost:0,adRev:0},
     {name:"GM",sales:0,orders:0,adCost:0,adRev:0},
-    {name:"エアレジ",sales:107170,orders:33,adCost:0,adRev:0},
   ]},
   "2026-01":{period:"2026年1月",sites:[
     {name:"YAHOO",sales:61754,orders:24,adCost:8909,adRev:33347},
-    {name:"楽天市場",sales:637702,orders:175,adCost:55021,adRev:264978},
+    {name:"楽天市場",sales:637702,orders:175,adCost:41000,adRev:79245},
     {name:"アマゾン",sales:370340,orders:132,adCost:51677,adRev:197652},
-    {name:"本店04",sales:493640,orders:82,adCost:null,adRev:null},
+    {name:"本店04",sales:493640,orders:82,adCost:19443,adRev:null},
     {name:"メルカリ",sales:5500,orders:4,adCost:0,adRev:0},
     {name:"GM",sales:3599,orders:1,adCost:0,adRev:0},
-    {name:"エアレジ",sales:65090,orders:18,adCost:0,adRev:0},
   ]},
   "2026-02":{period:"2026年2月",sites:[
     {name:"YAHOO",sales:87783,orders:30,adCost:10963,adRev:42842},
-    {name:"楽天市場",sales:540895,orders:174,adCost:46902,adRev:213878},
+    {name:"楽天市場",sales:540895,orders:174,adCost:40975,adRev:105405},
     {name:"アマゾン",sales:438258,orders:145,adCost:57390,adRev:233065},
-    {name:"本店04",sales:573303,orders:104,adCost:null,adRev:null},
+    {name:"本店04",sales:573303,orders:104,adCost:8923,adRev:null},
     {name:"メルカリ",sales:21664,orders:16,adCost:0,adRev:0},
     {name:"GM",sales:0,orders:0,adCost:0,adRev:0},
-    {name:"エアレジ",sales:89130,orders:29,adCost:0,adRev:0},
   ]},
   "2026-03":{period:"2026年3月",sites:[
     {name:"YAHOO",sales:110902,orders:22,adCost:11924,adRev:38446},
-    {name:"楽天市場",sales:894921,orders:256,adCost:50778,adRev:463275},
+    {name:"楽天市場",sales:894921,orders:256,adCost:41000,adRev:201354},
     {name:"アマゾン",sales:275503,orders:106,adCost:37904,adRev:126180},
-    {name:"本店04",sales:921056,orders:170,adCost:null,adRev:null},
+    {name:"本店04",sales:921056,orders:170,adCost:10310,adRev:null},
     {name:"メルカリ",sales:2200,orders:2,adCost:0,adRev:0},
     {name:"GM",sales:5025,orders:1,adCost:0,adRev:0},
-    {name:"エアレジ",sales:88680,orders:25,adCost:0,adRev:0},
   ]},
   "2026-04":{period:"2026年4月",sites:[
     {name:"YAHOO",sales:76382,orders:21,adCost:10276,adRev:31357},
-    {name:"楽天市場",sales:968306,orders:262,adCost:59547,adRev:627396},
+    {name:"楽天市場",sales:968306,orders:262,adCost:41000,adRev:323056},
     {name:"アマゾン",sales:428657,orders:137,adCost:49419,adRev:241150},
-    {name:"本店04",sales:607143,orders:98,adCost:null,adRev:null},
+    {name:"本店04",sales:607143,orders:98,adCost:13036,adRev:null},
     {name:"メルカリ",sales:1100,orders:1,adCost:0,adRev:0},
     {name:"GM",sales:8838,orders:2,adCost:0,adRev:0},
-    {name:"エアレジ",sales:100790,orders:24,adCost:0,adRev:0},
   ]},
-  "2026-05":{period:"2026年5月（5/20時点）",sites:[
-    {name:"YAHOO",sales:61223,orders:14,adCost:3701,adRev:28613},
-    {name:"楽天市場",sales:680370,orders:180,adCost:12870,adRev:52240},
-    {name:"アマゾン",sales:273412,orders:88,adCost:28531,adRev:126018},
-    {name:"本店04",sales:441707,orders:84,adCost:6133,adRev:28048},
-    {name:"メルカリ",sales:4400,orders:3,adCost:0,adRev:0},
-    {name:"GM",sales:7999,orders:1,adCost:0,adRev:0},
-    {name:"エアレジ",sales:0,orders:0,adCost:0,adRev:0},
+  "2026-05":{period:"2026年5月（5/22時点）",sites:[
+    {name:"YAHOO",sales:80274,orders:19,adCost:3701,adRev:28613},
+    {name:"楽天市場",sales:748801,orders:217,adCost:32902,adRev:273514},
+    {name:"アマゾン",sales:304940,orders:104,adCost:28531,adRev:126018},
+    {name:"本店04",sales:493326,orders:125,adCost:12933,adRev:28048},
+    {name:"メルカリ",sales:5500,orders:5,adCost:0,adRev:0},
+    {name:"GM",sales:7999,orders:2,adCost:0,adRev:0},
   ]},
 };
 const MONTHS=["2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05"];
 const MLABEL={"2025-09":"25/9","2025-10":"25/10","2025-11":"25/11","2025-12":"25/12","2026-01":"1月","2026-02":"2月","2026-03":"3月","2026-04":"4月","2026-05":"5月"};
 const DAYS={"2025-09":30,"2025-10":31,"2025-11":30,"2025-12":31,"2026-01":31,"2026-02":28,"2026-03":31,"2026-04":30,"2026-05":31};
-const ELAPSED={"2026-05":20};
+const ELAPSED={"2026-05":22};
+// 今月(2026-05)の日別売上データ。毎朝チャットで取得して追記していく。
+// 各日: {date,sites:[{name,sales,orders,adCost,adRev}]}
+const DAILY_SALES=[
+  {date:"2026-05-01",sites:[
+    {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:25255,orders:8,adCost:null,adRev:null},
+    {name:"アマゾン",sales:11380,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:18502,orders:3,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-02",sites:[
+    {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:14180,orders:6,adCost:null,adRev:null},
+    {name:"アマゾン",sales:14240,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:16071,orders:4,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-03",sites:[
+    {name:"YAHOO",sales:10538,orders:4,adCost:null,adRev:null},
+    {name:"楽天市場",sales:11870,orders:3,adCost:null,adRev:null},
+    {name:"アマゾン",sales:28744,orders:10,adCost:null,adRev:null},
+    {name:"本店04",sales:16603,orders:4,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-04",sites:[
+    {name:"YAHOO",sales:4099,orders:1,adCost:null,adRev:null},
+    {name:"楽天市場",sales:11609,orders:4,adCost:null,adRev:null},
+    {name:"アマゾン",sales:12468,orders:4,adCost:null,adRev:null},
+    {name:"本店04",sales:29019,orders:6,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-05",sites:[
+    {name:"YAHOO",sales:10648,orders:2,adCost:null,adRev:null},
+    {name:"楽天市場",sales:66781,orders:18,adCost:null,adRev:null},
+    {name:"アマゾン",sales:15354,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:5225,orders:1,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-06",sites:[
+    {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:18029,orders:5,adCost:null,adRev:null},
+    {name:"アマゾン",sales:16808,orders:6,adCost:null,adRev:null},
+    {name:"本店04",sales:5004,orders:1,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-07",sites:[
+    {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:26754,orders:8,adCost:null,adRev:null},
+    {name:"アマゾン",sales:13370,orders:3,adCost:null,adRev:null},
+    {name:"本店04",sales:15880,orders:2,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:4400,orders:1,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-08",sites:[
+    {name:"YAHOO",sales:6942,orders:1,adCost:null,adRev:null},
+    {name:"楽天市場",sales:16272,orders:4,adCost:null,adRev:null},
+    {name:"アマゾン",sales:13604,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:10354,orders:2,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-09",sites:[
+    {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:15530,orders:4,adCost:null,adRev:null},
+    {name:"アマゾン",sales:23406,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:12090,orders:3,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-10",sites:[
+    {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:110031,orders:32,adCost:null,adRev:null},
+    {name:"アマゾン",sales:12870,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:12330,orders:3,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-11",sites:[
+    {name:"YAHOO",sales:6089,orders:2,adCost:null,adRev:null},
+    {name:"楽天市場",sales:17242,orders:5,adCost:null,adRev:null},
+    {name:"アマゾン",sales:6090,orders:2,adCost:null,adRev:null},
+    {name:"本店04",sales:12899,orders:3,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-12",sites:[
+    {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:37974,orders:8,adCost:null,adRev:null},
+    {name:"アマゾン",sales:17020,orders:6,adCost:null,adRev:null},
+    {name:"本店04",sales:15350,orders:5,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-13",sites:[
+    {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:30992,orders:8,adCost:null,adRev:null},
+    {name:"アマゾン",sales:7750,orders:1,adCost:null,adRev:null},
+    {name:"本店04",sales:21004,orders:4,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-14",sites:[
+    {name:"YAHOO",sales:7958,orders:1,adCost:null,adRev:null},
+    {name:"楽天市場",sales:24332,orders:7,adCost:null,adRev:null},
+    {name:"アマゾン",sales:13268,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:4180,orders:1,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-15",sites:[
+    {name:"YAHOO",sales:9284,orders:2,adCost:null,adRev:null},
+    {name:"楽天市場",sales:70508,orders:25,adCost:null,adRev:null},
+    {name:"アマゾン",sales:10698,orders:4,adCost:null,adRev:null},
+    {name:"本店04",sales:127080,orders:38,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:null,adRev:null},
+    {name:"GM",sales:3599,orders:1,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-16",sites:[
+    {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:37663,orders:14,adCost:null,adRev:null},
+    {name:"アマゾン",sales:20328,orders:6,adCost:null,adRev:null},
+    {name:"本店04",sales:31299,orders:9,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-17",sites:[
+    {name:"YAHOO",sales:1887,orders:1,adCost:null,adRev:null},
+    {name:"楽天市場",sales:36119,orders:11,adCost:null,adRev:null},
+    {name:"アマゾン",sales:17166,orders:6,adCost:null,adRev:null},
+    {name:"本店04",sales:26586,orders:7,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-18",sites:[
+    {name:"YAHOO",sales:3778,orders:1,adCost:null,adRev:null},
+    {name:"楽天市場",sales:78129,orders:20,adCost:null,adRev:null},
+    {name:"アマゾン",sales:12758,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:38340,orders:7,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-19",sites:[
+    {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:31100,orders:10,adCost:null,adRev:null},
+    {name:"アマゾン",sales:6090,orders:2,adCost:null,adRev:null},
+    {name:"本店04",sales:28631,orders:7,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-20",sites:[
+    {name:"YAHOO",sales:11106,orders:3,adCost:null,adRev:null},
+    {name:"楽天市場",sales:14540,orders:5,adCost:null,adRev:null},
+    {name:"アマゾン",sales:6776,orders:3,adCost:null,adRev:null},
+    {name:"本店04",sales:11515,orders:3,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-21",sites:[
+    {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:51781,orders:11,adCost:null,adRev:null},
+    {name:"アマゾン",sales:19254,orders:9,adCost:null,adRev:null},
+    {name:"本店04",sales:35364,orders:12,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+  {date:"2026-05-22",sites:[
+    {name:"YAHOO",sales:7945,orders:1,adCost:null,adRev:null},
+    {name:"楽天市場",sales:2110,orders:1,adCost:null,adRev:null},
+    {name:"アマゾン",sales:5498,orders:2,adCost:null,adRev:null},
+    {name:"本店04",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
+  ]},
+];
 let curMonth="2026-05",curTab="instagram";
 let charts={};
 const fmt=n=>n==null||isNaN(n)?"-":Math.round(n).toLocaleString("ja-JP");
@@ -267,127 +417,174 @@ function switchTab(tab){
 }
 
 // 昨日データ
-let ydayData={date:"",sales:null,orders:null,rakuten:null,yahoo:null,amazon:null,google:null};
-async function loadYdayData(){try{const r=await window.storage.get("yesterday");if(r)ydayData=JSON.parse(r.value);}catch(e){}}
-async function saveYdayData(){try{await window.storage.set("yesterday",JSON.stringify(ydayData));}catch(e){}}
-async function updateYesterday(obj){Object.assign(ydayData,obj);await saveYdayData();renderSales();}
 function renderSales(){
-  renderYesterday();
-  renderMonthly();
-}
-function renderYesterday(){
-  const y=ydayData,aov=(y.sales&&y.orders)?Math.round(y.sales/y.orders):null;
-  const ads=[y.rakuten,y.yahoo,y.amazon,y.google].filter(v=>v!=null);
-  const totalAd=ads.reduce((a,b)=>a+b,0),hasAd=ads.length>0;
-  const roas=(hasAd&&y.sales)?((y.sales/totalAd)*100).toFixed(0):null;
-  let ydayHtml=`
-    <div class="yesterday-banner">
-      <div style="font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-        <span>📅 ${y.date||"昨日"}の売上ダイジェスト</span>
-        <button onclick="fetchYesterday()" id="yday-fetch-btn" style="padding:9px 18px;background:#fff;color:#1F3864;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700">🔄 昨日のデータを今すぐ取得</button>
-      </div>
-      <div class="yesterday-grid" style="margin-top:14px">
-        <div class="yday-card"><div class="yday-label">総売上</div><div class="yday-val">${y.sales!=null?"¥"+fmt(y.sales):"―"}</div><div class="yday-sub">${y.orders!=null?fmt(y.orders)+"件":""}${aov?" ／ 客単価 ¥"+fmt(aov):""}</div></div>
-        <div class="yday-card"><div class="yday-label">広告費 合計</div><div class="yday-val">${hasAd?"¥"+fmt(totalAd):"―"}</div><div class="yday-sub">${roas?"ROAS "+roas+"%":""}</div></div>
-        <div class="yday-card"><div class="yday-label">楽天RPP</div><div class="yday-val" style="font-size:18px">${y.rakuten!=null?"¥"+fmt(y.rakuten):"―"}</div></div>
-        <div class="yday-card"><div class="yday-label">Yahoo広告</div><div class="yday-val" style="font-size:18px">${y.yahoo!=null?"¥"+fmt(y.yahoo):"―"}</div></div>
-        <div class="yday-card"><div class="yday-label">Amazon広告</div><div class="yday-val" style="font-size:18px">${y.amazon!=null?"¥"+fmt(y.amazon):"―"}</div></div>
-        <div class="yday-card"><div class="yday-label">Google広告</div><div class="yday-val" style="font-size:18px">${y.google!=null?"¥"+fmt(y.google):"―"}</div></div>
-      </div>
-    </div>
-    <div id="monthly-section"></div>`;
-  document.getElementById("pane-sales").innerHTML=ydayHtml;
-}
-function fetchYesterday(){
-  const btn=document.getElementById("yday-fetch-btn");
-  if(window.sendPrompt){
-    if(btn){btn.textContent="🔄 取得中...";btn.disabled=true;}
-    window.sendPrompt("昨日の売上と広告費をネクストエンジン・各広告管理画面から取得してupdateYesterday()でダッシュボードを更新してください。");
-  }else{
-    // GitHub Pages版: 1画面の入力フォームを開く
-    openYdayModal();
-  }
-}
-function openYdayModal(){
-  const y=ydayData;
-  // 既存値があれば初期表示、日付は昨日をデフォルト
-  document.getElementById("f-date").value=y.date||new Date(Date.now()-86400000).toISOString().slice(0,10);
-  document.getElementById("f-sales").value=y.sales!=null?y.sales:"";
-  document.getElementById("f-orders").value=y.orders!=null?y.orders:"";
-  document.getElementById("f-rakuten").value=y.rakuten!=null?y.rakuten:"";
-  document.getElementById("f-yahoo").value=y.yahoo!=null?y.yahoo:"";
-  document.getElementById("f-amazon").value=y.amazon!=null?y.amazon:"";
-  document.getElementById("f-google").value=y.google!=null?y.google:"";
-  document.getElementById("yday-modal").classList.add("show");
-}
-function closeYdayModal(){
-  document.getElementById("yday-modal").classList.remove("show");
-}
-function saveYdayModal(){
-  const v=id=>{const el=document.getElementById(id).value;return el===""?null:Number(el);};
-  const date=document.getElementById("f-date").value;
-  updateYesterday({date:date||"",sales:v("f-sales"),orders:v("f-orders"),rakuten:v("f-rakuten"),yahoo:v("f-yahoo"),amazon:v("f-amazon"),google:v("f-google")});
-  closeYdayModal();
+  renderThisMonth();
+  renderPastMonths();
 }
 
-// 月次
-function renderMonthly(){
-  const d=DATA[curMonth],t=totals(curMonth),el=ELAPSED[curMonth],td=DAYS[curMonth],roasOk=t.roas!=null&&t.roas>=3;
+// ===== 今月（日別表示） =====
+function renderThisMonth(){
+  const td=DAYS[curMonth], el=ELAPSED[curMonth]||td;
+  // 月累計（DATAの今月）
+  const t=totals(curMonth);
+  // 月末着地予測
   let fcHtml="";
-  if(el&&el<td){
-    const k=td/el,fs=Math.round(t.sales*k),fa=Math.round(t.adCost*k),fr=Math.round(t.adRev*k),fo=Math.round(t.orders*k);
+  if(el && el<td){
+    const k=td/el;
+    const fs=Math.round(t.sales*k), fa=Math.round(t.adCost*k), fo=Math.round(t.orders*k);
+    const roasOk=t.roas!=null&&t.roas>=3;
     fcHtml=`<div class="forecast-banner"><div style="font-size:13px;font-weight:600">📈 月末着地予測（${el}/${td}日経過）</div><div class="forecast-grid">
-      <div class="fcast-card"><div class="fcast-label">着地売上</div><div class="fcast-val">¥${fmt(fs)}</div><div class="fcast-sub">現在 ¥${fmt(t.sales)}</div></div>
+      <div class="fcast-card"><div class="fcast-label">着地ネット売上</div><div class="fcast-val">¥${fmt(fs)}</div><div class="fcast-sub">現在 ¥${fmt(t.sales)}</div></div>
       <div class="fcast-card"><div class="fcast-label">着地件数</div><div class="fcast-val">${fmt(fo)}件</div></div>
       <div class="fcast-card"><div class="fcast-label">着地広告費</div><div class="fcast-val">¥${fmt(fa)}</div></div>
       <div class="fcast-card"><div class="fcast-label">現在ROAS</div><div class="fcast-val">${t.roas!=null?(t.roas*100).toFixed(0)+"%":"-"}</div><div class="fcast-sub">${roasOk?"✅ 目標達成":"⚠️ 未達"}</div></div>
     </div></div>`;
   }
-  let rows="";
+  // 今月の月累計KPI
+  const aov=t.orders>0?Math.round(t.sales/t.orders):0;
+  const kpiHtml=`<div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-label">今月 累計ネット売上</div><div class="kpi-value">¥${fmt(t.sales)}</div><div class="kpi-sub">${fmt(t.orders)}件 / 客単価 ¥${fmt(aov)}</div></div>
+    <div class="kpi-card orange"><div class="kpi-label">今月 広告費</div><div class="kpi-value">¥${fmt(t.adCost)}</div><div class="kpi-sub">広告経由 ¥${fmt(t.adRev)}</div></div>
+    <div class="kpi-card green"><div class="kpi-label">今月 ROAS</div><div class="kpi-value">${t.roas!=null?(t.roas*100).toFixed(0)+"%":"-"}</div></div>
+    <div class="kpi-card purple"><div class="kpi-label">日数</div><div class="kpi-value">${el}/${td}</div><div class="kpi-sub">日経過</div></div>
+  </div>`;
+
+  // 日別テーブル（DAILY_SALES）
+  let dailyTable="";
+  if(DAILY_SALES.length===0){
+    dailyTable=`<div style="text-align:center;color:#9ca3af;padding:28px;font-size:13px">
+      まだ今月の日別データがありません。<br>毎朝、チャットで「昨日の売上を取得してダッシュボードに反映して」と頼んでください。</div>`;
+  }else{
+    // 日付の新しい順
+    const sorted=[...DAILY_SALES].sort((a,b)=>b.date<a.date?-1:1);
+    let rows=sorted.map(day=>{
+      let ds=0,doo=0,dac=0,dar=0,hasOrders=false;
+      day.sites.forEach(s=>{ds+=s.sales||0;dac+=s.adCost||0;dar+=s.adRev||0;if(s.orders!=null){doo+=s.orders;hasOrders=true;}});
+      const daov=(hasOrders&&doo>0)?Math.round(ds/doo):null;
+      const droas=dac>0?(dar/dac*100).toFixed(0):null;
+      const roasH=droas==null?'<span class="roas-na">-</span>':(droas>=300?`<span class="roas-ok">${droas}%</span>`:`<span class="roas-ng">${droas}%</span>`);
+      return `<tr><td>${day.date}</td><td class="num">¥${fmt(ds)}</td><td class="num">${hasOrders?fmt(doo):'-'}</td><td class="num">${daov!=null?'¥'+fmt(daov):'-'}</td><td class="num">${dac?'¥'+fmt(dac):'-'}</td><td class="num">${roasH}</td></tr>`;
+    }).join("");
+    dailyTable=`<table><thead><tr><th>日付</th><th style="text-align:right">ネット売上</th><th style="text-align:right">客数</th><th style="text-align:right">客単価</th><th style="text-align:right">広告費</th><th style="text-align:right">費用対効果</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  document.getElementById("pane-sales").innerHTML=`
+    <div class="yesterday-banner">
+      <div style="font-size:15px;font-weight:700">📅 今月（${MLABEL[curMonth]}）の状況</div>
+      <div style="font-size:11px;opacity:.8;margin-top:4px">毎朝チャットで「昨日の売上を取得して反映して」と頼むと、前日分が下の日別表に追加されます。</div>
+    </div>
+    ${fcHtml}
+    ${kpiHtml}
+    <div class="card" style="margin-bottom:16px">
+      <h2>📊 今月の日別売上（5/1〜）</h2>
+      <div style="font-size:11px;color:#9ca3af;margin-bottom:8px">※ネクストエンジン受注ベース集計。月次タブの確定値とは集計方法が異なり多少差が出ます。</div>
+      <div class="chart-box" style="height:260px"><canvas id="dailySalesChart"></canvas></div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <h2>📆 今月の日別明細（売上・客数・客単価・広告費・費用対効果）</h2>
+      ${dailyTable}
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <h2>🏪 今月のサイト別詳細（${DATA[curMonth].period}）</h2>
+      <div id="thismonth-sitetable"></div>
+    </div>
+    <div id="pastmonths-section"></div>`;
+
+  // 今月のサイト別テーブル
+  const d=DATA[curMonth];
+  let srows="";
   d.sites.forEach(s=>{
     const roas=s.adCost>0?s.adRev/s.adCost:null;
-    const roasH=roas==null?`<span class="roas-na">-</span>`:(roas>=3?`<span class="roas-ok">${(roas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(roas*100).toFixed(0)}%</span>`);
-    rows+=`<tr><td>${s.name}</td><td class="num">¥${fmt(s.sales)}</td><td class="num">${fmt(s.orders)}</td><td class="num">${s.adCost?`¥${fmt(s.adCost)}`:"-"}</td><td class="num">${s.adRev?`¥${fmt(s.adRev)}`:"-"}</td><td class="num">${roasH}</td></tr>`;
+    const roasH=roas==null?'<span class="roas-na">-</span>':(roas>=3?`<span class="roas-ok">${(roas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(roas*100).toFixed(0)}%</span>`);
+    const saov=s.orders>0?Math.round(s.sales/s.orders):0;
+    srows+=`<tr><td>${s.name}</td><td class="num">¥${fmt(s.sales)}</td><td class="num">${fmt(s.orders)}</td><td class="num">¥${fmt(saov)}</td><td class="num">${s.adCost?'¥'+fmt(s.adCost):'-'}</td><td class="num">${roasH}</td></tr>`;
   });
-  rows+=`<tr class="total-row"><td>合計</td><td class="num">¥${fmt(t.sales)}</td><td class="num">${fmt(t.orders)}</td><td class="num">¥${fmt(t.adCost)}</td><td class="num">¥${fmt(t.adRev)}</td><td class="num">${t.roas!=null?(t.roas>=3?`<span class="roas-ok">${(t.roas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(t.roas*100).toFixed(0)}%</span>`):"−"}</td></tr>`;
-  const pane=document.getElementById("monthly-section");
-  if(!pane)return;
-  pane.innerHTML=`<div style="font-size:14px;font-weight:700;color:#1f2937;margin:4px 0 10px">📊 月次サマリー</div>
-    <div class="month-selector" id="monthSel"></div>${fcHtml}
-    <div class="kpi-grid">
-      <div class="kpi-card"><div class="kpi-label">月累計売上</div><div class="kpi-value">¥${fmt(t.sales)}</div><div class="kpi-sub">${fmt(t.orders)}件 / 客単価 ¥${fmt(Math.round(t.aov||0))}</div></div>
-      <div class="kpi-card orange"><div class="kpi-label">広告費</div><div class="kpi-value">¥${fmt(t.adCost)}</div><div class="kpi-sub">広告経由 ¥${fmt(t.adRev)}</div></div>
-      <div class="kpi-card green"><div class="kpi-label">ROAS</div><div class="kpi-value">${t.roas!=null?(t.roas*100).toFixed(0)+"%":"-"}</div><span class="kpi-badge ${roasOk?"ok":"ng"}">${roasOk?"目標300%達成":"目標未達"}</span></div>
-      <div class="kpi-card purple"><div class="kpi-label">広告寄与率</div><div class="kpi-value">${t.adRev&&t.sales?((t.adRev/t.sales)*100).toFixed(1)+"%":"-"}</div></div>
-    </div>
-    <div class="grid-3-1">
-      <div class="card"><h2>サイト別詳細（${d.period}）</h2>
-        <table><thead><tr><th>サイト</th><th>売上</th><th>件数</th><th>広告費</th><th>広告経由</th><th>ROAS</th></tr></thead><tbody>${rows}</tbody></table>
-      </div>
-      <div class="card"><h2>構成比</h2><div class="chart-box"><canvas id="siteChart"></canvas></div></div>
-    </div>`;
-  const sel=document.getElementById("monthSel");
-  MONTHS.forEach(m=>{const b=document.createElement("button");b.className="month-btn"+(m===curMonth?" active":"");b.textContent=MLABEL[m];b.onclick=()=>{curMonth=m;renderMonthly();};sel.appendChild(b);});
-  const filtered=d.sites.filter(s=>s.sales>0);
-  charts.site=new Chart(document.getElementById("siteChart").getContext("2d"),{type:"doughnut",data:{labels:filtered.map(s=>s.name),datasets:[{data:filtered.map(s=>s.sales),backgroundColor:["#ef4444","#bf1722","#f59e0b","#3b82f6","#10b981","#8b5cf6","#ec4899"],hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"right"}}}});
+  srows+=`<tr class="total-row"><td>合計</td><td class="num">¥${fmt(t.sales)}</td><td class="num">${fmt(t.orders)}</td><td class="num">¥${fmt(t.orders>0?Math.round(t.sales/t.orders):0)}</td><td class="num">¥${fmt(t.adCost)}</td><td class="num">${t.roas!=null?(t.roas>=3?`<span class="roas-ok">${(t.roas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(t.roas*100).toFixed(0)}%</span>`):'−'}</td></tr>`;
+  document.getElementById("thismonth-sitetable").innerHTML=`<table><thead><tr><th>サイト</th><th style="text-align:right">売上</th><th style="text-align:right">客数</th><th style="text-align:right">客単価</th><th style="text-align:right">広告費</th><th style="text-align:right">ROAS</th></tr></thead><tbody>${srows}</tbody></table>`;
+
+  // 日別売上 棒グラフ
+  if(DAILY_SALES.length>0){
+    const sortedD=[...DAILY_SALES].sort((a,b)=>a.date<b.date?-1:1);
+    const labels=sortedD.map(day=>day.date.slice(5));
+    const sales=sortedD.map(day=>day.sites.reduce((sm,s)=>sm+(s.sales||0),0));
+    const cv=document.getElementById("dailySalesChart");
+    if(cv){
+      charts.daily=new Chart(cv.getContext("2d"),{type:"bar",
+        data:{labels,datasets:[{label:"日別売上",data:sales,backgroundColor:"rgba(47,84,150,.85)",borderSkipped:false}]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>"¥"+ctx.parsed.y.toLocaleString()}}},
+          scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
+    }
+  }
 }
+
+// ===== 過去（月別表示） =====
+function renderPastMonths(){
+  const pane=document.getElementById("pastmonths-section");
+  if(!pane)return;
+  // 今月より前の月
+  const past=MONTHS.filter(m=>m!==curMonth);
+  let rows=past.map(mk=>{
+    const t=totals(mk);
+    const aov=t.orders>0?Math.round(t.sales/t.orders):0;
+    const roas=t.roas;
+    const roasH=roas==null?'<span class="roas-na">-</span>':(roas>=3?`<span class="roas-ok">${(roas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(roas*100).toFixed(0)}%</span>`);
+    return `<tr><td>${MLABEL[mk]}</td><td class="num">¥${fmt(t.sales)}</td><td class="num">${fmt(t.orders)}</td><td class="num">¥${fmt(aov)}</td><td class="num">${t.adCost?'¥'+fmt(t.adCost):'-'}</td><td class="num">${roasH}</td></tr>`;
+  }).join("");
+  // 過去合計
+  let ps=0,po=0,pac=0,par=0;
+  past.forEach(mk=>{const t=totals(mk);ps+=t.sales;po+=t.orders;pac+=t.adCost;par+=t.adRev;});
+  const proas=pac>0?par/pac:null;
+  rows+=`<tr class="total-row"><td>過去合計</td><td class="num">¥${fmt(ps)}</td><td class="num">${fmt(po)}</td><td class="num">¥${fmt(po>0?Math.round(ps/po):0)}</td><td class="num">¥${fmt(pac)}</td><td class="num">${proas!=null?(proas>=3?`<span class="roas-ok">${(proas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(proas*100).toFixed(0)}%</span>`):'−'}</td></tr>`;
+  pane.innerHTML=`
+    <div class="card" style="margin-bottom:16px">
+      <h2>📚 今月より前（月別サマリー）</h2>
+      <table><thead><tr><th>月</th><th style="text-align:right">ネット売上</th><th style="text-align:right">客数</th><th style="text-align:right">客単価</th><th style="text-align:right">広告費</th><th style="text-align:right">ROAS</th></tr></thead><tbody>${rows}</tbody></table>
+      <div style="font-size:11px;color:#9ca3af;margin-top:8px">各月の詳細は「推移」タブのグラフでも確認できます。</div>
+    </div>`;
+}
+
 
 // 推移
 function renderTrendPane(){
   document.getElementById("pane-trend").innerHTML=`
     <div class="grid-2">
-      <div class="card"><h2>月次売上推移</h2><div class="chart-box"><canvas id="trendChart"></canvas></div></div>
+      <div class="card"><h2>月次ネット売上推移</h2><div class="chart-box"><canvas id="trendChart"></canvas></div></div>
       <div class="card"><h2>ROAS推移</h2><div class="chart-box"><canvas id="roasChart"></canvas></div></div>
     </div>
-    <div class="card" style="margin-bottom:16px"><h2>広告費 vs 広告経由売上</h2><div class="chart-box"><canvas id="adChart"></canvas></div></div>`;
+    <div class="card" style="margin-bottom:16px"><h2>広告費 vs 広告経由売上</h2><div class="chart-box"><canvas id="adChart"></canvas></div></div>
+    <div class="card" style="margin-bottom:16px"><h2>サイト別 ネット売上推移（折れ線・サイト比較）</h2><div class="chart-box" style="height:300px"><canvas id="siteSalesLine"></canvas></div></div>
+    <div class="card" style="margin-bottom:16px"><h2>サイト別 ネット売上構成（積み上げ棒）</h2><div class="chart-box" style="height:300px"><canvas id="siteSalesStack"></canvas></div></div>
+    <div class="card" style="margin-bottom:16px"><h2>サイト別 広告費推移（楽天・Yahoo・Amazon・本店04(Google)）</h2><div class="chart-box" style="height:300px"><canvas id="siteAdCost"></canvas></div></div>`;
   const labels=MONTHS.map(m=>MLABEL[m]);
   const sales=MONTHS.map(m=>{const t=totals(m);return t?t.sales:0});
   const adCost=MONTHS.map(m=>{const t=totals(m);return t?t.adCost:0});
   const adRev=MONTHS.map(m=>{const t=totals(m);return t?t.adRev:0});
   const roas=MONTHS.map(m=>{const t=totals(m);return t&&t.roas?+(t.roas*100).toFixed(0):null});
-  charts.trend=new Chart(document.getElementById("trendChart").getContext("2d"),{type:"bar",data:{labels,datasets:[{label:"月次売上",data:sales,backgroundColor:"rgba(47,84,150,.85)",borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
+  charts.trend=new Chart(document.getElementById("trendChart").getContext("2d"),{type:"bar",data:{labels,datasets:[{label:"月次ネット売上",data:sales,backgroundColor:"rgba(47,84,150,.85)",borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
   charts.roas=new Chart(document.getElementById("roasChart").getContext("2d"),{type:"line",data:{labels,datasets:[{label:"ROAS(%)",data:roas,borderColor:"#16a34a",backgroundColor:"rgba(22,163,74,.1)",tension:.3,fill:true,pointRadius:4,spanGaps:true},{label:"目標300%",data:MONTHS.map(()=>300),borderColor:"#dc2626",borderDash:[6,3],pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+"%"}}}}});
   charts.ad=new Chart(document.getElementById("adChart").getContext("2d"),{type:"bar",data:{labels,datasets:[{label:"広告費",data:adCost,backgroundColor:"rgba(234,88,12,.8)",borderSkipped:false},{label:"広告経由売上",data:adRev,backgroundColor:"rgba(22,163,74,.8)",borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
+
+  // サイト別データ集計
+  const SITE_NAMES=["YAHOO","楽天市場","アマゾン","本店04","メルカリ","GM"];
+  const SITE_COLORS={"YAHOO":"#ef4444","楽天市場":"#bf1722","アマゾン":"#f59e0b","本店04":"#3b82f6","メルカリ":"#10b981","GM":"#8b5cf6"};
+  const siteSales={},siteAd={};
+  SITE_NAMES.forEach(n=>{siteSales[n]=[];siteAd[n]=[];});
+  MONTHS.forEach(m=>{
+    const d=DATA[m];
+    SITE_NAMES.forEach(n=>{
+      const s=d?d.sites.find(x=>x.name===n):null;
+      siteSales[n].push(s?s.sales||0:0);
+      siteAd[n].push(s&&s.adCost?s.adCost:0);
+    });
+  });
+  // 折れ線(サイト別売上)
+  charts.siteSalesLine=new Chart(document.getElementById("siteSalesLine").getContext("2d"),{type:"line",data:{labels,datasets:SITE_NAMES.map(n=>({label:n,data:siteSales[n],borderColor:SITE_COLORS[n],backgroundColor:SITE_COLORS[n],tension:.3,fill:false,pointRadius:3}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
+  // 積み上げ棒(サイト別売上構成)
+  charts.siteSalesStack=new Chart(document.getElementById("siteSalesStack").getContext("2d"),{type:"bar",data:{labels,datasets:SITE_NAMES.map(n=>({label:n,data:siteSales[n],backgroundColor:SITE_COLORS[n],borderSkipped:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
+  // サイト別広告費(広告を出しているサイトのみ)
+  const AD_SITES=["YAHOO","楽天市場","アマゾン","本店04"];
+  charts.siteAdCost=new Chart(document.getElementById("siteAdCost").getContext("2d"),{type:"bar",data:{labels,datasets:AD_SITES.map(n=>({label:n,data:siteAd[n],backgroundColor:SITE_COLORS[n],borderSkipped:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
 }
 
 // Instagram日別
@@ -466,8 +663,6 @@ function renderInstagramPane(){
   const totalSpent=IG_MONTHLY.reduce((s,d)=>s+(d.metaAdCost||0),0);
   const totalResults=IG_MONTHLY.reduce((s,d)=>s+(d.metaResults||0),0);
   const avgCPV=totalResults>0?Math.round(totalSpent/totalResults):0;
-  // 日別記録テーブル
-  let dailyRows=sortedKeys.map(k=>{const e=igDailyData[k];return `<tr><td>${k}</td><td class="num">${e.followers!=null?fmtK(e.followers):"-"}</td><td class="num">${e.reach!=null?fmtK(e.reach):"-"}</td><td class="num">${e.impressions!=null?fmtK(e.impressions):"-"}</td><td class="num">${e.interactions!=null?fmtK(e.interactions):"-"}</td></tr>`;}).join("")||`<tr><td colspan="5" style="text-align:center;color:#9ca3af;padding:20px">まだデータがありません</td></tr>`;
   // 月別KPI一覧
   let kpiRows=krows.map((d,i)=>{
     const ctr=d.impressions>0?((d.linkClicks/d.impressions)*100).toFixed(2)+"%":"-";
@@ -480,6 +675,11 @@ function renderInstagramPane(){
     const cpv=(d.metaResults>0)?Math.round(d.metaAdCost/d.metaResults):null;
     return `<tr><td>${d.m}</td><td class="num">${d.metaAdCost?'¥'+fmt(d.metaAdCost):'-'}</td><td class="num">${d.metaResults?fmt(d.metaResults):'-'}</td><td class="num">${cpv?'¥'+cpv:'-'}</td></tr>`;
   }).join("");
+  const metaTotalCost=IG_MONTHLY.reduce((s,d)=>s+(d.metaAdCost||0),0);
+  const metaTotalRes=IG_MONTHLY.reduce((s,d)=>s+(d.metaResults||0),0);
+  const metaAvgCPV=metaTotalRes>0?Math.round(metaTotalCost/metaTotalRes):null;
+  const metaTotalRow=`<tr class="total-row"><td>合計</td><td class="num">¥${fmt(metaTotalCost)}</td><td class="num">${fmt(metaTotalRes)}</td><td class="num">${metaAvgCPV?'¥'+metaAvgCPV:'-'}</td></tr>`;
+
 
   document.getElementById("pane-instagram").innerHTML=`
     <div class="ig-hero">
@@ -533,19 +733,13 @@ function renderInstagramPane(){
         <div style="background:rgba(255,255,255,.18);padding:10px 12px;border-radius:8px"><div style="font-size:11px;opacity:.85">平均CPV(訪問単価)</div><div style="font-size:20px;font-weight:700">¥${avgCPV}</div></div>
       </div>
     </div>
-    <div class="grid-2">
-      <div class="card"><h2>Meta広告費 vs プロフィール訪問数</h2><div class="chart-box"><canvas id="metaAdChart"></canvas></div></div>
-      <div class="card"><h2>CPV(訪問単価)の推移</h2><div class="chart-box"><canvas id="metaCpvChart"></canvas></div></div>
-    </div>
+    <div class="card" style="margin-bottom:16px"><h2>Meta広告費 vs プロフィール訪問数</h2><div class="chart-box"><canvas id="metaAdChart"></canvas></div></div>
     <div class="card" style="margin-bottom:16px">
       <h2>Meta広告 月別実績</h2>
-      <table><thead><tr><th>月</th><th style="text-align:right">広告費</th><th style="text-align:right">プロフィール訪問</th><th style="text-align:right">CPV</th></tr></thead><tbody>${metaRows}</tbody></table>
+      <table><thead><tr><th>月</th><th style="text-align:right">広告費</th><th style="text-align:right">プロフィール訪問</th><th style="text-align:right">CPV</th></tr></thead><tbody>${metaRows}${metaTotalRow}</tbody></table>
     </div>
 
-    <div class="grid-2">
-      <div class="card"><h2>フォロワー数の日別推移</h2><div class="chart-box"><canvas id="igFollowerChart"></canvas></div></div>
-      <div class="card"><h2>フォロワー数・売上 月次推移（2軸）</h2><div class="chart-box"><canvas id="igFollowerSales"></canvas></div></div>
-    </div>
+    <div class="card" style="margin-bottom:16px"><h2>フォロワー数・売上 月次推移（2軸）</h2><div class="chart-box"><canvas id="igFollowerSales"></canvas></div></div>
 
     <div class="card" style="margin-bottom:16px">
       <h2>月別KPI一覧（SNS × 売上）</h2>
@@ -554,13 +748,6 @@ function renderInstagramPane(){
           <thead><tr><th>月</th><th style="text-align:right">フォロワー</th><th style="text-align:right">閲覧数</th><th style="text-align:right">リーチ</th><th style="text-align:right">アクセス</th><th style="text-align:right">リンククリック</th><th style="text-align:right">クリック率</th><th style="text-align:right">月次売上</th></tr></thead>
           <tbody>${kpiRows}</tbody>
         </table>
-      </div>
-    </div>
-
-    <div class="card" style="margin-bottom:16px">
-      <h2>📅 日別記録一覧</h2>
-      <div class="daily-table-wrap">
-        <table><thead><tr><th>日付</th><th style="text-align:right">フォロワー</th><th style="text-align:right">リーチ</th><th style="text-align:right">ビュー</th><th style="text-align:right">インタラクション</th></tr></thead><tbody>${dailyRows}</tbody></table>
       </div>
     </div>
 
@@ -580,13 +767,7 @@ function renderInstagramPane(){
   // Meta広告チャート
   const metaLabels=IG_MONTHLY.map(d=>d.m);
   charts.metaAd=new Chart(document.getElementById("metaAdChart").getContext("2d"),{type:"bar",data:{labels:metaLabels,datasets:[{label:"広告費",data:IG_MONTHLY.map(d=>d.metaAdCost||0),backgroundColor:"rgba(131,58,180,.85)",yAxisID:"y1",borderSkipped:false},{label:"プロフィール訪問",data:IG_MONTHLY.map(d=>d.metaResults||0),type:"line",borderColor:"#fd1d1d",backgroundColor:"rgba(253,29,29,.1)",tension:.3,fill:false,pointRadius:4,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y1:{type:"linear",position:"left",beginAtZero:true,title:{display:true,text:"広告費"},ticks:{callback:v=>"¥"+(v/1000).toFixed(0)+"K"}},y2:{type:"linear",position:"right",beginAtZero:true,title:{display:true,text:"訪問数"},grid:{drawOnChartArea:false}}}}});
-  charts.metaCpv=new Chart(document.getElementById("metaCpvChart").getContext("2d"),{type:"line",data:{labels:metaLabels,datasets:[{label:"CPV(訪問単価)",data:IG_MONTHLY.map(d=>(d.metaResults>0)?Math.round(d.metaAdCost/d.metaResults):null),borderColor:"#16a34a",backgroundColor:"rgba(22,163,74,.1)",tension:.3,fill:true,pointRadius:5,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.parsed.y!=null?"CPV ¥"+ctx.parsed.y:"未出稿"}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+v}}}}});
 
-  // フォロワー日別推移
-  const dkeys=Object.keys(igDailyData).sort();
-  if(dkeys.length>0){
-    charts.igF=new Chart(document.getElementById("igFollowerChart").getContext("2d"),{type:"line",data:{labels:dkeys.map(k=>k.slice(5)),datasets:[{label:"フォロワー",data:dkeys.map(k=>igDailyData[k].followers),borderColor:"#e1306c",backgroundColor:"rgba(225,48,108,.12)",tension:.3,fill:true,pointRadius:2,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>fmtK(v)}}}}});
-  }
   // フォロワー×売上 月次2軸
   charts.igFS=new Chart(document.getElementById("igFollowerSales").getContext("2d"),{type:"line",data:{labels:IG_MONTHLY.map(d=>d.m),datasets:[{label:"フォロワー数",data:IG_MONTHLY.map(d=>d.followers),borderColor:"#e1306c",tension:.3,fill:false,pointRadius:4,yAxisID:"y1"},{label:"月次売上",data:IG_MONTHLY.map(d=>d.sales),borderColor:"#2F5496",tension:.3,fill:false,pointRadius:4,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y1:{type:"linear",position:"left",title:{display:true,text:"フォロワー"},ticks:{callback:v=>fmtK(v)}},y2:{type:"linear",position:"right",title:{display:true,text:"売上"},ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"},grid:{drawOnChartArea:false}}}}});
 }
@@ -643,7 +824,6 @@ loadIGData().then(()=>{
   }
   renderInstagramPane();
 });
-loadYdayData();
 </script>
 </body>
 </html>
