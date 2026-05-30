@@ -542,7 +542,7 @@ function renderThisMonth(){
     <div class="card" style="margin-bottom:16px">
       <h2>📊 今月の日別売上（5/1〜）</h2>
       <div style="font-size:11px;color:#9ca3af;margin-bottom:8px">※ネクストエンジン受注ベース集計。月次タブの確定値とは集計方法が異なり多少差が出ます。</div>
-      <div class="chart-box" style="height:260px"><canvas id="dailySalesChart"></canvas>
+      <div class="chart-box" style="height:260px"><canvas id="dailySalesChart"></canvas><p style="font-size:11px;color:#888;margin:2px 8px 4px;text-align:right">※ Meta(Instagram)広告費 ¥14,367 を売上比率で4サイトに按分して算入</p>
 <p style="font-size:11px;color:#888;margin:4px 0 0;text-align:right">※ Meta(Instagram)広告費 ¥14,367 を売上比率で楽天・本店04・Amazon・Yahoo に按分して算入</p></div>
     </div>
     <details open>
@@ -591,7 +591,7 @@ function renderPastMonths(){
   const pane=document.getElementById("pastmonths-section");
   if(!pane)return;
   // 今月より前の月
-  const past=MONTHS.filter(m=>m!==curMonth);
+  const past=MONTHS;
   let rows=past.map(mk=>{
     const t=totals(mk);
     const aov=t.orders>0?Math.round(t.sales/t.orders):0;
@@ -606,7 +606,7 @@ function renderPastMonths(){
   rows+=`<tr class="total-row"><td>過去合計</td><td class="num">¥${fmt(ps)}</td><td class="num">${fmt(po)}</td><td class="num">¥${fmt(po>0?Math.round(ps/po):0)}</td><td class="num">¥${fmt(pac)}</td><td class="num">${proas!=null?(proas>=3?`<span class="roas-ok">${(proas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(proas*100).toFixed(0)}%</span>`):'−'}</td></tr>`;
   pane.innerHTML=`
     <div class="card" style="margin-bottom:16px">
-      <h2>📚 今月より前（月別サマリー）</h2>
+      <h2>📚 月別サマリー（今月含む）</h2>
       <table><thead><tr><th>月</th><th style="text-align:right">ネット売上</th><th style="text-align:right">客数</th><th style="text-align:right">客単価</th><th style="text-align:right">広告費</th><th style="text-align:right">ROAS</th></tr></thead><tbody>${rows}</tbody></table>
       <div style="font-size:11px;color:#9ca3af;margin-top:8px">各月の詳細は「推移」タブのグラフでも確認できます。</div>
     </div>`;
