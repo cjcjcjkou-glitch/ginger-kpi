@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GINGER FACTORY KPI ããã·ã¥ãã¼ã</title>
+<title>GINGER FACTORY KPI ダッシュボード</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -84,22 +84,22 @@ tr.total-row{font-weight:700;background:#fffbeb}
 <body>
 <div class="container">
 <header>
-  <h1>GINGER FACTORY KPIããã·ã¥ãã¼ã 2026</h1>
-  <div class="subtitle">14æç®ï¼2025å¹´9æã2026å¹´8æï¼ï½ãµã¤ãå¥ãããå£²ä¸ã»ROASã»SNSæ¥å¥æ¨ç§»ã»ç¸é¢åæ</div>
+  <h1>GINGER FACTORY KPIダッシュボード 2026</h1>
+  <div class="subtitle">14期目（2025年9月〜2026年8月）｜サイト別ネット売上・ROAS・SNS日別推移・相関分析</div>
 </header>
 <div class="tab-nav">
-  <button class="tab-btn active" id="tab-instagram" onclick="switchTab('instagram')">ð± Instagramåæ</button>
-  <button class="tab-btn" id="tab-sales" onclick="switchTab('sales')">ð å£²ä¸</button>
-  <button class="tab-btn" id="tab-trend" onclick="switchTab('trend')">ð æ¨ç§»</button>
+  <button class="tab-btn active" id="tab-instagram" onclick="switchTab('instagram')">📱 Instagram分析</button>
+  <button class="tab-btn" id="tab-sales" onclick="switchTab('sales')">📊 売上</button>
+  <button class="tab-btn" id="tab-trend" onclick="switchTab('trend')">📈 推移</button>
 </div>
 <div id="pane-instagram"></div>
 <div id="pane-sales" style="display:none"></div>
 <div id="pane-trend" style="display:none"></div>
-<div class="footer">æçµæ´æ°: 2026/05/28 ï½ NEãã¼ã¿ã»Instagramã¤ã³ãµã¤ã(MBS)èªååå¾</div>
+<div class="footer">最終更新: 2026/05/30 ｜ NEデータ・Instagramインサイト(MBS)自動取得</div>
 </div>
 <script>
 
-// === GitHub Pagesç¨ localStorage ã©ããã¼ (Claude Artifactã®window.storageäºæ) ===
+// === GitHub Pages用 localStorage ラッパー (Claude Artifactのwindow.storage互換) ===
 window.storage = {
   get: async function(key) {
     try {
@@ -120,7 +120,7 @@ window.storage = {
     } catch(e) { return null; }
   }
 };
-// === ããã¾ã§ ===
+// === ここまで ===
 
 const IG_MONTHLY=[
   {m:"25/9月",followers:3431,reach:8304,impressions:28145,interactions:290,sales:1183389,metaAdCost:0,metaResults:0,linkClicks:331,access:20},
@@ -134,7 +134,7 @@ const IG_MONTHLY=[
   {m:"26/5月",followers:13000,reach:210349,impressions:361007,interactions:8214,sales:1469111,metaAdCost:7662,metaResults:768,linkClicks:8834,access:1655},
 ];
 const DATA={
-  "2025-09":{"period":"2025年9月",sites:[
+  "2025-09":{"period":"2025年9月","sites":[
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
     {name:"YAHOO",sales:41601,orders:10,adCost:null,adRev:null},
     {name:"アマゾン",sales:178122,orders:64,adCost:null,adRev:null},
@@ -142,7 +142,7 @@ const DATA={
     {name:"本店04",sales:517312,orders:92,adCost:7965,adRev:null},
     {name:"楽天市場",sales:443054,orders:120,adCost:null,adRev:null},
   ]},
-  "2025-10":{"period":"2025年10月",sites:[
+  "2025-10":{"period":"2025年10月","sites":[
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
     {name:"YAHOO",sales:12569,orders:6,adCost:null,adRev:null},
     {name:"アマゾン",sales:195990,orders:73,adCost:null,adRev:null},
@@ -150,7 +150,7 @@ const DATA={
     {name:"本店04",sales:345549,orders:67,adCost:9027,adRev:null},
     {name:"楽天市場",sales:340772,orders:98,adCost:null,adRev:null},
   ]},
-  "2025-11":{"period":"2025年11月",sites:[
+  "2025-11":{"period":"2025年11月","sites":[
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
     {name:"YAHOO",sales:57571,orders:18,adCost:null,adRev:null},
     {name:"アマゾン",sales:248548,orders:98,adCost:null,adRev:null},
@@ -158,7 +158,7 @@ const DATA={
     {name:"本店04",sales:462149,orders:69,adCost:10962,adRev:null},
     {name:"楽天市場",sales:483985,orders:153,adCost:null,adRev:null},
   ]},
-  "2025-12":{"period":"2025年12月",sites:[
+  "2025-12":{"period":"2025年12月","sites":[
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
     {name:"YAHOO",sales:47506,orders:18,adCost:null,adRev:null},
     {name:"アマゾン",sales:316563,orders:117,adCost:null,adRev:null},
@@ -166,7 +166,7 @@ const DATA={
     {name:"本店04",sales:493882,orders:92,adCost:25889,adRev:null},
     {name:"楽天市場",sales:649968,orders:194,adCost:null,adRev:null},
   ]},
-  "2026-01":{"period":"2026年1月",sites:[
+  "2026-01":{"period":"2026年1月","sites":[
     {name:"GM",sales:3599,orders:1,adCost:null,adRev:null},
     {name:"YAHOO",sales:61754,orders:24,adCost:8909,adRev:33347},
     {name:"アマゾン",sales:370340,orders:132,adCost:51677,adRev:197652},
@@ -174,7 +174,7 @@ const DATA={
     {name:"本店04",sales:493640,orders:82,adCost:19443,adRev:null},
     {name:"楽天市場",sales:637702,orders:175,adCost:55021,adRev:264978},
   ]},
-  "2026-02":{"period":"2026年2月",sites:[
+  "2026-02":{"period":"2026年2月","sites":[
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
     {name:"YAHOO",sales:87783,orders:30,adCost:10963,adRev:42842},
     {name:"アマゾン",sales:438258,orders:145,adCost:57390,adRev:233065},
@@ -182,7 +182,7 @@ const DATA={
     {name:"本店04",sales:573303,orders:104,adCost:8923,adRev:null},
     {name:"楽天市場",sales:540895,orders:174,adCost:46902,adRev:213878},
   ]},
-  "2026-03":{"period":"2026年3月",sites:[
+  "2026-03":{"period":"2026年3月","sites":[
     {name:"GM",sales:5025,orders:1,adCost:null,adRev:null},
     {name:"YAHOO",sales:110902,orders:22,adCost:11924,adRev:38446},
     {name:"アマゾン",sales:275503,orders:106,adCost:37904,adRev:126180},
@@ -190,7 +190,7 @@ const DATA={
     {name:"本店04",sales:921056,orders:170,adCost:10310,adRev:null},
     {name:"楽天市場",sales:894921,orders:256,adCost:50778,adRev:463275},
   ]},
-  "2026-04":{"period":"2026年4月",sites:[
+  "2026-04":{"period":"2026年4月","sites":[
     {name:"GM",sales:8838,orders:2,adCost:null,adRev:null},
     {name:"YAHOO",sales:76382,orders:21,adCost:10276,adRev:31357},
     {name:"アマゾン",sales:428657,orders:137,adCost:49419,adRev:241150},
@@ -198,7 +198,7 @@ const DATA={
     {name:"本店04",sales:607143,orders:98,adCost:13036,adRev:null},
     {name:"楽天市場",sales:968306,orders:262,adCost:59547,adRev:627396},
   ]},
-  "2026-05":{"period":"2026年5月",sites:[
+  "2026-05":{"period":"2026年5月","sites":[
     {name:"GM",sales:7999,orders:2,adCost:null,adRev:null},
     {name:"YAHOO",sales:192145,orders:44,adCost:null,adRev:null},
     {name:"アマゾン",sales:491192,orders:170,adCost:null,adRev:null},
@@ -211,190 +211,190 @@ const MONTHS=["2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-
 const MLABEL={"2025-09":"25/9","2025-10":"25/10","2025-11":"25/11","2025-12":"25/12","2026-01":"26/1","2026-02":"26/2","2026-03":"26/3","2026-04":"26/4","2026-05":"26/5"};
 const DAYS={"2025-09":30,"2025-10":31,"2025-11":30,"2025-12":31,"2026-01":31,"2026-02":28,"2026-03":31,"2026-04":30,"2026-05":31};
 const ELAPSED={"2026-05":30};
-// ä»æ(2026-05)ã®æ¥å¥å£²ä¸ãã¼ã¿ãæ¯æãã£ããã§åå¾ãã¦è¿½è¨ãã¦ããã
-// åæ¥: {date,sites:[{name,sales,orders,adCost,adRev}]}
+// 今月(2026-05)の日別売上データ。毎朝チャットで取得して追記していく。
+// 各日: {date,sites:[{name,sales,orders,adCost,adRev}]}
 const DAILY_SALES=[
   {date:"2026-05-01",sites:[
     {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:25255,orders:8,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:11380,orders:5,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:18502,orders:3,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:25255,orders:8,adCost:null,adRev:null},
+    {name:"アマゾン",sales:11380,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:18502,orders:3,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-02",sites:[
     {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:14180,orders:6,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:14240,orders:5,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:16071,orders:4,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:14180,orders:6,adCost:null,adRev:null},
+    {name:"アマゾン",sales:14240,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:16071,orders:4,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-03",sites:[
     {name:"YAHOO",sales:10538,orders:4,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:11870,orders:3,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:28744,orders:10,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:16603,orders:4,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:1100,orders:1,adCost:null,adRev:null},
+    {name:"楽天市場",sales:11870,orders:3,adCost:null,adRev:null},
+    {name:"アマゾン",sales:28744,orders:10,adCost:null,adRev:null},
+    {name:"本店04",sales:16603,orders:4,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-04",sites:[
     {name:"YAHOO",sales:4099,orders:1,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:11609,orders:4,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:12468,orders:4,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:29019,orders:6,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:11609,orders:4,adCost:null,adRev:null},
+    {name:"アマゾン",sales:12468,orders:4,adCost:null,adRev:null},
+    {name:"本店04",sales:29019,orders:6,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-05",sites:[
     {name:"YAHOO",sales:10648,orders:2,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:66781,orders:18,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:15354,orders:5,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:5225,orders:1,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:66781,orders:18,adCost:null,adRev:null},
+    {name:"アマゾン",sales:15354,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:5225,orders:1,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-06",sites:[
     {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:18029,orders:5,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:16808,orders:6,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:5004,orders:1,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:18029,orders:5,adCost:null,adRev:null},
+    {name:"アマゾン",sales:16808,orders:6,adCost:null,adRev:null},
+    {name:"本店04",sales:5004,orders:1,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-07",sites:[
     {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:26754,orders:8,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:13370,orders:3,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:15880,orders:2,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:26754,orders:8,adCost:null,adRev:null},
+    {name:"アマゾン",sales:13370,orders:3,adCost:null,adRev:null},
+    {name:"本店04",sales:15880,orders:2,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:4400,orders:1,adCost:null,adRev:null},
   ]},
   {date:"2026-05-08",sites:[
     {name:"YAHOO",sales:6942,orders:1,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:16272,orders:4,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:13604,orders:5,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:10354,orders:2,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:16272,orders:4,adCost:null,adRev:null},
+    {name:"アマゾン",sales:13604,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:10354,orders:2,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-09",sites:[
     {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:15530,orders:4,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:23406,orders:5,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:12090,orders:3,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:15530,orders:4,adCost:null,adRev:null},
+    {name:"アマゾン",sales:23406,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:12090,orders:3,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-10",sites:[
     {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:110031,orders:32,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:12870,orders:5,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:12330,orders:3,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:110031,orders:32,adCost:null,adRev:null},
+    {name:"アマゾン",sales:12870,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:12330,orders:3,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-11",sites:[
     {name:"YAHOO",sales:6089,orders:2,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:17242,orders:5,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:6090,orders:2,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:12899,orders:3,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:17242,orders:5,adCost:null,adRev:null},
+    {name:"アマゾン",sales:6090,orders:2,adCost:null,adRev:null},
+    {name:"本店04",sales:12899,orders:3,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-12",sites:[
     {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:37974,orders:8,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:17020,orders:6,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:15350,orders:5,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:1100,orders:1,adCost:null,adRev:null},
+    {name:"楽天市場",sales:37974,orders:8,adCost:null,adRev:null},
+    {name:"アマゾン",sales:17020,orders:6,adCost:null,adRev:null},
+    {name:"本店04",sales:15350,orders:5,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-13",sites:[
     {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:30992,orders:8,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:7750,orders:1,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:21004,orders:4,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:30992,orders:8,adCost:null,adRev:null},
+    {name:"アマゾン",sales:7750,orders:1,adCost:null,adRev:null},
+    {name:"本店04",sales:21004,orders:4,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-14",sites:[
     {name:"YAHOO",sales:7958,orders:1,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:24332,orders:7,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:13268,orders:5,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:4180,orders:1,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:24332,orders:7,adCost:null,adRev:null},
+    {name:"アマゾン",sales:13268,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:4180,orders:1,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-15",sites:[
     {name:"YAHOO",sales:9284,orders:2,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:70508,orders:25,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:10698,orders:4,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:127080,orders:38,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:1100,orders:1,adCost:null,adRev:null},
+    {name:"楽天市場",sales:70508,orders:25,adCost:null,adRev:null},
+    {name:"アマゾン",sales:10698,orders:4,adCost:null,adRev:null},
+    {name:"本店04",sales:127080,orders:38,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:null,adRev:null},
     {name:"GM",sales:3599,orders:1,adCost:null,adRev:null},
   ]},
   {date:"2026-05-16",sites:[
     {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:37663,orders:14,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:20328,orders:6,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:31299,orders:9,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:37663,orders:14,adCost:null,adRev:null},
+    {name:"アマゾン",sales:20328,orders:6,adCost:null,adRev:null},
+    {name:"本店04",sales:31299,orders:9,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-17",sites:[
     {name:"YAHOO",sales:1887,orders:1,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:36119,orders:11,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:17166,orders:6,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:26586,orders:7,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:36119,orders:11,adCost:null,adRev:null},
+    {name:"アマゾン",sales:17166,orders:6,adCost:null,adRev:null},
+    {name:"本店04",sales:26586,orders:7,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-18",sites:[
     {name:"YAHOO",sales:3778,orders:1,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:78129,orders:20,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:12758,orders:5,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:38340,orders:7,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:78129,orders:20,adCost:null,adRev:null},
+    {name:"アマゾン",sales:12758,orders:5,adCost:null,adRev:null},
+    {name:"本店04",sales:38340,orders:7,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-19",sites:[
     {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:31100,orders:10,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:6090,orders:2,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:28631,orders:7,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:1100,orders:1,adCost:null,adRev:null},
+    {name:"楽天市場",sales:31100,orders:10,adCost:null,adRev:null},
+    {name:"アマゾン",sales:6090,orders:2,adCost:null,adRev:null},
+    {name:"本店04",sales:28631,orders:7,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-20",sites:[
     {name:"YAHOO",sales:11106,orders:3,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:14540,orders:5,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:6776,orders:3,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:11515,orders:3,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:1100,orders:1,adCost:null,adRev:null},
+    {name:"楽天市場",sales:14540,orders:5,adCost:null,adRev:null},
+    {name:"アマゾン",sales:6776,orders:3,adCost:null,adRev:null},
+    {name:"本店04",sales:11515,orders:3,adCost:null,adRev:null},
+    {name:"メルカリ",sales:1100,orders:1,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-21",sites:[
     {name:"YAHOO",sales:0,orders:0,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:51781,orders:11,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:19254,orders:9,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:35364,orders:12,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:51781,orders:11,adCost:null,adRev:null},
+    {name:"アマゾン",sales:19254,orders:9,adCost:null,adRev:null},
+    {name:"本店04",sales:35364,orders:12,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
   {date:"2026-05-22",sites:[
     {name:"YAHOO",sales:7945,orders:1,adCost:null,adRev:null},
-    {name:"æ¥½å¤©å¸å ´",sales:2110,orders:1,adCost:null,adRev:null},
-    {name:"ã¢ãã¾ã³",sales:5498,orders:2,adCost:null,adRev:null},
-    {name:"æ¬åº04",sales:0,orders:0,adCost:null,adRev:null},
-    {name:"ã¡ã«ã«ãª",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"楽天市場",sales:2110,orders:1,adCost:null,adRev:null},
+    {name:"アマゾン",sales:5498,orders:2,adCost:null,adRev:null},
+    {name:"本店04",sales:0,orders:0,adCost:null,adRev:null},
+    {name:"メルカリ",sales:0,orders:0,adCost:null,adRev:null},
     {name:"GM",sales:0,orders:0,adCost:null,adRev:null},
   ]},
 ];
 let curMonth="2026-05",curTab="instagram";
 let charts={};
 const fmt=n=>n==null||isNaN(n)?"-":Math.round(n).toLocaleString("ja-JP");
-const fmtK=n=>n==null?"-":n>=10000?(n/10000).toFixed(1)+"ä¸":n.toLocaleString();
+const fmtK=n=>n==null?"-":n>=10000?(n/10000).toFixed(1)+"万":n.toLocaleString();
 function totals(mk){
   const d=DATA[mk];if(!d)return null;
   const t={sales:0,orders:0,adCost:0,adRev:0};
@@ -416,46 +416,46 @@ function switchTab(tab){
   else renderInstagramPane();
 }
 
-// æ¨æ¥ãã¼ã¿
+// 昨日データ
 function renderSales(){
   renderThisMonth();
   renderPastMonths();
 }
 
-// ===== ä»æï¼æ¥å¥è¡¨ç¤ºï¼ =====
+// ===== 今月（日別表示） =====
 function renderThisMonth(){
   const td=DAYS[curMonth], el=ELAPSED[curMonth]||td;
-  // æç´¯è¨ï¼DATAã®ä»æï¼
+  // 月累計（DATAの今月）
   const t=totals(curMonth);
-  // ææ«çå°äºæ¸¬
+  // 月末着地予測
   let fcHtml="";
   if(el && el<td){
     const k=td/el;
     const fs=Math.round(t.sales*k), fa=Math.round(t.adCost*k), fo=Math.round(t.orders*k);
     const roasOk=t.roas!=null&&t.roas>=3;
-    fcHtml=`<div class="forecast-banner"><div style="font-size:13px;font-weight:600">ð ææ«çå°äºæ¸¬ï¼${el}/${td}æ¥çµéï¼</div><div class="forecast-grid">
-      <div class="fcast-card"><div class="fcast-label">çå°ãããå£²ä¸</div><div class="fcast-val">Â¥${fmt(fs)}</div><div class="fcast-sub">ç¾å¨ Â¥${fmt(t.sales)}</div></div>
-      <div class="fcast-card"><div class="fcast-label">çå°ä»¶æ°</div><div class="fcast-val">${fmt(fo)}ä»¶</div></div>
-      <div class="fcast-card"><div class="fcast-label">çå°åºåè²»</div><div class="fcast-val">Â¥${fmt(fa)}</div></div>
-      <div class="fcast-card"><div class="fcast-label">ç¾å¨ROAS</div><div class="fcast-val">${t.roas!=null?(t.roas*100).toFixed(0)+"%":"-"}</div><div class="fcast-sub">${roasOk?"â ç®æ¨éæ":"â ï¸ æªé"}</div></div>
+    fcHtml=`<div class="forecast-banner"><div style="font-size:13px;font-weight:600">📈 月末着地予測（${el}/${td}日経過）</div><div class="forecast-grid">
+      <div class="fcast-card"><div class="fcast-label">着地ネット売上</div><div class="fcast-val">¥${fmt(fs)}</div><div class="fcast-sub">現在 ¥${fmt(t.sales)}</div></div>
+      <div class="fcast-card"><div class="fcast-label">着地件数</div><div class="fcast-val">${fmt(fo)}件</div></div>
+      <div class="fcast-card"><div class="fcast-label">着地広告費</div><div class="fcast-val">¥${fmt(fa)}</div></div>
+      <div class="fcast-card"><div class="fcast-label">現在ROAS</div><div class="fcast-val">${t.roas!=null?(t.roas*100).toFixed(0)+"%":"-"}</div><div class="fcast-sub">${roasOk?"✅ 目標達成":"⚠️ 未達"}</div></div>
     </div></div>`;
   }
-  // ä»æã®æç´¯è¨KPI
+  // 今月の月累計KPI
   const aov=t.orders>0?Math.round(t.sales/t.orders):0;
   const kpiHtml=`<div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-label">ä»æ ç´¯è¨ãããå£²ä¸</div><div class="kpi-value">Â¥${fmt(t.sales)}</div><div class="kpi-sub">${fmt(t.orders)}ä»¶ / å®¢åä¾¡ Â¥${fmt(aov)}</div></div>
-    <div class="kpi-card orange"><div class="kpi-label">ä»æ åºåè²»</div><div class="kpi-value">Â¥${fmt(t.adCost)}</div><div class="kpi-sub">åºåçµç± Â¥${fmt(t.adRev)}</div></div>
-    <div class="kpi-card green"><div class="kpi-label">ä»æ ROAS</div><div class="kpi-value">${t.roas!=null?(t.roas*100).toFixed(0)+"%":"-"}</div></div>
-    <div class="kpi-card purple"><div class="kpi-label">æ¥æ°</div><div class="kpi-value">${el}/${td}</div><div class="kpi-sub">æ¥çµé</div></div>
+    <div class="kpi-card"><div class="kpi-label">今月 累計ネット売上</div><div class="kpi-value">¥${fmt(t.sales)}</div><div class="kpi-sub">${fmt(t.orders)}件 / 客単価 ¥${fmt(aov)}</div></div>
+    <div class="kpi-card orange"><div class="kpi-label">今月 広告費</div><div class="kpi-value">¥${fmt(t.adCost)}</div><div class="kpi-sub">広告経由 ¥${fmt(t.adRev)}</div></div>
+    <div class="kpi-card green"><div class="kpi-label">今月 ROAS</div><div class="kpi-value">${t.roas!=null?(t.roas*100).toFixed(0)+"%":"-"}</div></div>
+    <div class="kpi-card purple"><div class="kpi-label">日数</div><div class="kpi-value">${el}/${td}</div><div class="kpi-sub">日経過</div></div>
   </div>`;
 
-  // æ¥å¥ãã¼ãã«ï¼DAILY_SALESï¼
+  // 日別テーブル（DAILY_SALES）
   let dailyTable="";
   if(DAILY_SALES.length===0){
     dailyTable=`<div style="text-align:center;color:#9ca3af;padding:28px;font-size:13px">
-      ã¾ã ä»æã®æ¥å¥ãã¼ã¿ãããã¾ããã<br>æ¯æããã£ããã§ãæ¨æ¥ã®å£²ä¸ãåå¾ãã¦ããã·ã¥ãã¼ãã«åæ ãã¦ãã¨é ¼ãã§ãã ããã</div>`;
+      まだ今月の日別データがありません。<br>毎朝、チャットで「昨日の売上を取得してダッシュボードに反映して」と頼んでください。</div>`;
   }else{
-    // æ¥ä»ã®æ°ããé 
+    // 日付の新しい順
     const sorted=[...DAILY_SALES].sort((a,b)=>b.date<a.date?-1:1);
     let rows=sorted.map(day=>{
       let ds=0,doo=0,dac=0,dar=0,hasOrders=false;
@@ -463,46 +463,46 @@ function renderThisMonth(){
       const daov=(hasOrders&&doo>0)?Math.round(ds/doo):null;
       const droas=dac>0?(dar/dac*100).toFixed(0):null;
       const roasH=droas==null?'<span class="roas-na">-</span>':(droas>=300?`<span class="roas-ok">${droas}%</span>`:`<span class="roas-ng">${droas}%</span>`);
-      return `<tr><td>${day.date}</td><td class="num">Â¥${fmt(ds)}</td><td class="num">${hasOrders?fmt(doo):'-'}</td><td class="num">${daov!=null?'Â¥'+fmt(daov):'-'}</td><td class="num">${dac?'Â¥'+fmt(dac):'-'}</td><td class="num">${roasH}</td></tr>`;
+      return `<tr><td>${day.date}</td><td class="num">¥${fmt(ds)}</td><td class="num">${hasOrders?fmt(doo):'-'}</td><td class="num">${daov!=null?'¥'+fmt(daov):'-'}</td><td class="num">${dac?'¥'+fmt(dac):'-'}</td><td class="num">${roasH}</td></tr>`;
     }).join("");
-    dailyTable=`<table><thead><tr><th>æ¥ä»</th><th style="text-align:right">ãããå£²ä¸</th><th style="text-align:right">å®¢æ°</th><th style="text-align:right">å®¢åä¾¡</th><th style="text-align:right">åºåè²»</th><th style="text-align:right">è²»ç¨å¯¾å¹æ</th></tr></thead><tbody>${rows}</tbody></table>`;
+    dailyTable=`<table><thead><tr><th>日付</th><th style="text-align:right">ネット売上</th><th style="text-align:right">客数</th><th style="text-align:right">客単価</th><th style="text-align:right">広告費</th><th style="text-align:right">費用対効果</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
   document.getElementById("pane-sales").innerHTML=`
     <div class="yesterday-banner">
-      <div style="font-size:15px;font-weight:700">ð ä»æï¼${MLABEL[curMonth]}ï¼ã®ç¶æ³</div>
-      <div style="font-size:11px;opacity:.8;margin-top:4px">æ¯æãã£ããã§ãæ¨æ¥ã®å£²ä¸ãåå¾ãã¦åæ ãã¦ãã¨é ¼ãã¨ãåæ¥åãä¸ã®æ¥å¥è¡¨ã«è¿½å ããã¾ãã</div>
+      <div style="font-size:15px;font-weight:700">📅 今月（${MLABEL[curMonth]}）の状況</div>
+      <div style="font-size:11px;opacity:.8;margin-top:4px">毎朝チャットで「昨日の売上を取得して反映して」と頼むと、前日分が下の日別表に追加されます。</div>
     </div>
     ${fcHtml}
     ${kpiHtml}
     <div class="card" style="margin-bottom:16px">
-      <h2>ð ä»æã®æ¥å¥å£²ä¸ï¼5/1ãï¼</h2>
-      <div style="font-size:11px;color:#9ca3af;margin-bottom:8px">â»ãã¯ã¹ãã¨ã³ã¸ã³åæ³¨ãã¼ã¹éè¨ãææ¬¡ã¿ãã®ç¢ºå®å¤ã¨ã¯éè¨æ¹æ³ãç°ãªãå¤å°å·®ãåºã¾ãã</div>
+      <h2>📊 今月の日別売上（5/1〜）</h2>
+      <div style="font-size:11px;color:#9ca3af;margin-bottom:8px">※ネクストエンジン受注ベース集計。月次タブの確定値とは集計方法が異なり多少差が出ます。</div>
       <div class="chart-box" style="height:260px"><canvas id="dailySalesChart"></canvas></div>
     </div>
     <div class="card" style="margin-bottom:16px">
-      <h2>ð ä»æã®æ¥å¥æç´°ï¼å£²ä¸ã»å®¢æ°ã»å®¢åä¾¡ã»åºåè²»ã»è²»ç¨å¯¾å¹æï¼</h2>
+      <h2>📆 今月の日別明細（売上・客数・客単価・広告費・費用対効果）</h2>
       ${dailyTable}
     </div>
     <div class="card" style="margin-bottom:16px">
-      <h2>ðª ä»æã®ãµã¤ãå¥è©³ç´°ï¼${DATA[curMonth].period}ï¼</h2>
+      <h2>🏪 今月のサイト別詳細（${DATA[curMonth].period}）</h2>
       <div id="thismonth-sitetable"></div>
     </div>
     <div id="pastmonths-section"></div>`;
 
-  // ä»æã®ãµã¤ãå¥ãã¼ãã«
+  // 今月のサイト別テーブル
   const d=DATA[curMonth];
   let srows="";
   d.sites.forEach(s=>{
     const roas=s.adCost>0?s.adRev/s.adCost:null;
     const roasH=roas==null?'<span class="roas-na">-</span>':(roas>=3?`<span class="roas-ok">${(roas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(roas*100).toFixed(0)}%</span>`);
     const saov=s.orders>0?Math.round(s.sales/s.orders):0;
-    srows+=`<tr><td>${s.name}</td><td class="num">Â¥${fmt(s.sales)}</td><td class="num">${fmt(s.orders)}</td><td class="num">Â¥${fmt(saov)}</td><td class="num">${s.adCost?'Â¥'+fmt(s.adCost):'-'}</td><td class="num">${roasH}</td></tr>`;
+    srows+=`<tr><td>${s.name}</td><td class="num">¥${fmt(s.sales)}</td><td class="num">${fmt(s.orders)}</td><td class="num">¥${fmt(saov)}</td><td class="num">${s.adCost?'¥'+fmt(s.adCost):'-'}</td><td class="num">${roasH}</td></tr>`;
   });
-  srows+=`<tr class="total-row"><td>åè¨</td><td class="num">Â¥${fmt(t.sales)}</td><td class="num">${fmt(t.orders)}</td><td class="num">Â¥${fmt(t.orders>0?Math.round(t.sales/t.orders):0)}</td><td class="num">Â¥${fmt(t.adCost)}</td><td class="num">${t.roas!=null?(t.roas>=3?`<span class="roas-ok">${(t.roas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(t.roas*100).toFixed(0)}%</span>`):'â'}</td></tr>`;
-  document.getElementById("thismonth-sitetable").innerHTML=`<table><thead><tr><th>ãµã¤ã</th><th style="text-align:right">å£²ä¸</th><th style="text-align:right">å®¢æ°</th><th style="text-align:right">å®¢åä¾¡</th><th style="text-align:right">åºåè²»</th><th style="text-align:right">ROAS</th></tr></thead><tbody>${srows}</tbody></table>`;
+  srows+=`<tr class="total-row"><td>合計</td><td class="num">¥${fmt(t.sales)}</td><td class="num">${fmt(t.orders)}</td><td class="num">¥${fmt(t.orders>0?Math.round(t.sales/t.orders):0)}</td><td class="num">¥${fmt(t.adCost)}</td><td class="num">${t.roas!=null?(t.roas>=3?`<span class="roas-ok">${(t.roas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(t.roas*100).toFixed(0)}%</span>`):'−'}</td></tr>`;
+  document.getElementById("thismonth-sitetable").innerHTML=`<table><thead><tr><th>サイト</th><th style="text-align:right">売上</th><th style="text-align:right">客数</th><th style="text-align:right">客単価</th><th style="text-align:right">広告費</th><th style="text-align:right">ROAS</th></tr></thead><tbody>${srows}</tbody></table>`;
 
-  // æ¥å¥å£²ä¸ æ£ã°ã©ã
+  // 日別売上 棒グラフ
   if(DAILY_SALES.length>0){
     const sortedD=[...DAILY_SALES].sort((a,b)=>a.date<b.date?-1:1);
     const labels=sortedD.map(day=>day.date.slice(5));
@@ -510,64 +510,64 @@ function renderThisMonth(){
     const cv=document.getElementById("dailySalesChart");
     if(cv){
       charts.daily=new Chart(cv.getContext("2d"),{type:"bar",
-        data:{labels,datasets:[{label:"æ¥å¥å£²ä¸",data:sales,backgroundColor:"rgba(47,84,150,.85)",borderSkipped:false}]},
+        data:{labels,datasets:[{label:"日別売上",data:sales,backgroundColor:"rgba(47,84,150,.85)",borderSkipped:false}]},
         options:{responsive:true,maintainAspectRatio:false,
-          plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>"Â¥"+ctx.parsed.y.toLocaleString()}}},
-          scales:{y:{beginAtZero:true,ticks:{callback:v=>"Â¥"+(v/10000).toFixed(0)+"ä¸"}}}}});
+          plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>"¥"+ctx.parsed.y.toLocaleString()}}},
+          scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
     }
   }
 }
 
-// ===== éå»ï¼æå¥è¡¨ç¤ºï¼ =====
+// ===== 過去（月別表示） =====
 function renderPastMonths(){
   const pane=document.getElementById("pastmonths-section");
   if(!pane)return;
-  // ä»æããåã®æ
+  // 今月より前の月
   const past=MONTHS.filter(m=>m!==curMonth);
   let rows=past.map(mk=>{
     const t=totals(mk);
     const aov=t.orders>0?Math.round(t.sales/t.orders):0;
     const roas=t.roas;
     const roasH=roas==null?'<span class="roas-na">-</span>':(roas>=3?`<span class="roas-ok">${(roas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(roas*100).toFixed(0)}%</span>`);
-    return `<tr><td>${MLABEL[mk]}</td><td class="num">Â¥${fmt(t.sales)}</td><td class="num">${fmt(t.orders)}</td><td class="num">Â¥${fmt(aov)}</td><td class="num">${t.adCost?'Â¥'+fmt(t.adCost):'-'}</td><td class="num">${roasH}</td></tr>`;
+    return `<tr><td>${MLABEL[mk]}</td><td class="num">¥${fmt(t.sales)}</td><td class="num">${fmt(t.orders)}</td><td class="num">¥${fmt(aov)}</td><td class="num">${t.adCost?'¥'+fmt(t.adCost):'-'}</td><td class="num">${roasH}</td></tr>`;
   }).join("");
-  // éå»åè¨
+  // 過去合計
   let ps=0,po=0,pac=0,par=0;
   past.forEach(mk=>{const t=totals(mk);ps+=t.sales;po+=t.orders;pac+=t.adCost;par+=t.adRev;});
   const proas=pac>0?par/pac:null;
-  rows+=`<tr class="total-row"><td>éå»åè¨</td><td class="num">Â¥${fmt(ps)}</td><td class="num">${fmt(po)}</td><td class="num">Â¥${fmt(po>0?Math.round(ps/po):0)}</td><td class="num">Â¥${fmt(pac)}</td><td class="num">${proas!=null?(proas>=3?`<span class="roas-ok">${(proas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(proas*100).toFixed(0)}%</span>`):'â'}</td></tr>`;
+  rows+=`<tr class="total-row"><td>過去合計</td><td class="num">¥${fmt(ps)}</td><td class="num">${fmt(po)}</td><td class="num">¥${fmt(po>0?Math.round(ps/po):0)}</td><td class="num">¥${fmt(pac)}</td><td class="num">${proas!=null?(proas>=3?`<span class="roas-ok">${(proas*100).toFixed(0)}%</span>`:`<span class="roas-ng">${(proas*100).toFixed(0)}%</span>`):'−'}</td></tr>`;
   pane.innerHTML=`
     <div class="card" style="margin-bottom:16px">
-      <h2>ð ä»æããåï¼æå¥ãµããªã¼ï¼</h2>
-      <table><thead><tr><th>æ</th><th style="text-align:right">ãããå£²ä¸</th><th style="text-align:right">å®¢æ°</th><th style="text-align:right">å®¢åä¾¡</th><th style="text-align:right">åºåè²»</th><th style="text-align:right">ROAS</th></tr></thead><tbody>${rows}</tbody></table>
-      <div style="font-size:11px;color:#9ca3af;margin-top:8px">åæã®è©³ç´°ã¯ãæ¨ç§»ãã¿ãã®ã°ã©ãã§ãç¢ºèªã§ãã¾ãã</div>
+      <h2>📚 今月より前（月別サマリー）</h2>
+      <table><thead><tr><th>月</th><th style="text-align:right">ネット売上</th><th style="text-align:right">客数</th><th style="text-align:right">客単価</th><th style="text-align:right">広告費</th><th style="text-align:right">ROAS</th></tr></thead><tbody>${rows}</tbody></table>
+      <div style="font-size:11px;color:#9ca3af;margin-top:8px">各月の詳細は「推移」タブのグラフでも確認できます。</div>
     </div>`;
 }
 
 
-// æ¨ç§»
+// 推移
 function renderTrendPane(){
   document.getElementById("pane-trend").innerHTML=`
     <div class="grid-2">
-      <div class="card"><h2>ææ¬¡ãããå£²ä¸æ¨ç§»</h2><div class="chart-box"><canvas id="trendChart"></canvas></div></div>
-      <div class="card"><h2>ROASæ¨ç§»</h2><div class="chart-box"><canvas id="roasChart"></canvas></div></div>
+      <div class="card"><h2>月次ネット売上推移</h2><div class="chart-box"><canvas id="trendChart"></canvas></div></div>
+      <div class="card"><h2>ROAS推移</h2><div class="chart-box"><canvas id="roasChart"></canvas></div></div>
     </div>
-    <div class="card" style="margin-bottom:16px"><h2>åºåè²» vs åºåçµç±å£²ä¸</h2><div class="chart-box"><canvas id="adChart"></canvas></div></div>
-    <div class="card" style="margin-bottom:16px"><h2>ãµã¤ãå¥ ãããå£²ä¸æ¨ç§»ï¼æãç·ã»ãµã¤ãæ¯è¼ï¼</h2><div class="chart-box" style="height:300px"><canvas id="siteSalesLine"></canvas></div></div>
-    <div class="card" style="margin-bottom:16px"><h2>ãµã¤ãå¥ ãããå£²ä¸æ§æï¼ç©ã¿ä¸ãæ£ï¼</h2><div class="chart-box" style="height:300px"><canvas id="siteSalesStack"></canvas></div></div>
-    <div class="card" style="margin-bottom:16px"><h2>ãµã¤ãå¥ åºåè²»æ¨ç§»ï¼æ¥½å¤©ã»Yahooã»Amazonã»æ¬åº04(Google)ï¼</h2><div class="chart-box" style="height:300px"><canvas id="siteAdCost"></canvas></div></div>`;
+    <div class="card" style="margin-bottom:16px"><h2>広告費 vs 広告経由売上</h2><div class="chart-box"><canvas id="adChart"></canvas></div></div>
+    <div class="card" style="margin-bottom:16px"><h2>サイト別 ネット売上推移（折れ線・サイト比較）</h2><div class="chart-box" style="height:300px"><canvas id="siteSalesLine"></canvas></div></div>
+    <div class="card" style="margin-bottom:16px"><h2>サイト別 ネット売上構成（積み上げ棒）</h2><div class="chart-box" style="height:300px"><canvas id="siteSalesStack"></canvas></div></div>
+    <div class="card" style="margin-bottom:16px"><h2>サイト別 広告費推移（楽天・Yahoo・Amazon・本店04(Google)）</h2><div class="chart-box" style="height:300px"><canvas id="siteAdCost"></canvas></div></div>`;
   const labels=MONTHS.map(m=>MLABEL[m]);
   const sales=MONTHS.map(m=>{const t=totals(m);return t?t.sales:0});
   const adCost=MONTHS.map(m=>{const t=totals(m);return t?t.adCost:0});
   const adRev=MONTHS.map(m=>{const t=totals(m);return t?t.adRev:0});
   const roas=MONTHS.map(m=>{const t=totals(m);return t&&t.roas?+(t.roas*100).toFixed(0):null});
-  charts.trend=new Chart(document.getElementById("trendChart").getContext("2d"),{type:"bar",data:{labels,datasets:[{label:"ææ¬¡ãããå£²ä¸",data:sales,backgroundColor:"rgba(47,84,150,.85)",borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"Â¥"+(v/10000).toFixed(0)+"ä¸"}}}}});
-  charts.roas=new Chart(document.getElementById("roasChart").getContext("2d"),{type:"line",data:{labels,datasets:[{label:"ROAS(%)",data:roas,borderColor:"#16a34a",backgroundColor:"rgba(22,163,74,.1)",tension:.3,fill:true,pointRadius:4,spanGaps:true},{label:"ç®æ¨300%",data:MONTHS.map(()=>300),borderColor:"#dc2626",borderDash:[6,3],pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+"%"}}}}});
-  charts.ad=new Chart(document.getElementById("adChart").getContext("2d"),{type:"bar",data:{labels,datasets:[{label:"åºåè²»",data:adCost,backgroundColor:"rgba(234,88,12,.8)",borderSkipped:false},{label:"åºåçµç±å£²ä¸",data:adRev,backgroundColor:"rgba(22,163,74,.8)",borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"Â¥"+(v/10000).toFixed(0)+"ä¸"}}}}});
+  charts.trend=new Chart(document.getElementById("trendChart").getContext("2d"),{type:"bar",data:{labels,datasets:[{label:"月次ネット売上",data:sales,backgroundColor:"rgba(47,84,150,.85)",borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
+  charts.roas=new Chart(document.getElementById("roasChart").getContext("2d"),{type:"line",data:{labels,datasets:[{label:"ROAS(%)",data:roas,borderColor:"#16a34a",backgroundColor:"rgba(22,163,74,.1)",tension:.3,fill:true,pointRadius:4,spanGaps:true},{label:"目標300%",data:MONTHS.map(()=>300),borderColor:"#dc2626",borderDash:[6,3],pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+"%"}}}}});
+  charts.ad=new Chart(document.getElementById("adChart").getContext("2d"),{type:"bar",data:{labels,datasets:[{label:"広告費",data:adCost,backgroundColor:"rgba(234,88,12,.8)",borderSkipped:false},{label:"広告経由売上",data:adRev,backgroundColor:"rgba(22,163,74,.8)",borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
 
-  // ãµã¤ãå¥ãã¼ã¿éè¨
-  const SITE_NAMES=["YAHOO","æ¥½å¤©å¸å ´","ã¢ãã¾ã³","æ¬åº04","ã¡ã«ã«ãª","GM"];
-  const SITE_COLORS={"YAHOO":"#ef4444","æ¥½å¤©å¸å ´":"#bf1722","ã¢ãã¾ã³":"#f59e0b","æ¬åº04":"#3b82f6","ã¡ã«ã«ãª":"#10b981","GM":"#8b5cf6"};
+  // サイト別データ集計
+  const SITE_NAMES=["YAHOO","楽天市場","アマゾン","本店04","メルカリ","GM"];
+  const SITE_COLORS={"YAHOO":"#ef4444","楽天市場":"#bf1722","アマゾン":"#f59e0b","本店04":"#3b82f6","メルカリ":"#10b981","GM":"#8b5cf6"};
   const siteSales={},siteAd={};
   SITE_NAMES.forEach(n=>{siteSales[n]=[];siteAd[n]=[];});
   MONTHS.forEach(m=>{
@@ -578,23 +578,23 @@ function renderTrendPane(){
       siteAd[n].push(s&&s.adCost?s.adCost:0);
     });
   });
-  // æãç·(ãµã¤ãå¥å£²ä¸)
-  charts.siteSalesLine=new Chart(document.getElementById("siteSalesLine").getContext("2d"),{type:"line",data:{labels,datasets:SITE_NAMES.map(n=>({label:n,data:siteSales[n],borderColor:SITE_COLORS[n],backgroundColor:SITE_COLORS[n],tension:.3,fill:false,pointRadius:3}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"Â¥"+(v/10000).toFixed(0)+"ä¸"}}}}});
-  // ç©ã¿ä¸ãæ£(ãµã¤ãå¥å£²ä¸æ§æ)
-  charts.siteSalesStack=new Chart(document.getElementById("siteSalesStack").getContext("2d"),{type:"bar",data:{labels,datasets:SITE_NAMES.map(n=>({label:n,data:siteSales[n],backgroundColor:SITE_COLORS[n],borderSkipped:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true,ticks:{callback:v=>"Â¥"+(v/10000).toFixed(0)+"ä¸"}}}}});
-  // ãµã¤ãå¥åºåè²»(åºåãåºãã¦ãããµã¤ãã®ã¿)
-  const AD_SITES=["YAHOO","æ¥½å¤©å¸å ´","ã¢ãã¾ã³","æ¬åº04"];
-  charts.siteAdCost=new Chart(document.getElementById("siteAdCost").getContext("2d"),{type:"bar",data:{labels,datasets:AD_SITES.map(n=>({label:n,data:siteAd[n],backgroundColor:SITE_COLORS[n],borderSkipped:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"Â¥"+(v/10000).toFixed(0)+"ä¸"}}}}});
+  // 折れ線(サイト別売上)
+  charts.siteSalesLine=new Chart(document.getElementById("siteSalesLine").getContext("2d"),{type:"line",data:{labels,datasets:SITE_NAMES.map(n=>({label:n,data:siteSales[n],borderColor:SITE_COLORS[n],backgroundColor:SITE_COLORS[n],tension:.3,fill:false,pointRadius:3}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
+  // 積み上げ棒(サイト別売上構成)
+  charts.siteSalesStack=new Chart(document.getElementById("siteSalesStack").getContext("2d"),{type:"bar",data:{labels,datasets:SITE_NAMES.map(n=>({label:n,data:siteSales[n],backgroundColor:SITE_COLORS[n],borderSkipped:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
+  // サイト別広告費(広告を出しているサイトのみ)
+  const AD_SITES=["YAHOO","楽天市場","アマゾン","本店04"];
+  charts.siteAdCost=new Chart(document.getElementById("siteAdCost").getContext("2d"),{type:"bar",data:{labels,datasets:AD_SITES.map(n=>({label:n,data:siteAd[n],backgroundColor:SITE_COLORS[n],borderSkipped:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}}});
 }
 
-// Instagramæ¥å¥
+// Instagram日別
 let igDailyData={};
 async function loadIGData(){try{const r=await window.storage.get("ig_daily");igDailyData=r?JSON.parse(r.value):{};}catch(e){igDailyData={};}}
 async function saveIGData(){try{await window.storage.set("ig_daily",JSON.stringify(igDailyData));}catch(e){}}
 function getTodayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
 function getLatestEntry(){const keys=Object.keys(igDailyData).sort();return keys.length>0?{date:keys[keys.length-1],...igDailyData[keys[keys.length-1]]}:null;}
 function getPrevEntry(){const keys=Object.keys(igDailyData).sort();return keys.length>1?{date:keys[keys.length-2],...igDailyData[keys[keys.length-2]]}:null;}
-function diffBadge(cur,prev,unit=""){if(cur==null||prev==null)return "";const d=cur-prev;if(d===0)return `<span class="ig-stat-diff diff-flat">å¤åãªã</span>`;const sign=d>0?"+":"";const cls=d>0?"diff-up":"diff-down";return `<span class="ig-stat-diff ${cls}">${sign}${fmtK(d)}${unit} ååæ¯</span>`;}
+function diffBadge(cur,prev,unit=""){if(cur==null||prev==null)return "";const d=cur-prev;if(d===0)return `<span class="ig-stat-diff diff-flat">変化なし</span>`;const sign=d>0?"+":"";const cls=d>0?"diff-up":"diff-down";return `<span class="ig-stat-diff ${cls}">${sign}${fmtK(d)}${unit} 前回比</span>`;}
 async function saveIGEntry(followers,reach,impressions,interactions,dateKey){
   const key=dateKey||getTodayKey();
   igDailyData[key]={followers,reach,impressions,interactions};
@@ -602,23 +602,23 @@ async function saveIGEntry(followers,reach,impressions,interactions,dateKey){
 }
 function fetchIGAndSave(){
   const btn=document.getElementById("ig-fetch-btn");
-  btn.disabled=true;btn.textContent="ð åå¾ä¸­...";
-  if(window.sendPrompt){window.sendPrompt("Meta Business Suiteï¼business.facebook.comï¼ã®Instagramã¤ã³ãµã¤ããã¼ã¸ãéãã¦ããã©ã­ã¯ã¼æ°ã»ãªã¼ãã»ãã¥ã¼æ°ã»ã¤ã³ã¿ã©ã¯ã·ã§ã³æ°ãèª­ã¿åããsaveIGEntry()ã§ããã·ã¥ãã¼ãã«ä¿å­ãã¦ãã ããã");}
+  btn.disabled=true;btn.textContent="🔄 取得中...";
+  if(window.sendPrompt){window.sendPrompt("Meta Business Suite（business.facebook.com）のInstagramインサイトページを開いて、フォロワー数・リーチ・ビュー数・インタラクション数を読み取り、saveIGEntry()でダッシュボードに保存してください。");}
   else{
-    // GitHub Pagesç: æåå¥åãã¤ã¢ã­ã°
-    const dateKey = prompt("è¨é²ããæ¥ä» (ä¾: 2026-05-20)", getTodayKey());
-    if(!dateKey){btn.disabled=false;btn.textContent="ð ä»æ¥ã®ãã¼ã¿ãåå¾";return;}
-    const followers = prompt("ãã©ã­ã¯ã¼æ°");
-    const reach = prompt("ãªã¼ã (éå»30æ¥)");
-    const impressions = prompt("ãã¥ã¼ (éå»30æ¥)");
-    const interactions = prompt("ã¤ã³ã¿ã©ã¯ã·ã§ã³");
+    // GitHub Pages版: 手動入力ダイアログ
+    const dateKey = prompt("記録する日付 (例: 2026-05-20)", getTodayKey());
+    if(!dateKey){btn.disabled=false;btn.textContent="📊 今日のデータを取得";return;}
+    const followers = prompt("フォロワー数");
+    const reach = prompt("リーチ (過去30日)");
+    const impressions = prompt("ビュー (過去30日)");
+    const interactions = prompt("インタラクション");
     const toNum = v => (v===null||v==="")?null:Number(v);
     saveIGEntry(toNum(followers),toNum(reach),toNum(impressions),toNum(interactions),dateKey);
-    btn.disabled=false;btn.textContent="ð ä»æ¥ã®ãã¼ã¿ãåå¾";
+    btn.disabled=false;btn.textContent="📊 今日のデータを取得";
   }
 }
 
-// ææ¬¡ã¬ãã¼ã
+// 月次レポート
 function pearson(xs,ys){
   const n=xs.length;if(n<2)return null;
   const mx=xs.reduce((a,b)=>a+b,0)/n,my=ys.reduce((a,b)=>a+b,0)/n;
@@ -628,20 +628,20 @@ function pearson(xs,ys){
   return sxy/Math.sqrt(sxx*syy);
 }
 function corrLabel(r){
-  if(r==null)return"ç®åºä¸å¯";
+  if(r==null)return"算出不可";
   const a=Math.abs(r);
-  if(a>=0.8)return"éå¸¸ã«å¼·ãç¸é¢";
-  if(a>=0.6)return"å¼·ãç¸é¢";
-  if(a>=0.4)return"ä¸­ç¨åº¦ã®ç¸é¢";
-  if(a>=0.2)return"å¼±ãç¸é¢";
-  return"ã»ã¼ç¸é¢ãªã";
+  if(a>=0.8)return"非常に強い相関";
+  if(a>=0.6)return"強い相関";
+  if(a>=0.4)return"中程度の相関";
+  if(a>=0.2)return"弱い相関";
+  return"ほぼ相関なし";
 }
 
-// ===== Instagramåæã¿ã(çµ±å) =====
+// ===== Instagram分析タブ(統合) =====
 function renderInstagramPane(){
   const latest=getLatestEntry(),prev=getPrevEntry(),todayKey=getTodayKey(),alreadyToday=igDailyData[todayKey]!=null;
   const sortedKeys=Object.keys(igDailyData).sort().reverse();
-  // KPIãã¼ã¿ãããæ(ãªã³ã¯ã¯ãªãã¯å®æ¸¬)
+  // KPIデータがある月(リンククリック実測)
   const krows=IG_MONTHLY.filter(d=>d.linkClicks!=null);
   const months=krows.map(d=>d.m);
   const clicks=krows.map(d=>d.linkClicks);
@@ -659,125 +659,125 @@ function renderInstagramPane(){
   const lastMonth=IG_MONTHLY[IG_MONTHLY.length-1];
   let bestMonth=krows[0],bestClick=clicks[0];
   krows.forEach((d,i)=>{if(clicks[i]>bestClick){bestClick=clicks[i];bestMonth=d;}});
-  // Metaåºåéè¨
+  // Meta広告集計
   const totalSpent=IG_MONTHLY.reduce((s,d)=>s+(d.metaAdCost||0),0);
   const totalResults=IG_MONTHLY.reduce((s,d)=>s+(d.metaResults||0),0);
   const avgCPV=totalResults>0?Math.round(totalSpent/totalResults):0;
-  // æå¥KPIä¸è¦§
+  // 月別KPI一覧
   let kpiRows=krows.map((d,i)=>{
     const ctr=d.impressions>0?((d.linkClicks/d.impressions)*100).toFixed(2)+"%":"-";
     const cp=i>0?clicks[i]-clicks[i-1]:null;
-    const arrow=cp==null?"":(cp>0?`<span style="color:#16a34a">â²${fmt(cp)}</span>`:cp<0?`<span style="color:#dc2626">â¼${fmt(-cp)}</span>`:"â");
-    return `<tr><td>${d.m}</td><td class="num">${fmt(d.followers)}</td><td class="num">${fmt(d.impressions)}</td><td class="num">${fmt(d.reach)}</td><td class="num">${fmt(d.access)}</td><td class="num"><b>${fmt(d.linkClicks)}</b> ${arrow}</td><td class="num">${ctr}</td><td class="num">Â¥${fmt(d.sales)}</td></tr>`;
+    const arrow=cp==null?"":(cp>0?`<span style="color:#16a34a">▲${fmt(cp)}</span>`:cp<0?`<span style="color:#dc2626">▼${fmt(-cp)}</span>`:"→");
+    return `<tr><td>${d.m}</td><td class="num">${fmt(d.followers)}</td><td class="num">${fmt(d.impressions)}</td><td class="num">${fmt(d.reach)}</td><td class="num">${fmt(d.access)}</td><td class="num"><b>${fmt(d.linkClicks)}</b> ${arrow}</td><td class="num">${ctr}</td><td class="num">¥${fmt(d.sales)}</td></tr>`;
   }).join("");
-  // Metaåºåãã¼ãã«
+  // Meta広告テーブル
   const metaRows=IG_MONTHLY.map(d=>{
     const cpv=(d.metaResults>0)?Math.round(d.metaAdCost/d.metaResults):null;
-    return `<tr><td>${d.m}</td><td class="num">${d.metaAdCost?'Â¥'+fmt(d.metaAdCost):'-'}</td><td class="num">${d.metaResults?fmt(d.metaResults):'-'}</td><td class="num">${cpv?'Â¥'+cpv:'-'}</td></tr>`;
+    return `<tr><td>${d.m}</td><td class="num">${d.metaAdCost?'¥'+fmt(d.metaAdCost):'-'}</td><td class="num">${d.metaResults?fmt(d.metaResults):'-'}</td><td class="num">${cpv?'¥'+cpv:'-'}</td></tr>`;
   }).join("");
   const metaTotalCost=IG_MONTHLY.reduce((s,d)=>s+(d.metaAdCost||0),0);
   const metaTotalRes=IG_MONTHLY.reduce((s,d)=>s+(d.metaResults||0),0);
   const metaAvgCPV=metaTotalRes>0?Math.round(metaTotalCost/metaTotalRes):null;
-  const metaTotalRow=`<tr class="total-row"><td>åè¨</td><td class="num">Â¥${fmt(metaTotalCost)}</td><td class="num">${fmt(metaTotalRes)}</td><td class="num">${metaAvgCPV?'Â¥'+metaAvgCPV:'-'}</td></tr>`;
+  const metaTotalRow=`<tr class="total-row"><td>合計</td><td class="num">¥${fmt(metaTotalCost)}</td><td class="num">${fmt(metaTotalRes)}</td><td class="num">${metaAvgCPV?'¥'+metaAvgCPV:'-'}</td></tr>`;
 
 
   document.getElementById("pane-instagram").innerHTML=`
     <div class="ig-hero">
       <div class="ig-hero-title">
-        <span>ð± Instagramåæï½SNSãå£²ä¸ã«ã©ãå¹ãã¦ããã</span>
-        <button class="ig-fetch-btn" id="ig-fetch-btn" onclick="fetchIGAndSave()">${alreadyToday?"ð ä»æ¥ã®ãã¼ã¿ãæ´æ°":"ð ä»æ¥ã®ãã¼ã¿ãåå¾"}</button>
+        <span>📱 Instagram分析｜SNSが売上にどう効いているか</span>
+        <button class="ig-fetch-btn" id="ig-fetch-btn" onclick="fetchIGAndSave()">${alreadyToday?"🔄 今日のデータを更新":"📊 今日のデータを取得"}</button>
       </div>
       <div class="ig-stats">
-        <div class="ig-stat"><div class="ig-stat-label">ãã©ã­ã¯ã¼æ°</div><div class="ig-stat-val">${latest&&latest.followers!=null?fmtK(latest.followers):"-"}</div>${diffBadge(latest?.followers,prev?.followers,"äºº")}<div style="font-size:11px;opacity:.7;margin-top:2px">${latest?latest.date+"æç¹":""}</div></div>
-        <div class="ig-stat"><div class="ig-stat-label">é²è¦§æ°(ææ°æ)</div><div class="ig-stat-val">${fmtK(lastMonth.impressions)}</div></div>
-        <div class="ig-stat"><div class="ig-stat-label">ãªã³ã¯ã¯ãªãã¯(ææ°æ)</div><div class="ig-stat-val">${fmtK(lastMonth.linkClicks)}</div></div>
-        <div class="ig-stat"><div class="ig-stat-label">ææ¬¡å£²ä¸(ææ°æ)</div><div class="ig-stat-val">Â¥${fmtK(lastMonth.sales)}</div></div>
+        <div class="ig-stat"><div class="ig-stat-label">フォロワー数</div><div class="ig-stat-val">${latest&&latest.followers!=null?fmtK(latest.followers):"-"}</div>${diffBadge(latest?.followers,prev?.followers,"人")}<div style="font-size:11px;opacity:.7;margin-top:2px">${latest?latest.date+"時点":""}</div></div>
+        <div class="ig-stat"><div class="ig-stat-label">閲覧数(最新月)</div><div class="ig-stat-val">${fmtK(lastMonth.impressions)}</div></div>
+        <div class="ig-stat"><div class="ig-stat-label">リンククリック(最新月)</div><div class="ig-stat-val">${fmtK(lastMonth.linkClicks)}</div></div>
+        <div class="ig-stat"><div class="ig-stat-label">月次売上(最新月)</div><div class="ig-stat-val">¥${fmtK(lastMonth.sales)}</div></div>
       </div>
     </div>
 
     <div style="background:linear-gradient(135deg,#1F3864,#2F5496);color:#fff;padding:16px 22px;border-radius:12px;margin-bottom:14px">
-      <div style="font-size:14px;font-weight:700;margin-bottom:3px">ð¯ æéè¦KPIï¼ãªã³ã¯ã¯ãªãã¯æ°</div>
-      <div style="font-size:11px;opacity:.88">Instagramããèªç¤¾ECãµã¤ãã¸å®éã«é·ç§»ããåæ°ãé²è¦§âãªã¼ãâãã­ãã£ã¼ã«ã¢ã¯ã»ã¹âãªã³ã¯ã¯ãªãã¯ã¨ããå°ç·ã®æçµå°ç¹ã§ãå£²ä¸ã«æãè¿ãè¡åææ¨ã§ãã</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:3px">🎯 最重要KPI：リンククリック数</div>
+      <div style="font-size:11px;opacity:.88">Instagramから自社ECサイトへ実際に遷移した回数。閲覧→リーチ→プロフィールアクセス→リンククリックという導線の最終地点で、売上に最も近い行動指標です。</div>
     </div>
     <div class="kpi-grid">
-      <div class="kpi-card purple"><div class="kpi-label">ãªã³ã¯ã¯ãªãã¯ ç´¯è¨</div><div class="kpi-value">${fmt(totalClicks)}</div><div class="kpi-sub">2026å¹´1ã5æ</div></div>
-      <div class="kpi-card"><div class="kpi-label">ãã­ãã£ã¼ã«ã¢ã¯ã»ã¹ ç´¯è¨</div><div class="kpi-value">${fmt(totalAccess)}</div></div>
-      <div class="kpi-card orange"><div class="kpi-label">é²è¦§æ° ç´¯è¨</div><div class="kpi-value">${fmtK(totalViews)}</div></div>
-      <div class="kpi-card green"><div class="kpi-label">ã¯ãªãã¯âå£²ä¸ ç¸é¢</div><div class="kpi-value">${rClickSales!=null?rClickSales.toFixed(2):"-"}</div><span class="kpi-badge ${rClickSales>=0.6?"ok":"ng"}">${corrLabel(rClickSales)}</span></div>
+      <div class="kpi-card purple"><div class="kpi-label">リンククリック 累計</div><div class="kpi-value">${fmt(totalClicks)}</div><div class="kpi-sub">2026年1〜5月</div></div>
+      <div class="kpi-card"><div class="kpi-label">プロフィールアクセス 累計</div><div class="kpi-value">${fmt(totalAccess)}</div></div>
+      <div class="kpi-card orange"><div class="kpi-label">閲覧数 累計</div><div class="kpi-value">${fmtK(totalViews)}</div></div>
+      <div class="kpi-card green"><div class="kpi-label">クリック→売上 相関</div><div class="kpi-value">${rClickSales!=null?rClickSales.toFixed(2):"-"}</div><span class="kpi-badge ${rClickSales>=0.6?"ok":"ng"}">${corrLabel(rClickSales)}</span></div>
     </div>
     <div class="grid-2">
-      <div class="card"><h2>ãªã³ã¯ã¯ãªãã¯æ° Ã ææ¬¡å£²ä¸ï¼2è»¸ï¼</h2><div class="chart-box"><canvas id="igClickSales"></canvas></div></div>
-      <div class="card"><h2>ãªã³ã¯ã¯ãªãã¯æ° Ã ææ¬¡å£²ä¸ï¼æ£å¸å³ï¼</h2><div style="font-size:11px;color:#9ca3af;margin-bottom:6px">ç¹ã¯åæãå³ã«ããã»ã©ã¯ãªãã¯ãå¤ããä¸ã«ããã»ã©å£²ä¸ãå¤ãæãç¹ãå³ä¸ããã«ä¸¦ã¶ã»ã©ãã¯ãªãã¯ãå¢ããã¨å£²ä¸ãå¢ãããé¢ä¿ãå¼·ãã</div><div class="chart-box"><canvas id="igScatter"></canvas></div></div>
+      <div class="card"><h2>リンククリック数 × 月次売上（2軸）</h2><div class="chart-box"><canvas id="igClickSales"></canvas></div></div>
+      <div class="card"><h2>リンククリック数 × 月次売上（散布図）</h2><div style="font-size:11px;color:#9ca3af;margin-bottom:6px">点は各月。右にあるほどクリックが多く、上にあるほど売上が多い月。点が右上がりに並ぶほど「クリックが増えると売上も増える」関係が強い。</div><div class="chart-box"><canvas id="igScatter"></canvas></div></div>
     </div>
 
     <div class="card" style="margin-bottom:16px">
-      <h2>ð åSNSææ¨ã¨å£²ä¸ã®ç¸é¢åæ</h2>
+      <h2>📊 各SNS指標と売上の相関分析</h2>
       <table>
-        <thead><tr><th>ææ¨</th><th style="text-align:right">ææ¬¡å£²ä¸ã¨ã®ç¸é¢ä¿æ°</th><th>è©ä¾¡</th></tr></thead>
+        <thead><tr><th>指標</th><th style="text-align:right">月次売上との相関係数</th><th>評価</th></tr></thead>
         <tbody>
-          <tr><td>ãªã³ã¯ã¯ãªãã¯æ°</td><td class="num"><b>${rClickSales!=null?rClickSales.toFixed(3):"-"}</b></td><td>${corrLabel(rClickSales)}</td></tr>
-          <tr><td>ãã­ãã£ã¼ã«ã¢ã¯ã»ã¹æ°</td><td class="num">${rAccessSales!=null?rAccessSales.toFixed(3):"-"}</td><td>${corrLabel(rAccessSales)}</td></tr>
-          <tr><td>é²è¦§æ°</td><td class="num">${rViewSales!=null?rViewSales.toFixed(3):"-"}</td><td>${corrLabel(rViewSales)}</td></tr>
-          <tr><td>ãªã¼ã</td><td class="num">${rReachSales!=null?rReachSales.toFixed(3):"-"}</td><td>${corrLabel(rReachSales)}</td></tr>
+          <tr><td>リンククリック数</td><td class="num"><b>${rClickSales!=null?rClickSales.toFixed(3):"-"}</b></td><td>${corrLabel(rClickSales)}</td></tr>
+          <tr><td>プロフィールアクセス数</td><td class="num">${rAccessSales!=null?rAccessSales.toFixed(3):"-"}</td><td>${corrLabel(rAccessSales)}</td></tr>
+          <tr><td>閲覧数</td><td class="num">${rViewSales!=null?rViewSales.toFixed(3):"-"}</td><td>${corrLabel(rViewSales)}</td></tr>
+          <tr><td>リーチ</td><td class="num">${rReachSales!=null?rReachSales.toFixed(3):"-"}</td><td>${corrLabel(rReachSales)}</td></tr>
         </tbody>
       </table>
-      <div style="font-size:11px;color:#9ca3af;margin-top:8px">ç¸é¢ä¿æ°ã¯-1ã+1ã+1ã«è¿ãã»ã©ããã®ææ¨ãå¢ããã¨å£²ä¸ãå¢ãããé¢ä¿ãå¼·ããâ»2026å¹´1ã5æã®5ã¶æãã¼ã¿ã«åºã¥ãåèå¤ã</div>
+      <div style="font-size:11px;color:#9ca3af;margin-top:8px">相関係数は-1〜+1。+1に近いほど「その指標が増えると売上も増える」関係が強い。※2026年1〜5月の5ヶ月データに基づく参考値。</div>
     </div>
 
     <div style="background:linear-gradient(135deg,#833ab4,#fd1d1d);color:#fff;padding:16px 22px;border-radius:12px;margin-bottom:14px">
-      <div style="font-size:14px;font-weight:700;margin-bottom:3px">ð° Metaåºåï¼Instagramå®£ä¼ï¼ææ¬¡æ¨ç§»</div>
-      <div style="font-size:11px;opacity:.85">ãã­ãã£ã¼ã«è¨ªåç²å¾ãç®çã¨ããInstagramåºåã®æå¥å®ç¸¾ãCPV(è¨ªååä¾¡)ãä½ãã»ã©å¹ççã</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:3px">💰 Meta広告（Instagram宣伝）月次推移</div>
+      <div style="font-size:11px;opacity:.85">プロフィール訪問獲得を目的としたInstagram広告の月別実績。CPV(訪問単価)が低いほど効率的。</div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:12px">
-        <div style="background:rgba(255,255,255,.18);padding:10px 12px;border-radius:8px"><div style="font-size:11px;opacity:.85">ç´¯è¨åºåè²»</div><div style="font-size:20px;font-weight:700">Â¥${fmt(totalSpent)}</div></div>
-        <div style="background:rgba(255,255,255,.18);padding:10px 12px;border-radius:8px"><div style="font-size:11px;opacity:.85">ç´¯è¨ãã­ãã£ã¼ã«è¨ªå</div><div style="font-size:20px;font-weight:700">${fmt(totalResults)}</div></div>
-        <div style="background:rgba(255,255,255,.18);padding:10px 12px;border-radius:8px"><div style="font-size:11px;opacity:.85">å¹³åCPV(è¨ªååä¾¡)</div><div style="font-size:20px;font-weight:700">Â¥${avgCPV}</div></div>
+        <div style="background:rgba(255,255,255,.18);padding:10px 12px;border-radius:8px"><div style="font-size:11px;opacity:.85">累計広告費</div><div style="font-size:20px;font-weight:700">¥${fmt(totalSpent)}</div></div>
+        <div style="background:rgba(255,255,255,.18);padding:10px 12px;border-radius:8px"><div style="font-size:11px;opacity:.85">累計プロフィール訪問</div><div style="font-size:20px;font-weight:700">${fmt(totalResults)}</div></div>
+        <div style="background:rgba(255,255,255,.18);padding:10px 12px;border-radius:8px"><div style="font-size:11px;opacity:.85">平均CPV(訪問単価)</div><div style="font-size:20px;font-weight:700">¥${avgCPV}</div></div>
       </div>
     </div>
-    <div class="card" style="margin-bottom:16px"><h2>Metaåºåè²» vs ãã­ãã£ã¼ã«è¨ªåæ°</h2><div class="chart-box"><canvas id="metaAdChart"></canvas></div></div>
+    <div class="card" style="margin-bottom:16px"><h2>Meta広告費 vs プロフィール訪問数</h2><div class="chart-box"><canvas id="metaAdChart"></canvas></div></div>
     <div class="card" style="margin-bottom:16px">
-      <h2>Metaåºå æå¥å®ç¸¾</h2>
-      <table><thead><tr><th>æ</th><th style="text-align:right">åºåè²»</th><th style="text-align:right">ãã­ãã£ã¼ã«è¨ªå</th><th style="text-align:right">CPV</th></tr></thead><tbody>${metaRows}${metaTotalRow}</tbody></table>
+      <h2>Meta広告 月別実績</h2>
+      <table><thead><tr><th>月</th><th style="text-align:right">広告費</th><th style="text-align:right">プロフィール訪問</th><th style="text-align:right">CPV</th></tr></thead><tbody>${metaRows}${metaTotalRow}</tbody></table>
     </div>
 
-    <div class="card" style="margin-bottom:16px"><h2>ãã©ã­ã¯ã¼æ°ã»å£²ä¸ ææ¬¡æ¨ç§»ï¼2è»¸ï¼</h2><div class="chart-box"><canvas id="igFollowerSales"></canvas></div></div>
+    <div class="card" style="margin-bottom:16px"><h2>フォロワー数・売上 月次推移（2軸）</h2><div class="chart-box"><canvas id="igFollowerSales"></canvas></div></div>
 
     <div class="card" style="margin-bottom:16px">
-      <h2>æå¥KPIä¸è¦§ï¼SNS Ã å£²ä¸ï¼</h2>
+      <h2>月別KPI一覧（SNS × 売上）</h2>
       <div style="overflow-x:auto">
         <table>
-          <thead><tr><th>æ</th><th style="text-align:right">ãã©ã­ã¯ã¼</th><th style="text-align:right">é²è¦§æ°</th><th style="text-align:right">ãªã¼ã</th><th style="text-align:right">ã¢ã¯ã»ã¹</th><th style="text-align:right">ãªã³ã¯ã¯ãªãã¯</th><th style="text-align:right">ã¯ãªãã¯ç</th><th style="text-align:right">ææ¬¡å£²ä¸</th></tr></thead>
+          <thead><tr><th>月</th><th style="text-align:right">フォロワー</th><th style="text-align:right">閲覧数</th><th style="text-align:right">リーチ</th><th style="text-align:right">アクセス</th><th style="text-align:right">リンククリック</th><th style="text-align:right">クリック率</th><th style="text-align:right">月次売上</th></tr></thead>
           <tbody>${kpiRows}</tbody>
         </table>
       </div>
     </div>
 
     <div class="card" style="margin-bottom:16px">
-      <h2>ð ãµããªã¼ã»æè¦</h2>
+      <h2>📝 サマリー・所見</h2>
       <div style="font-size:13px;line-height:1.8;color:#374151">
-        ã»æéè¦KPIã®<b>ãªã³ã¯ã¯ãªãã¯æ°</b>ã¯2026å¹´1ã5æç´¯è¨ã§<b>${fmt(totalClicks)}å</b>ãæå¤æã¯<b>${bestMonth.m}ï¼${fmt(bestClick)}åï¼</b>ã<br>
-        ã»ãªã³ã¯ã¯ãªãã¯ã¨å£²ä¸ã®ç¸é¢ä¿æ°ã¯<b>${rClickSales!=null?rClickSales.toFixed(2):"-"}</b>ï¼${corrLabel(rClickSales)}ï¼ã<br>
-        ã»<b>ç¤ºå</b>ï¼é²è¦§æ°ãå¢ãããã¨èªä½ãããé²è¦§ããäººãããªã³ã¯ã¯ãªãã¯ï¼ãµã¤ãé·ç§»ï¼ãã¸å°ãå°ç·è¨­è¨ï¼ãã­ãã£ã¼ã«ãªã³ã¯ã»ãã¤ã©ã¤ãã»ã¹ãã¼ãªã¼ãºï¼ã®å¼·åãå£²ä¸ã«å¹ãã
+        ・最重要KPIの<b>リンククリック数</b>は2026年1〜5月累計で<b>${fmt(totalClicks)}回</b>。最多月は<b>${bestMonth.m}（${fmt(bestClick)}回）</b>。<br>
+        ・リンククリックと売上の相関係数は<b>${rClickSales!=null?rClickSales.toFixed(2):"-"}</b>（${corrLabel(rClickSales)}）。<br>
+        ・<b>示唆</b>：閲覧数を増やすこと自体より、閲覧した人を「リンククリック（サイト遷移）」へ導く導線設計（プロフィールリンク・ハイライト・ストーリーズ）の強化が売上に効く。
       </div>
     </div>`;
 
-  // ãã£ã¼ãæç»
-  charts.igCS=new Chart(document.getElementById("igClickSales").getContext("2d"),{type:"bar",data:{labels:months,datasets:[{label:"ãªã³ã¯ã¯ãªãã¯æ°",data:clicks,backgroundColor:"rgba(124,58,237,.85)",yAxisID:"y1",borderSkipped:false},{label:"ææ¬¡å£²ä¸",data:sales,type:"line",borderColor:"#2F5496",backgroundColor:"rgba(47,84,150,.1)",tension:.3,fill:false,pointRadius:5,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y1:{type:"linear",position:"left",beginAtZero:true,title:{display:true,text:"ãªã³ã¯ã¯ãªãã¯"}},y2:{type:"linear",position:"right",beginAtZero:true,title:{display:true,text:"å£²ä¸"},ticks:{callback:v=>"Â¥"+(v/10000).toFixed(0)+"ä¸"},grid:{drawOnChartArea:false}}}}});
-  charts.igSC=new Chart(document.getElementById("igScatter").getContext("2d"),{type:"scatter",data:{datasets:[{label:"æå¥",data:krows.map(d=>({x:d.linkClicks,y:d.sales})),backgroundColor:"rgba(124,58,237,.75)",pointRadius:11,pointHoverRadius:13}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:24,right:30}},plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${krows[ctx.dataIndex].m}: ã¯ãªãã¯${fmt(ctx.parsed.x)} / Â¥${fmt(ctx.parsed.y)}`}}},scales:{x:{title:{display:true,text:"ãªã³ã¯ã¯ãªãã¯æ°ï¼å¤ãâï¼"}},y:{title:{display:true,text:"ææ¬¡å£²ä¸ï¼å¤ãâï¼"},ticks:{callback:v=>"Â¥"+(v/10000).toFixed(0)+"ä¸"}}}},plugins:[{id:"monthLabels",afterDatasetsDraw(chart){const{ctx}=chart;const meta=chart.getDatasetMeta(0);ctx.save();ctx.font="bold 13px sans-serif";ctx.fillStyle="#1f2937";ctx.textAlign="center";meta.data.forEach((pt,i)=>{ctx.fillText(krows[i].m,pt.x,pt.y-16);});ctx.restore();}}]});
+  // チャート描画
+  charts.igCS=new Chart(document.getElementById("igClickSales").getContext("2d"),{type:"bar",data:{labels:months,datasets:[{label:"リンククリック数",data:clicks,backgroundColor:"rgba(124,58,237,.85)",yAxisID:"y1",borderSkipped:false},{label:"月次売上",data:sales,type:"line",borderColor:"#2F5496",backgroundColor:"rgba(47,84,150,.1)",tension:.3,fill:false,pointRadius:5,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y1:{type:"linear",position:"left",beginAtZero:true,title:{display:true,text:"リンククリック"}},y2:{type:"linear",position:"right",beginAtZero:true,title:{display:true,text:"売上"},ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"},grid:{drawOnChartArea:false}}}}});
+  charts.igSC=new Chart(document.getElementById("igScatter").getContext("2d"),{type:"scatter",data:{datasets:[{label:"月別",data:krows.map(d=>({x:d.linkClicks,y:d.sales})),backgroundColor:"rgba(124,58,237,.75)",pointRadius:11,pointHoverRadius:13}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:24,right:30}},plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${krows[ctx.dataIndex].m}: クリック${fmt(ctx.parsed.x)} / ¥${fmt(ctx.parsed.y)}`}}},scales:{x:{title:{display:true,text:"リンククリック数（多い→）"}},y:{title:{display:true,text:"月次売上（多い↑）"},ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"}}}},plugins:[{id:"monthLabels",afterDatasetsDraw(chart){const{ctx}=chart;const meta=chart.getDatasetMeta(0);ctx.save();ctx.font="bold 13px sans-serif";ctx.fillStyle="#1f2937";ctx.textAlign="center";meta.data.forEach((pt,i)=>{ctx.fillText(krows[i].m,pt.x,pt.y-16);});ctx.restore();}}]});
 
-  // Metaåºåãã£ã¼ã
+  // Meta広告チャート
   const metaLabels=IG_MONTHLY.map(d=>d.m);
-  charts.metaAd=new Chart(document.getElementById("metaAdChart").getContext("2d"),{type:"bar",data:{labels:metaLabels,datasets:[{label:"åºåè²»",data:IG_MONTHLY.map(d=>d.metaAdCost||0),backgroundColor:"rgba(131,58,180,.85)",yAxisID:"y1",borderSkipped:false},{label:"ãã­ãã£ã¼ã«è¨ªå",data:IG_MONTHLY.map(d=>d.metaResults||0),type:"line",borderColor:"#fd1d1d",backgroundColor:"rgba(253,29,29,.1)",tension:.3,fill:false,pointRadius:4,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y1:{type:"linear",position:"left",beginAtZero:true,title:{display:true,text:"åºåè²»"},ticks:{callback:v=>"Â¥"+(v/1000).toFixed(0)+"K"}},y2:{type:"linear",position:"right",beginAtZero:true,title:{display:true,text:"è¨ªåæ°"},grid:{drawOnChartArea:false}}}}});
+  charts.metaAd=new Chart(document.getElementById("metaAdChart").getContext("2d"),{type:"bar",data:{labels:metaLabels,datasets:[{label:"広告費",data:IG_MONTHLY.map(d=>d.metaAdCost||0),backgroundColor:"rgba(131,58,180,.85)",yAxisID:"y1",borderSkipped:false},{label:"プロフィール訪問",data:IG_MONTHLY.map(d=>d.metaResults||0),type:"line",borderColor:"#fd1d1d",backgroundColor:"rgba(253,29,29,.1)",tension:.3,fill:false,pointRadius:4,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y1:{type:"linear",position:"left",beginAtZero:true,title:{display:true,text:"広告費"},ticks:{callback:v=>"¥"+(v/1000).toFixed(0)+"K"}},y2:{type:"linear",position:"right",beginAtZero:true,title:{display:true,text:"訪問数"},grid:{drawOnChartArea:false}}}}});
 
-  // ãã©ã­ã¯ã¼Ãå£²ä¸ ææ¬¡2è»¸
-  charts.igFS=new Chart(document.getElementById("igFollowerSales").getContext("2d"),{type:"line",data:{labels:IG_MONTHLY.map(d=>d.m),datasets:[{label:"ãã©ã­ã¯ã¼æ°",data:IG_MONTHLY.map(d=>d.followers),borderColor:"#e1306c",tension:.3,fill:false,pointRadius:4,yAxisID:"y1"},{label:"ææ¬¡å£²ä¸",data:IG_MONTHLY.map(d=>d.sales),borderColor:"#2F5496",tension:.3,fill:false,pointRadius:4,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y1:{type:"linear",position:"left",title:{display:true,text:"ãã©ã­ã¯ã¼"},ticks:{callback:v=>fmtK(v)}},y2:{type:"linear",position:"right",title:{display:true,text:"å£²ä¸"},ticks:{callback:v=>"Â¥"+(v/10000).toFixed(0)+"ä¸"},grid:{drawOnChartArea:false}}}}});
+  // フォロワー×売上 月次2軸
+  charts.igFS=new Chart(document.getElementById("igFollowerSales").getContext("2d"),{type:"line",data:{labels:IG_MONTHLY.map(d=>d.m),datasets:[{label:"フォロワー数",data:IG_MONTHLY.map(d=>d.followers),borderColor:"#e1306c",tension:.3,fill:false,pointRadius:4,yAxisID:"y1"},{label:"月次売上",data:IG_MONTHLY.map(d=>d.sales),borderColor:"#2F5496",tension:.3,fill:false,pointRadius:4,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top"}},scales:{y1:{type:"linear",position:"left",title:{display:true,text:"フォロワー"},ticks:{callback:v=>fmtK(v)}},y2:{type:"linear",position:"right",title:{display:true,text:"売上"},ticks:{callback:v=>"¥"+(v/10000).toFixed(0)+"万"},grid:{drawOnChartArea:false}}}}});
 }
 
 
-// åæå
+// 初期化
 loadIGData().then(()=>{
-  // ååèµ·åæã®ã¿ã·ã¼ããã¼ã¿ãæå¥(æ¢ã«ãã¼ã¿ãããå ´åã¯ä¸æ¸ãããªã)
+  // 初回起動時のみシードデータを投入(既にデータがある場合は上書きしない)
   if(Object.keys(igDailyData).length===0){
-    // 2026-01-01ã2026-05-19ã®æ¥å¥ãã©ã­ã¯ã¼ç·æ°(1/1=3500ã¹ã¿ã¼ããä¸¡ç«¯åºå®ã§ã¢ã³ãã©ã­ã¼æåå¸åããè¿ä¼¼å¤)
+    // 2026-01-01〜2026-05-19の日別フォロワー総数(1/1=3500スタート、両端固定でアンフォロー按分吸収した近似値)
     const seedFollowers={
       "2026-01-01":3500,"2026-01-02":3502,"2026-01-03":3504,"2026-01-05":3505,
       "2026-01-06":3506,"2026-01-07":3509,"2026-01-08":3513,"2026-01-09":3516,
@@ -818,7 +818,7 @@ loadIGData().then(()=>{
     for(const d in seedFollowers){
       igDailyData[d]={followers:seedFollowers[d],reach:null,impressions:null,interactions:null};
     }
-    // 5/20ã¯ãªã¼ãã»ãã¥ã¼ã»ã¤ã³ã¿ã©ã¯ã·ã§ã³ãåå¾æ¸ã®å¤ãå¥ãã
+    // 5/20はリーチ・ビュー・インタラクションも取得済の値を入れる
     igDailyData["2026-05-20"]={followers:13000,reach:147000,impressions:377000,interactions:9117};
     saveIGData();
   }
