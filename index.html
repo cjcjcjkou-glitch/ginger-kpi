@@ -861,64 +861,52 @@ loadIGData().then(()=>{
   }
   renderInstagramPane();
 });
-</script>
-<script>
-// 売上+推移タブ合体 & 広告効果タブ追加
-(function(){
-  var _st = window.switchTab;
-  if(!_st) return;
-  window.switchTab = function(tab){
-    if(tab==="sales"){
-      _st("sales");
-      setTimeout(function(){
-        var ps=document.getElementById("pane-sales");
-        var hasT=ps&&ps.querySelector(".trend-section");
-        if(ps&&!hasT){ var d=document.createElement("div"); d.className="trend-section"; renderTrend&&renderTrend(d); ps.appendChild(d); }
-      },200);
-    } else if(tab==="ad"){
-      var panes=document.querySelectorAll(".tab-pane");
-      panes.forEach(function(p){p.style.display="none";});
-      var pa=document.getElementById("pane-ad");
-      if(pa){pa.style.display="block"; renderAdTab(pa);}
-      document.querySelectorAll(".tab-btn").forEach(function(b){b.classList.remove("active");});
-      var ab=document.getElementById("tab-ad");
-      if(ab)ab.classList.add("active");
-    } else { _st(tab); }
-  };
 
-  window.renderAdTab = function(pane){
-    var months=MONTHS; var DATA_=DATA; var ML=MLABEL;
-    var fmt=function(n){return n?"¥"+Math.round(n).toLocaleString():"-";};
-    var fmtR=function(n){return n?n.toFixed(1)+"x":"-";};
-    var color=function(r){return r>10?"#27ae60":r>5?"#f39c12":"#e74c3c";};
-
-    var rows="";
-    months.forEach(function(m){
-      var sites=DATA_[m]&&DATA_[m].sites||[];
-      var ts=sites.reduce(function(s,x){return s+(x.sales||0);},0);
-      var ta=sites.reduce(function(s,x){return s+(x.adCost||0);},0);
-      var roas=ta>0?ts/ta:null;
-      rows+="<tr><td style=\"padding:8px;font-weight:bold\">"+( ML[m]||m)+"</td><td style=\"padding:8px;text-align:right\">"+fmt(ts)+"</td><td style=\"padding:8px;text-align:right;color:#e74c3c\">"+fmt(ta)+"</td><td style=\"padding:8px;text-align:right;color:"+color(roas)+";font-weight:bold\">"+fmtR(roas)+"</td><td style=\"padding:8px;text-align:right\">"+fmt(ts-ta)+"</td></tr>";
-    });
-
-    var lm=months[months.length-1];
-    var lsites=(DATA_[lm]&&DATA_[lm].sites||[]).filter(function(s){return s.adCost;});
-    var sr="";
-    lsites.forEach(function(s){
-      var r=s.adCost?s.sales/s.adCost:null;
-      sr+="<tr><td style=\"padding:8px\">"+s.name+"</td><td style=\"padding:8px;text-align:right\">"+fmt(s.sales)+"</td><td style=\"padding:8px;text-align:right;color:#e74c3c\">"+fmt(s.adCost)+"</td><td style=\"padding:8px;text-align:right;color:"+color(r)+";font-weight:bold\">"+fmtR(r)+"</td></tr>";
-    });
-
-    pane.innerHTML = "<div style=\"padding:16px\"><h2 style=\"margin-bottom:8px\">💹 広告費用対効果（ROAS）</h2>"
-      + "<p style=\"font-size:11px;color:#888;margin-bottom:16px\">※ Meta広告費を売上比率で4サイトに按分算入済</p>"
-      + "<h3 style=\"margin:16px 0 8px\">📅 月別ROAS推移</h3>"
-      + "<div style=\"overflow-x:auto\"><table style=\"width:100%;border-collapse:collapse;font-size:14px\"><thead><tr style=\"background:#2c3e50;color:white\"><th style=\"padding:8px;text-align:left\">月</th><th style=\"padding:8px;text-align:right\">売上</th><th style=\"padding:8px;text-align:right\">広告費</th><th style=\"padding:8px;text-align:right\">ROAS</th><th style=\"padding:8px;text-align:right\">ネット売上</th></tr></thead><tbody>"
-      + rows + "</tbody></table></div>"
-      + "<h3 style=\"margin:24px 0 8px\">🏪 最新月サイト別ROAS</h3>"
-      + "<div style=\"overflow-x:auto\"><table style=\"width:100%;border-collapse:collapse;font-size:14px\"><thead><tr style=\"background:#2c3e50;color:white\"><th style=\"padding:8px;text-align:left\">サイト</th><th style=\"padding:8px;text-align:right\">売上</th><th style=\"padding:8px;text-align:right\">広告費（按分込）</th><th style=\"padding:8px;text-align:right\">ROAS</th></tr></thead><tbody>"
-      + sr + "</tbody></table></div></div>";
-  };
-})();
+function renderAdTab(){
+  var pane=document.getElementById("pane-ad");
+  if(!pane)return;
+  var months=MONTHS;
+  var fmt=function(n){return n?"¥"+Math.round(n).toLocaleString():"-";};
+  var fmtR=function(n){return n?n.toFixed(1)+"x":"-";};
+  var clr=function(r){return r>10?"#27ae60":r>5?"#f39c12":"#e74c3c";};
+  var rows="";
+  months.forEach(function(m){
+    var s=DATA[m]&&DATA[m].sites||[];
+    var ts=s.reduce(function(a,x){return a+(x.sales||0);},0);
+    var ta=s.reduce(function(a,x){return a+(x.adCost||0);},0);
+    var r=ta>0?ts/ta:null;
+    rows+='<tr><td style="padding:8px;font-weight:bold">'+(MLABEL[m]||m)+'</td>'+
+      '<td style="padding:8px;text-align:right">'+fmt(ts)+'</td>'+
+      '<td style="padding:8px;text-align:right;color:#e74c3c">'+fmt(ta)+'</td>'+
+      '<td style="padding:8px;text-align:right;color:'+clr(r)+';font-weight:bold">'+fmtR(r)+'</td>'+
+      '<td style="padding:8px;text-align:right">'+fmt(ts-ta)+'</td></tr>';
+  });
+  var lm=months[months.length-1];
+  var ls=(DATA[lm]&&DATA[lm].sites||[]).filter(function(s){return s.adCost;});
+  var sr=ls.map(function(s){
+    var r=s.adCost?s.sales/s.adCost:null;
+    return '<tr><td style="padding:8px">'+s.name+'</td>'+
+      '<td style="padding:8px;text-align:right">'+fmt(s.sales)+'</td>'+
+      '<td style="padding:8px;text-align:right;color:#e74c3c">'+fmt(s.adCost)+'</td>'+
+      '<td style="padding:8px;text-align:right;color:'+clr(r)+';font-weight:bold">'+fmtR(r)+'</td></tr>';
+  }).join("");
+  pane.innerHTML=
+    '<div style="padding:16px">'+
+    '<h2 style="margin-bottom:8px">💹 広告費用対効果（ROAS）</h2>'+
+    '<p style="font-size:11px;color:#888;margin-bottom:16px">※ Meta広告費を売上比率で按分済</p>'+
+    '<h3 style="margin:16px 0 8px">📅 月別ROAS推移</h3>'+
+    '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:14px"><thead>'+
+    '<tr style="background:#2c3e50;color:white"><th style="padding:8px;text-align:left">月</th>'+
+    '<th style="padding:8px;text-align:right">売上</th><th style="padding:8px;text-align:right">広告費</th>'+
+    '<th style="padding:8px;text-align:right">ROAS</th><th style="padding:8px;text-align:right">ネット売上</th></tr></thead>'+
+    '<tbody>'+rows+'</tbody></table></div>'+
+    '<h3 style="margin:24px 0 8px">🏪 最新月サイト別ROAS</h3>'+
+    '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:14px"><thead>'+
+    '<tr style="background:#2c3e50;color:white"><th style="padding:8px;text-align:left">サイト</th>'+
+    '<th style="padding:8px;text-align:right">売上</th><th style="padding:8px;text-align:right">広告費（按分込）</th>'+
+    '<th style="padding:8px;text-align:right">ROAS</th></tr></thead>'+
+    '<tbody>'+sr+'</tbody></table></div></div>';
+}
 </script>
 </body>
 </html>
